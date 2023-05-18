@@ -1,6 +1,4 @@
-Here's a suggested README for the project:
-
-# LLM Communication App
+# Anthropic API GUI
 
 This app allows you to communicate with Anthropic's Claude through an intuitive UI. You can save conversations, configure models and parameters, and get generated responses from the models.
 
