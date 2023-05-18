@@ -1,0 +1,13 @@
+node_modules/
+.idea/
+.DS_Store
+
+# testing
+/coverage
+
+# production
+build
+/.project
+
+!.env*
+.env*.local
