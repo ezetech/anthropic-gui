@@ -1,19 +1,80 @@
 {
-  "name": "electron-llm-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "name": "anthropic-gui",
+  "version": "0.1.0",
+  "private": true,
+  "main": "public/electron.js",
+  "homepage": "./",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@electron-forge/cli": "^6.1.1",
-    "electron": "^24.3.1"
+    "build": "react-app-rewired build",
+    "start": "react-app-rewired start",
+    "start:dev": "concurrently -k \"BROWSER=none npm start\" \"npm:electron:dev\"",
+    "electron:dev": "wait-on tcp:3000 && cross-env NODE_ENV=DEV electron .",
+    "start:prod": "concurrently -k \"BROWSER=none npm start\" \"npm:electron:dev\"",
+    "electron:prod": "cross-env NODE_ENV=PROD electron .",
+    "lint": "eslint . --ext .ts --ext .js --ext .tsx",
+    "lint:fix": "eslint --fix . --ext .ts --ext .js --ext .tsx",
+    "prettify": "prettier --write .",
+    "stylelint": "stylelint '**/*.{css,scss}'"
   },
   "dependencies": {
-    "path": "^0.12.7"
+    "@reduxjs/toolkit": "^1.9.5",
+    "cross-env": "^7.0.3",
+    "normalize.css": "^8.0.1",
+    "path": "^0.12.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.7",
+    "react-router-dom": "^6.11.2",
+    "react-scripts": "^5.0.1",
+    "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
+    "@types/node": "^16.18.34",
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
+    "@types/react-redux": "^7.1.25",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "concurrently": "^8.0.1",
+    "customize-cra": "^1.0.0",
+    "electron": "^25.0.0",
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "prettier": "^2.8.8",
+    "react-app-rewired": "^2.2.1",
+    "sass": "^1.62.1",
+    "sass-resources-loader": "^2.2.5",
+    "stylelint": "^15.6.2",
+    "stylelint-config-prettier-scss": "^1.0.0",
+    "stylelint-config-standard-scss": "^9.0.0",
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "wait-on": "^7.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

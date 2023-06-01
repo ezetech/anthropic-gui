@@ -1,0 +1,32 @@
+@import 'normalize.css/normalize.css';
+@import './fonts';
+
+* {
+  box-sizing: border-box;
+
+  // @include myriad-pro-regular;
+}
+
+html,
+body {
+  font-size: 16px;
+}
+
+// reset autofill background color for inputs in chrome
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input[type='number'] {
+  appearance: textfield;
+
+  // remove arrows in number picker input
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}
