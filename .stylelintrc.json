@@ -11,7 +11,7 @@
     "alpha-value-notation": "number",
     "color-function-notation": null,
     "color-hex-length": "long",
-    "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "selector-class-pattern": null,
     "selector-pseudo-class-no-unknown": [
       true,
       {

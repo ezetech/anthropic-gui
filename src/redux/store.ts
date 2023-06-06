@@ -5,6 +5,7 @@ import storage from 'redux-persist/es/storage';
 import { baseApi } from './api';
 import { apiSettingsSlice } from './apiSettings/apiSettings.slice';
 import { chatsSlice } from './chats/chatsSlice';
+import { themeSlice } from './theme/themeSlice';
 
 const persistConfig = {
   key: 'root',
@@ -14,6 +15,7 @@ const persistConfig = {
 const reducers = combineReducers({
   apiSettings: apiSettingsSlice.reducer,
   chats: chatsSlice.reducer,
+  theme: themeSlice.reducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 
@@ -22,7 +24,9 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat([baseApi.middleware]),
+    getDefaultMiddleware({ serializableCheck: false }).concat([
+      baseApi.middleware,
+    ]),
 });
 
 export const persistor = persistStore(store);

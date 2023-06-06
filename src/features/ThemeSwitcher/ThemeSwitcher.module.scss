@@ -1,0 +1,41 @@
+.wrapper.buttonGroup {
+  background: #000000;
+  border-radius: 10px;
+
+  .button {
+    transition: 0.3s;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    svg {
+      fill: #7b7b7b;
+      stroke: #7b7b7b;
+    }
+
+    &.selected {
+      background-color: var(--background-secondary);
+
+      svg {
+        fill: #ffffff;
+        stroke: #ffffff;
+      }
+
+      &:hover {
+        opacity: 0.7;
+        background-color: var(--background-secondary);
+      }
+    }
+
+    &:first-of-type.selected {
+      border-bottom-right-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    &:last-of-type.selected {
+      border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+    }
+  }
+}
