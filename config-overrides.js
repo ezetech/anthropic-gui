@@ -15,14 +15,6 @@ module.exports = override(
       'css-loader',
       'postcss-loader',
       'sass-loader',
-      {
-        loader: 'sass-resources-loader',
-        options: {
-          resources: [
-            './src/assets/styles/colors.scss',
-          ],
-        },
-      },
     ],
   }),
   adjustStyleLoaders(({ use: [, css, postcss, resolve, processor] }) => {

@@ -1,15 +1,20 @@
-@import 'normalize.css/normalize.css';
-@import './fonts';
+@import "normalize.css/normalize.css";
+@import "themes/light";
+@import "themes/dark";
+@import "variables/global";
 
 * {
   box-sizing: border-box;
-
-  // @include myriad-pro-regular;
 }
 
 html,
 body {
   font-size: 16px;
+  color: var(--text-primary);
+}
+
+body {
+  background-color: var(--bg-color-main);
 }
 
 // reset autofill background color for inputs in chrome

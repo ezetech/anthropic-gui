@@ -5,6 +5,7 @@ import { HashRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { store, persistor } from '@/redux/store';
+import { CustomThemeProvider } from '@/theme/themeProvider';
 
 import { RouterComponent } from './router/RouterComponent';
 
@@ -13,7 +14,9 @@ export const App = () => (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <HashRouter>
-          <RouterComponent />
+          <CustomThemeProvider>
+            <RouterComponent />
+          </CustomThemeProvider>
         </HashRouter>
       </PersistGate>
     </Provider>
