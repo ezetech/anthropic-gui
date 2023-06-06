@@ -58,6 +58,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
     'arrow-body-style': ['error', 'as-needed'],
+    'import/no-extraneous-dependencies': 'off',
     'import/order': [
       'error',
       {
