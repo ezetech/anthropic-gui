@@ -10,12 +10,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 module.exports = override(
   addWebpackModuleRule({
     test: /\.scss$/,
-    use: [
-      'style-loader',
-      'css-loader',
-      'postcss-loader',
-      'sass-loader',
-    ],
+    use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
   }),
   adjustStyleLoaders(({ use: [, css, postcss, resolve, processor] }) => {
     // allow aliased import of mixins, variables, i.e. `@import 'core.scss'`

@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>Anthropic API GUI</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="bg-gray-100">
@@ -11,23 +14,48 @@
       <div id="api-key-screen" class="screen">
         <div class="api-key-input-container flex flex-col items-center">
           <label for="api_key" class="mb-2">API Key:</label>
-          <input type="text" id="api_key" name="api_key" class="border border-gray-300 rounded px-3 py-2 mb-4 w-64" />
-          <button id="submit-api-key" class="bg-blue-500 text-white px-4 py-2 rounded">Enter</button>
+          <input
+            type="text"
+            id="api_key"
+            name="api_key"
+            class="border border-gray-300 rounded px-3 py-2 mb-4 w-64"
+          />
+          <button
+            id="submit-api-key"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Enter
+          </button>
         </div>
       </div>
 
       <div id="main-interface" class="screen hidden">
-        <div id="left-column" class="bg-white shadow-md rounded p-4 flex-1 max-w-xs h-full overflow-y-auto">
-            <button id="new-chat" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">New Chat</button>
-          <button id="save-chat" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">Save Chat</button>
+        <div
+          id="left-column"
+          class="bg-white shadow-md rounded p-4 flex-1 max-w-xs h-full overflow-y-auto"
+        >
+          <button
+            id="new-chat"
+            class="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+          >
+            New Chat
+          </button>
+          <button
+            id="save-chat"
+            class="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+          >
+            Save Chat
+          </button>
           <ul id="saved-chats">
             <!-- List of saved chats will be populated here -->
           </ul>
           <button id="logout">Logout</button>
         </div>
 
-        <div id="middle-column" class="bg-white shadow-md rounded p-4 flex-2 mx-4 h-full overflow-y-auto">
-
+        <div
+          id="middle-column"
+          class="bg-white shadow-md rounded p-4 flex-2 mx-4 h-full overflow-y-auto"
+        >
           <div id="prompt-container">
             <div class="prompt-row human">
               <label>Human</label>
@@ -39,39 +67,86 @@
             </div>
           </div>
           <div class="flex items-center space-x-4 mt-4">
-            <button id="add-prompt-row" class="bg-blue-500 text-white px-4 py-2 rounded">+</button>
-            <button id="submit-prompt" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+            <button
+              id="add-prompt-row"
+              class="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              +
+            </button>
+            <button
+              id="submit-prompt"
+              class="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Submit
+            </button>
           </div>
         </div>
 
-        <div id="right-column" class="bg-white shadow-md rounded p-4 flex-1 max-w-xs h-full">
-          
+        <div
+          id="right-column"
+          class="bg-white shadow-md rounded p-4 flex-1 max-w-xs h-full"
+        >
           <div class="model-selection mb-4">
             <label for="model" class="block mb-2">Model:</label>
-            <select id="model" name="model" class="border border-gray-300 rounded px-3 py-2 w-full">
+            <select
+              id="model"
+              name="model"
+              class="border border-gray-300 rounded px-3 py-2 w-full"
+            >
               <option value="model1">Model 1</option>
               <option value="model2">Model 2</option>
               <option value="model3">Model 3</option>
             </select>
           </div>
           <div class="prompt-parameters mb-4">
-            <label for="max_tokens_to_sample" class="block mb-2">Max Tokens:</label>
-            <input type="number" id="max_tokens_to_sample" name="max_tokens_to_sample" value="100000" class="border border-gray-300 rounded px-3 py-2 w-full" />
+            <label for="max_tokens_to_sample" class="block mb-2"
+              >Max Tokens:</label
+            >
+            <input
+              type="number"
+              id="max_tokens_to_sample"
+              name="max_tokens_to_sample"
+              value="100000"
+              class="border border-gray-300 rounded px-3 py-2 w-full"
+            />
           </div>
-          
+
           <div class="prompt-parameters mb-4">
             <label for="temperature" class="block mb-2">Temperature:</label>
-            <input type="number" id="temperature" name="temperature" step="0.01" min="0" max="1" value="1" class="border border-gray-300 rounded px-3 py-2 w-full" />
+            <input
+              type="number"
+              id="temperature"
+              name="temperature"
+              step="0.01"
+              min="0"
+              max="1"
+              value="1"
+              class="border border-gray-300 rounded px-3 py-2 w-full"
+            />
           </div>
           <div class="prompt-parameters mb-4">
             <label for="top_k" class="block mb-2">Top K:</label>
-            <input type="number" id="top_k" name="top_k" value="-1" class="border border-gray-300 rounded px-3 py-2 w-full" />
+            <input
+              type="number"
+              id="top_k"
+              name="top_k"
+              value="-1"
+              class="border border-gray-300 rounded px-3 py-2 w-full"
+            />
           </div>
           <div class="prompt-parameters mb-4">
             <label for="top_p" class="block mb-2">Top P:</label>
-            <input type="number" id="top_p" name="top_p" step="0.01" min="-1" max="1" value="-1" class="border border-gray-300 rounded px-3 py-2 w-full" />
+            <input
+              type="number"
+              id="top_p"
+              name="top_p"
+              step="0.01"
+              min="-1"
+              max="1"
+              value="-1"
+              class="border border-gray-300 rounded px-3 py-2 w-full"
+            />
           </div>
-          
         </div>
       </div>
     </div>

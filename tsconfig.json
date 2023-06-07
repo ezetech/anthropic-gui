@@ -23,6 +23,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": [".eslintrc.js", "src",],
+  "include": [".eslintrc.js", "src"],
   "exclude": ["node_modules", "build", "public"]
 }
