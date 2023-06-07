@@ -1,0 +1,46 @@
+.buttonWrapper.button {
+  padding-top: 13px;
+  padding-bottom: 13px;
+  transition: 0.3s;
+  font-weight: 700;
+
+  &.contained {
+    background-color: var(--primary-color);
+    color: #ffffff;
+
+    &:disabled {
+      background-color: var(--bg-btn-disabled);
+      color: var(--text-disabled);
+    }
+
+    &:hover {
+      background-color: var(--primary-hover);
+    }
+
+    svg {
+      fill: #ffffff;
+      stroke: #ffffff;
+    }
+  }
+
+  &.outlined {
+    border: 1px solid var(--text-secondary);
+    color: 1px solid var(--text-primary);
+
+    &:disabled {
+      border-color: var(--disabled);
+      color: var(--disabled);
+    }
+
+    &:hover {
+      color: var(--btn-outlined-hover);
+      border-color: var(--btn-outlined-hover);
+      background-color: transparent;
+    }
+
+    svg {
+      fill: var(--text-primary);
+      stroke: var(--text-primary);
+    }
+  }
+}
