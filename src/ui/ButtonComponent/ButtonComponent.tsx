@@ -21,7 +21,7 @@ export const ButtonComponent = memo((props: ButtonComponentProps) => {
         styles[variant],
       ])}
     >
-      Enter
+      {props.children}
     </Button>
   );
 });

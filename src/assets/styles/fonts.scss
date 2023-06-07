@@ -1,6 +1,13 @@
 @font-face {
-  font-family: MyriadProRegular;
-  src: url('../fonts/MyriadPro-Regular.otf') format('opentype');
-  font-weight: 200;
+  font-family: AeonikMedium;
+  src: url('../fonts/Aeonik-Medium.otf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: AeonikBold;
+  src: url('../fonts//Aeonik-Bold.otf');
+  font-weight: 500;
   font-style: normal;
 }
