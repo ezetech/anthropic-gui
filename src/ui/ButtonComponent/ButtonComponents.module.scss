@@ -2,7 +2,9 @@
   padding-top: 13px;
   padding-bottom: 13px;
   transition: 0.3s;
+  font-family: var(--font-family-bold);
   font-weight: 700;
+  text-transform: none;
 
   &.contained {
     background-color: var(--primary-color);
