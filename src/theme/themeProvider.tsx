@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import createTheme from '@mui/material/styles/createTheme';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
 import { useAppSelector } from '@/redux/hooks';
 import { selectThemeMode } from '@/redux/theme/theme.selectors';

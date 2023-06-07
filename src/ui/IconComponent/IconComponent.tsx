@@ -10,7 +10,11 @@ const ICONS = {
 
 export type IconType = keyof typeof ICONS;
 
-export const IconComponent = memo(({ type }: { type: IconType }) => {
+export const IconComponent = memo(({ type }: { type?: IconType }) => {
+  if (!type) {
+    return null;
+  }
+
   const NewIcon = ICONS[type];
   return <NewIcon />;
 });

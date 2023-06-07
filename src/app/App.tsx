@@ -5,7 +5,7 @@ import { HashRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { store, persistor } from '@/redux/store';
-import { CustomThemeProvider } from '@/theme/themeProvider';
+import { CustomThemeProvider } from '@/theme/ThemeProvider';
 
 import { RouterComponent } from './router/RouterComponent';
 
