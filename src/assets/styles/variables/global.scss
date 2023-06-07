@@ -1,5 +1,13 @@
 :root {
+  // colors
+  --primary-color:  #6129FF;
+  --primary-hover:  #480FEA;
+  --disabled: #AEAEAE;
+
+
   // components backgrounds
-  --background-primary: #F2F2F2;
-  --background-secondary:  #3C424E;
+  --theme-switcher-bg-primary: #252836;
+  --theme-switcher-bg-secondary: #363C4A;
+  --theme-switcher-bg-hover-dark: #1A1C25;
+  --theme-switcher-bg-hover-light: #515A6E;
 }

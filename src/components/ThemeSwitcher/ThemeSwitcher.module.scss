@@ -1,0 +1,70 @@
+.wrapper.buttonGroup {
+  border-radius: 10px;
+  overflow: hidden;
+
+  .button {
+    transition: 0.3s;
+    border-color: transparent;
+
+    svg {
+      fill: #828592;
+      stroke: #828592;
+    }
+  }
+
+  &.light {
+    background: var(--theme-switcher-bg-primary);
+
+    .lightBtn {
+      border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+      background-color: var(--theme-switcher-bg-secondary);
+
+      svg {
+        fill: #ffffff;
+        stroke: #ffffff;
+      }
+    }
+  }
+
+  &.dark {
+    background: var(--theme-switcher-bg-secondary);
+
+    .darkBtn {
+      border-bottom-right-radius: 10px;
+      border-top-right-radius: 10px;
+      background-color: var(--theme-switcher-bg-primary);
+
+      svg {
+        fill: #ffffff;
+        stroke: #ffffff;
+      }
+    }
+  }
+
+  &.light .darkBtn:hover {
+    background: transparent;
+  }
+
+  &.dark .lightBtn:hover {
+    background: transparent;
+  }
+
+  &.dark:hover {
+    background: var(--theme-switcher-bg-hover-light);
+
+    .lightBtn svg {
+      fill: #ffffff;
+      stroke: #ffffff;
+    }
+  }
+
+  &.light:hover {
+    background: var(--theme-switcher-bg-hover-dark);
+
+    .darkBtn svg {
+      fill: #ffffff;
+      stroke: #ffffff;
+    }
+  }
+}

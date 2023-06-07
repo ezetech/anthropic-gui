@@ -1,7 +1,14 @@
 .appLightTheme {
+  // colors
   --bg-color-main: #ffffff;
-  --secondary-color: #000000;
-  --primary-color: #7829ff;
   --text-primary: #000000;
   --text-secondary: #aeaeae;
+  --text-disabled: #ffffff;
+  --btn-outlined-hover: #000000;
+
+  // components backgrounds
+  --bg-primary:#F2F2F2;
+  --bg-secondary: #000000;
+  --bg-btn-disabled: #AEAEAE;
+
 }

@@ -1,7 +1,13 @@
 .appDarkTheme {
-  --bg-color-main: #242582;
-  --secondary-color: #000000;
-  --primary-color: #7829FF;
+  // colors
+  --bg-color-main: #191824;
   --text-primary: #ffffff;
-  --text-secondary: #aeaeae;
+  --text-secondary: #828592;
+  --text-disabled: #828592;
+  --btn-outlined-hover: #ffffff;
+
+  // components backgrounds
+  --bg-primary: #252836;
+  --bg-secondary:  #363C4A;
+  --bg-btn-disabled: #363C4A;
 }

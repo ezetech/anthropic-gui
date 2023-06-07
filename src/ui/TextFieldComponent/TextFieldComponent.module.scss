@@ -1,0 +1,29 @@
+.wrapper.textField {
+  svg {
+    fill: var(--text-secondary);
+    stroke: var(--text-secondary);
+  }
+
+  fieldset {
+    border: 1px solid var(--text-secondary);
+    border-radius: 8px;
+  }
+
+  div:hover fieldset {
+    border-color: var(--btn-outlined-hover);
+  }
+
+  input {
+    border: 0;
+    color: var(--text-primary);
+
+    &::placeholder {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+  }
+
+  input:focus + fieldset {
+    border-color: var(--primary-color);
+  }
+}
