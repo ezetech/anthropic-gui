@@ -1,12 +1,12 @@
-import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ApiSettingOptions } from '@/typings/common';
 
 const initialState: ApiSettingOptions = {
   apiKey: '',
   model: 'claude-v1.3-100k',
-  maxTokens: 100000,
-  temperature: 1,
+  maxTokens: 8000,
+  temperature: 0,
   topK: -1,
   topP: -1,
 };
@@ -15,19 +15,50 @@ export const apiSettingsSlice = createSlice({
   name: 'apiSettings',
   initialState,
   reducers: {
-    setApiSettings: <
-      F extends keyof ApiSettingOptions,
-      V extends ApiSettingOptions[F],
-    >(
-      state: Draft<ApiSettingOptions>,
-      action: PayloadAction<{ field: F; value: V }>, //
-    ) => {
-      const { field, value } = action.payload;
+    setApiKey: (state, action: PayloadAction<string>) => {
+      state.apiKey = action.payload;
+    },
+    setModel: (state, action: PayloadAction<string>) => {
+      const value = action.payload;
+      if (!value.includes('100k')) {
+        if (state.maxTokens > initialState.maxTokens) {
+          state.maxTokens = initialState.maxTokens;
+        }
+      }
+      state.model = value;
+    },
+    setMaxTokens: (state, action: PayloadAction<number>) => {
+      state.maxTokens = Math.round(action.payload);
+    },
+    setTemperature: (state, action: PayloadAction<number>) => {
+      const value = action.payload;
+      if (value > 0) {
+        state.topP = initialState.topP;
+      }
+      state.temperature = value;
+    },
+    setTopK: (state, action: PayloadAction<number>) => {
+      state.topK = Math.round(action.payload);
+    },
+    setTopP: (state, action: PayloadAction<number>) => {
+      const value = action.payload;
 
-      state[field] = value;
+      if (value > -1) {
+        state.temperature = 0;
+      }
+
+      state.topP = value;
     },
     cleanState: () => initialState,
   },
 });
 
-export const { cleanState, setApiSettings } = apiSettingsSlice.actions;
+export const {
+  cleanState,
+  setApiKey,
+  setMaxTokens,
+  setModel,
+  setTemperature,
+  setTopK,
+  setTopP,
+} = apiSettingsSlice.actions;

@@ -1,0 +1,56 @@
+.wrapper {
+  cursor: pointer;
+
+  .select {
+    position: static;
+    padding: 10px 12px;
+
+    legend {
+      display: none;
+    }
+
+    & > div {
+      padding: 0;
+      font-family: var(--font-family-main);
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 16px;
+    }
+
+    fieldset {
+      transition: 0.3s;
+      border: 1px solid var(--border-primary);
+      border-radius: 8px;
+    }
+    
+    svg {
+      stroke: var(--text-primary);
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      transition: 0.3s;
+    }
+
+    &.open svg {
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+
+  &:hover fieldset {
+    border-color: var(--btn-outlined-hover);
+  }
+
+  .select div input:focus + fieldset {
+    border-color: var(--primary-color);
+  }
+
+  .label {
+    position: static;
+    transform: none;
+    padding: 5px 12px 0;
+    font-size: 14px;
+    font-family: var(--font-family-main);
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+}
