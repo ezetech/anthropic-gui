@@ -6,7 +6,7 @@ export const getThemePalette = (mode: PaletteMode) => ({
     ...(mode === 'light'
       ? {
           primary: {
-            main: '#7829FF',
+            main: '#6129ff',
           },
           secondary: {
             main: '#000000',
@@ -22,7 +22,7 @@ export const getThemePalette = (mode: PaletteMode) => ({
         }
       : {
           primary: {
-            main: '#7829FF',
+            main: '#6129ff',
           },
           secondary: {
             main: '#000000',
@@ -32,8 +32,8 @@ export const getThemePalette = (mode: PaletteMode) => ({
             secondary: '#AEAEAE',
           },
           background: {
-            default: '#000000',
-            paper: '#F2F2F2',
+            default: '#191824',
+            paper: '#252836',
           },
         }),
   },

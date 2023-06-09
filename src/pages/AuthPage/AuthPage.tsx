@@ -11,7 +11,7 @@ import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/app/router/constants/routes';
-import { setApiSettings } from '@/redux/apiSettings/apiSettings.slice';
+import { setApiKey as dispatchApiKey } from '@/redux/apiSettings/apiSettings.slice';
 import { useAppDispatch } from '@/redux/hooks';
 import { ButtonComponent } from '@/ui/ButtonComponent';
 import { TextFieldComponent } from '@/ui/TextFieldComponent';
@@ -35,7 +35,7 @@ export const AuthPage = () => {
     (event?: FormEvent<HTMLFormElement>) => {
       event?.preventDefault();
       if (apiKey) {
-        dispatch(setApiSettings({ field: 'apiKey', value: apiKey }));
+        dispatch(dispatchApiKey(apiKey));
         navigate(ROUTES.Home, { replace: true });
       }
     },
