@@ -1,0 +1,44 @@
+.wrapper {
+  width: 100%;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 14px 13px 20px;
+  transition: 0.3s;
+
+  .rail {
+    background-color: var(--bg-slider-rail);
+  }
+
+  .label {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .input {
+    background: var(--bg-primary);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-family: var(--font-family-main);
+    font-weight: 500;
+    width: 90px;
+    text-align: center;
+    transition: 0.3s;
+    outline: none;
+    color: var(--text-primary);
+  }
+
+
+  &:hover {
+    border-color: var(--btn-outlined-hover);
+
+    .input {
+      border-color: var(--btn-outlined-hover);
+    }
+  }
+
+  .input:focus {
+    border-color: var(--primary-color);
+  }
+}
+

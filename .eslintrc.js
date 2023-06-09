@@ -56,9 +56,11 @@ module.exports = {
       { format: ['UPPER_CASE'], selector: 'enum' },
     ],
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
     'arrow-body-style': ['error', 'as-needed'],
     'import/no-extraneous-dependencies': 'off',
+
     'import/order': [
       'error',
       {
@@ -89,12 +91,11 @@ module.exports = {
         warnOnUnassignedImports: true,
       },
     ],
-
     'linebreak-style': 'off',
     'no-console': 1,
     'prefer-const': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
 
+    'react-hooks/exhaustive-deps': 'warn',
     'react-hooks/rules-of-hooks': 'error',
     'react/display-name': 'error',
     'react/jsx-curly-brace-presence': 'error',
