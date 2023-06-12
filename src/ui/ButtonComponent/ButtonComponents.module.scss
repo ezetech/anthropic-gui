@@ -5,6 +5,11 @@
   font-family: var(--font-family-bold);
   font-weight: 700;
   text-transform: none;
+  border-radius: 8px;
+
+  svg {
+    margin-left: 7px;
+  }
 
   &.contained {
     background-color: var(--primary-color);
