@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 
-import { ApiSettings } from '@/components/ApiSettings';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import { ApiSettings } from '@/features/ApiSettings';
 
 export const HomePage = () => (
   <Stack spacing={2} padding={4}>
