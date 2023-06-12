@@ -1,9 +1,4 @@
 .wrapper.textField {
-  svg {
-    fill: var(--text-secondary);
-    stroke: var(--text-secondary);
-  }
-
   fieldset {
     border: 1px solid var(--text-secondary);
     border-radius: 8px;
@@ -16,6 +11,8 @@
   input {
     border: 0;
     color: var(--text-primary);
+    padding-top: 12px;
+    padding-bottom: 12px;
 
     &::placeholder {
       color: var(--text-secondary);

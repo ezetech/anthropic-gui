@@ -1,6 +1,7 @@
-import { useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { SelectChangeEvent, Stack } from '@mui/material';
+import classNames from 'classnames';
 
 import {
   selectApiMaxTokens,
@@ -24,7 +25,11 @@ import { modelSelectItems } from './apiSettings.constants';
 
 import styles from './ApiSettings.module.scss';
 
-export const ApiSettings = () => {
+interface ApiSettingsProps {
+  className?: string;
+}
+
+export const ApiSettings = memo(({ className }: ApiSettingsProps) => {
   const dispatch = useAppDispatch();
   const temperature = useAppSelector(selectApiTemperature);
   const model = useAppSelector(selectApiModel);
@@ -81,7 +86,11 @@ export const ApiSettings = () => {
   const isModelWithMaxToken = useMemo(() => model.includes('100k'), [model]);
 
   return (
-    <Stack gap="10px" useFlexGap className={styles.wrapper}>
+    <Stack
+      gap="10px"
+      useFlexGap
+      className={classNames(className, styles.wrapper)}
+    >
       <h3 className={styles.title}>Settings</h3>
       <SelectComponent
         label="Model"
@@ -123,4 +132,6 @@ export const ApiSettings = () => {
       />
     </Stack>
   );
-};
+});
+
+ApiSettings.displayName = 'ApiSettings';
