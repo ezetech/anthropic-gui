@@ -94,7 +94,7 @@ export const ApiSettings = () => {
         value={maxTokens}
         handleChange={onMaxTokensChange}
         max={isModelWithMaxToken ? 100000 : 8000}
-        min={0}
+        min={1}
         step={1}
       />
       <SliderComponent
@@ -109,7 +109,7 @@ export const ApiSettings = () => {
         label="Top K"
         value={topK}
         handleChange={onTopKChange}
-        max={20}
+        max={10}
         min={0}
         step={1}
       />
