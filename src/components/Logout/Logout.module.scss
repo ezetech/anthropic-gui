@@ -1,0 +1,20 @@
+.btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 11px;
+  background-color: var(--bg-primary);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  transition: border 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--primary-hover);
+  }
+
+  span {
+    color: var(--text-primary);
+  }
+}

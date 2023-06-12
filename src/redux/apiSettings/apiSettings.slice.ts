@@ -49,16 +49,20 @@ export const apiSettingsSlice = createSlice({
 
       state.topP = value;
     },
-    cleanState: () => initialState,
+    cleanApiKey: state => {
+      state.apiKey = '';
+    },
+    cleanApiSettings: () => initialState,
   },
 });
 
 export const {
-  cleanState,
   setApiKey,
   setMaxTokens,
   setModel,
   setTemperature,
   setTopK,
   setTopP,
+  cleanApiKey,
+  cleanApiSettings,
 } = apiSettingsSlice.actions;
