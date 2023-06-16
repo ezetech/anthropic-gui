@@ -10,16 +10,17 @@ interface ButtonComponentProps extends ButtonProps {
 }
 
 export const ButtonComponent = memo((props: ButtonComponentProps) => {
-  const { variant = 'contained' } = props;
+  const { variant = 'contained', className } = props;
   return (
     <Button
-      {...props}
       variant={variant}
       className={classNames([
         styles.button,
         styles.buttonWrapper,
         styles[variant],
+        className,
       ])}
+      {...props}
     >
       {props.children}
     </Button>
