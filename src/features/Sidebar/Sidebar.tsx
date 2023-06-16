@@ -30,7 +30,7 @@ export const Sidebar = memo(({ className }: SidebarProps) => {
       <Logo />
       <ButtonComponent onClick={onClickNewChat}>
         <span>New Chat</span>
-        <IconComponent type="plus" />
+        <IconComponent type="plus" className={styles.newChatIcon} />
       </ButtonComponent>
       <Conversations />
       <div className={styles.bottomItems}>

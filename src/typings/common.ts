@@ -6,7 +6,7 @@ export type ApiErrorDetails = {
 
 export interface ApiSettingOptions {
   apiKey: string;
-  model: string; // TODO change MODEL TYPE
+  model: string;
   maxTokens: number;
   temperature: number;
   topK: number;
@@ -18,17 +18,17 @@ export interface ChatContent {
   text: string;
 }
 
-export interface Chat {
+interface ConversationCommon {
   id: string;
   name: string;
   createdAt: Date;
-  order: number;
-  content: ChatContent;
+  type: 'folder' | 'chat';
 }
 
-export interface Folder {
-  id: string;
-  name: string;
-  createdAt: Date;
-  order: number;
+export interface Chat extends ConversationCommon {
+  content?: ChatContent[];
+}
+
+export interface Folder extends ConversationCommon {
+  chats?: Chat[];
 }

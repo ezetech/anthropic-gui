@@ -3,7 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
 import { apiSettingsSlice } from './apiSettings/apiSettings.slice';
-import { chatsSlice } from './chats/chatsSlice';
+import { conversationsSlice } from './conversations/conversationsSlice';
 import { themeSlice } from './theme/themeSlice';
 
 const persistConfig = {
@@ -13,7 +13,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
   apiSettings: apiSettingsSlice.reducer,
-  chats: chatsSlice.reducer,
+  chats: conversationsSlice.reducer,
   theme: themeSlice.reducer,
 });
 
