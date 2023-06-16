@@ -8,7 +8,7 @@ import styles from './TextFieldComponent.module.scss';
 export const TextFieldComponent = memo((props: TextFieldProps) => (
   <TextField
     {...props}
-    className={classNames(styles.textField, styles.wrapper)}
+    className={classNames(styles.textField, styles.wrapper, props.className)}
   />
 ));
 TextFieldComponent.displayName = 'TexFieldComponent';

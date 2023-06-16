@@ -1,0 +1,87 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  padding: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 8px;
+  color: var(--bg-default);
+  text-decoration: none;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .conversationIcon {
+    transition: 0.3s;
+    stroke: var(--bg-default);
+  }
+
+  .deleteIcon {
+    margin-left: auto;
+    opacity: 0;
+    display: none;
+    transition: 0.3s;
+    cursor: pointer;
+    stroke: var(--bg-default);
+
+    &:hover {
+      stroke: var(--text-primary);
+    }
+  }
+
+  &:active {
+    background-color: var(--bg-primary);
+    border: 1px dashed var(--text-primary);
+    color: var(--text-primary);
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+    }
+  }
+
+  &:hover {
+    color: var(--text-primary);
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+    }
+
+    .deleteIcon {
+      display: block;
+      opacity: 1;
+    }
+  }
+
+  &.selected {
+    color: var(--text-primary);
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+      fill: var(--text-primary);
+    }
+  }
+
+  .confirmationDelete {
+    flex-shrink: 0;
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    margin-left: auto;
+
+    svg {
+      stroke: var(--bg-default);
+
+      &:hover {
+        stroke: var(--text-primary);
+      }
+    }
+  }
+}
