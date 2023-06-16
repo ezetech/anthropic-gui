@@ -4,11 +4,16 @@
   row-gap: 17px;
   padding: 25px 18px;
   border-right: 1px solid var(--border-primary);
+  overflow-y: hidden;
 
   .bottomItems {
     margin-top: auto;
     display: flex;
     flex-direction: column;
     row-gap: 17px;
+  }
+
+  .newChatIcon {
+    stroke: #ffffff;
   }
 }

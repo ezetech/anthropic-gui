@@ -1,7 +1,7 @@
 :root {
   // fonts
-  --font-family-main: "AeonikMedium",  serif;
-  --font-family-bold: "AeonikBold",  serif;
+  --font-family-main: 'AeonikMedium', serif;
+  --font-family-bold: 'AeonikBold', serif;
 
   // colors
   --primary-color: #6129ff;
@@ -13,4 +13,5 @@
   --theme-switcher-bg-secondary: #363c4a;
   --theme-switcher-bg-hover-dark: #1a1c25;
   --theme-switcher-bg-hover-light: #515a6e;
+  --bg-default: #828592;
 }

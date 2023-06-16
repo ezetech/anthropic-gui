@@ -1,12 +1,14 @@
+import { PropsWithChildren } from 'react';
+
 import { ApiSettings } from '@/features/ApiSettings';
 import { Sidebar } from '@/features/Sidebar';
 
-import styles from './HomePage.module.scss';
+import styles from './ChatLayoutPage.module.scss';
 
-export const HomePage = () => (
+export const ChatLayoutPage = ({ children }: PropsWithChildren) => (
   <div className={styles.wrapper}>
     <Sidebar />
-    <div style={{ textAlign: 'center', padding: '25px' }}>Chat</div>
+    {children}
     <ApiSettings />
   </div>
 );

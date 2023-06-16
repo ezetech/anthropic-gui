@@ -103,7 +103,7 @@ export const ApiSettings = memo(({ className }: ApiSettingsProps) => {
         value={maxTokens}
         handleChange={onMaxTokensChange}
         max={isModelWithMaxToken ? 100000 : 8000}
-        min={1}
+        min={1000}
         step={1}
       />
       <SliderComponent
