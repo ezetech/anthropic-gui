@@ -3,9 +3,10 @@ import { ApiSettingOptions } from '@/typings/common';
 
 export interface PromptRequest extends ApiSettingOptions {
   prompt: string;
+  signal?: AbortSignal;
 }
 
-export const submitPropmt = async ({
+export const submitPrompt = async ({
   model,
   temperature,
   topK,
@@ -13,6 +14,7 @@ export const submitPropmt = async ({
   apiKey,
   maxTokens,
   prompt,
+  signal,
 }: PromptRequest) => {
   const requestBody = {
     prompt: `\n\nHuman: ${prompt}\n\nAssistant: `,
@@ -31,6 +33,7 @@ export const submitPropmt = async ({
       'x-api-key': apiKey,
       'Content-Type': 'application/json',
     },
+    signal: signal,
     body: JSON.stringify(requestBody),
   };
 

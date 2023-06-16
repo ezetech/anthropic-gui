@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from '@/app/router/constants/routes';
+import { ChatNew, ChatSelected } from '@/features/Chat';
 import { AuthPage } from '@/pages/AuthPage';
 import { ChatLayoutPage } from '@/pages/ChatLayoutPage';
 
@@ -17,7 +18,7 @@ export const RouterComponent = () => (
         element={
           <PrivateRoute>
             <ChatLayoutPage>
-              <div style={{ textAlign: 'center', padding: '25px' }}>Chat</div>
+              <ChatNew />
             </ChatLayoutPage>
           </PrivateRoute>
         }
@@ -28,7 +29,7 @@ export const RouterComponent = () => (
           // TODO insert chat/id page to ChatLayoutPage children}
           <PrivateRoute>
             <ChatLayoutPage>
-              <div style={{ textAlign: 'center', padding: '25px' }}>Chat</div>
+              <ChatSelected />
             </ChatLayoutPage>
           </PrivateRoute>
         }
