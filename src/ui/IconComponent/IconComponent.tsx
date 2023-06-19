@@ -18,7 +18,6 @@ import { ReactComponent as newFolder } from '@/assets/icons/new-folder.svg';
 import { ReactComponent as openedFolder } from '@/assets/icons/opened-folder.svg';
 import { ReactComponent as plus } from '@/assets/icons/plus.svg';
 import { ReactComponent as regenerate } from '@/assets/icons/regenerate.svg';
-import { ReactComponent as remove } from '@/assets/icons/remove.svg';
 import { ReactComponent as search } from '@/assets/icons/search.svg';
 import { ReactComponent as submit } from '@/assets/icons/submit.svg';
 import { ReactComponent as themeDark } from '@/assets/icons/theme-dark.svg';
@@ -43,7 +42,6 @@ const ICONS = {
   cancel,
   ai,
   aiResponse,
-  remove,
   human,
   backgroundDefaultChat,
   regenerate,

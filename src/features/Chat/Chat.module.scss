@@ -1,10 +1,14 @@
 .chatGeneralContainer {
   display: flex;
   flex-direction: column;
-  margin-left: 60px;
-  margin-right: 60px;
-  margin-top: 69px;
+  padding: 40px 30px 25px;
+  margin: 0 auto;
   align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 900px;
 }
 
 .chatPromptContainer {
@@ -16,64 +20,6 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-}
-
-.promptContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  max-width: 656px;
-  min-height: 81px;
-  width: 100%;
-  height: 100%;
-  margin-left: 21px;
-  margin-bottom: 24px;
-  background: var(--bg-primary);
-  border: 1px solid var(--primary-color);
-  border-radius: 8px;
-}
-
-.promptContainerHeader {
-  display: flex;
-  justify-content: space-between;
-}
-
-.promptText {
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--text-primary);
-  margin: 14px 18px;
-  white-space: pre-wrap;
-  outline: none;
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.placeholderText {
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--text-primary);
-  margin-top: 14px;
-  margin-left: 18px;
-  margin-bottom: 4px;
-  width: 100%;
-  display: block;
-}
-
-.iconDelete {
-  margin-top: 14px;
-  margin-left: 16px;
-  margin-right: 16px;
 }
 
 .chatBgContainer {
@@ -98,118 +44,40 @@
 }
 
 .chatButtonsContainer {
-  display: flex;
-  margin-bottom: 26px;
-  justify-content: center;
-  align-self: center;
-  flex-direction: row;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.buttonAddContainer {
+  margin-top: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.buttonsColumn {
+  align-items: center;
+  display: flex;
+  column-gap: 20px;
 }
 
 .buttonAddChat {
-  background: var(--primary-color);
-  border-radius: 30px !important;
-  padding: 11px;
-  border: none;
+  flex-shrink: 0;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
   width: 45px;
   height: 45px;
-}
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  transition: 0.3s;
 
-.iconPlus {
-  stroke: #ffffff;
-}
+  svg {
+    transition: 0.3s;
+    stroke: #ffffff;
+  }
 
-.chatActionsButtonsContainer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  max-width: 656px;
-  min-height: 81px;
-  width: 100%;
-  height: 100%;
-  margin-left: 21px;
-}
-
-.buttonSubmitChat {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary-color);
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  max-width: 159px;
-  height: 45px;
-  width: 100%;
-  margin-right: 5px;
-}
-
-.submitText {
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: #ffffff;
-  margin-right: 7px;
-}
-
-.buttonStopChat {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  max-width: 129px;
-  height: 45px;
-  width: 100%;
-  padding: 13px 38px;
-  background: var(--primary-color);
-  color: #ffffff;
-  margin-right: 5px;
-}
-
-.stopText {
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: #ffffff;
-  margin-right: 7px;
-}
-
-.buttonRegenerateChat {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #AEAEAE;
-  border-radius: 10px;
-  cursor: pointer;
-  max-width: 184px;
-  height: 45px;
-  width: 100%;
-  padding: 13px 38px;
-  color: var(--text-secondary);
-}
-
-.regenerateText {
-  color: var(--text-primary);
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
+  &:hover {
+    background-color: var(--primary-hover);
+  }
 }
 
 .iconRegenerate {
@@ -221,34 +89,26 @@
   margin-left: 15px;
 }
 
-.textField {
-  min-width: 656px;
-  min-height: 81px;
-  margin-left: 21px;
-  margin-bottom: 24px;
-  background: var(--bg-primary);
-  border: 1px solid var(--primary-color);
-  border-radius: 8px;
-  padding: 14px;
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--text-primary);
-  outline: none;
-  resize: none;
-}
+.confirmationRename {
+  opacity: 0;
+  flex-shrink: 0;
+  display: flex;
+  column-gap: 5px;
+  align-items: center;
+  margin-left: auto;
+  transition: 0.3s;
 
-.activePrompt {
-  pointer-events: auto;
-}
+  svg {
+    stroke: var(--bg-default);
+    transition: 0.3s;
+    cursor: pointer;
 
-.activePrompt::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
+    &:hover {
+      stroke: var(--text-primary);
+    }
+  }
+
+  &.edited {
+    opacity: 1;
+  }
 }

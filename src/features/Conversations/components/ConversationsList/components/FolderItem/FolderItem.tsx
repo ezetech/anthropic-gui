@@ -7,7 +7,7 @@ import { Drop } from '@/components/Drop';
 import { PortalAwareItem } from '@/components/PortalAwareItem';
 import {
   deleteConversation,
-  renameConversation,
+  renameFolder,
 } from '@/redux/conversations/conversationsSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { Folder } from '@/typings/common';
@@ -63,7 +63,7 @@ export const FolderItem = memo(({ folderItem }: FolderItemProps) => {
     if (isEditing) {
       if (editedFolderName) {
         dispatch(
-          renameConversation({
+          renameFolder({
             conversationId: folderItem.id,
             name: editedFolderName,
           }),

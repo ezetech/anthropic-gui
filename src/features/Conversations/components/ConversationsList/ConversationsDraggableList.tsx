@@ -82,24 +82,25 @@ export const ConversationsDraggableList = () => {
             {...dropProvided.droppableProps}
             className={styles.wrapper}
           >
-            {conversations?.length &&
-              conversations.map((conversation, index) => (
-                <Draggable
-                  key={conversation.id}
-                  draggableId={conversation.id}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <PortalAwareItem provided={provided} snapshot={snapshot}>
-                      {conversation.type === 'folder' ? (
-                        <FolderItem folderItem={conversation} />
-                      ) : (
-                        <ChatItem conversationItem={conversation} />
-                      )}
-                    </PortalAwareItem>
-                  )}
-                </Draggable>
-              ))}
+            {conversations?.length
+              ? conversations.map((conversation, index) => (
+                  <Draggable
+                    key={conversation.id}
+                    draggableId={conversation.id}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <PortalAwareItem provided={provided} snapshot={snapshot}>
+                        {conversation.type === 'folder' ? (
+                          <FolderItem folderItem={conversation} />
+                        ) : (
+                          <ChatItem conversationItem={conversation} />
+                        )}
+                      </PortalAwareItem>
+                    )}
+                  </Draggable>
+                ))
+              : null}
             {dropProvided.placeholder}
           </div>
         )}

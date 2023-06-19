@@ -3,101 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Chat, ChatContent, Folder } from '@/typings/common';
 
-// TODO remove after tests
-export const conversationExamples: (Chat | Folder)[] = [
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some conversation',
-    type: 'chat',
-    content: [{ text: 'Some conversation', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some conversation 2',
-    type: 'chat',
-    content: [{ text: 'Some conversation 2', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some conversation',
-    type: 'chat',
-    content: [{ text: 'Some conversation', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Typescript',
-    type: 'chat',
-    content: [{ text: 'Some conversation 2', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some conversation',
-    type: 'chat',
-    content: [{ text: 'Some conversation', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some conversation',
-    type: 'chat',
-    content: [{ text: 'Some conversation 2', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some conversation',
-    type: 'chat',
-    content: [{ text: 'Some conversation', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some conversation 2',
-    type: 'chat',
-    content: [{ text: 'Some conversation 2', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Typescript',
-    type: 'chat',
-    content: [{ text: 'Some conversation', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'React',
-    type: 'chat',
-    content: [{ text: 'Some conversation 2', type: 'human' }],
-  },
-  {
-    createdAt: new Date(),
-    id: uuidv4(),
-    name: 'Some Folder 3',
-    type: 'folder',
-    chats: [
-      {
-        createdAt: new Date(),
-        id: uuidv4(),
-        name: 'Internet',
-        type: 'chat',
-        content: [{ text: 'Some conversation 2', type: 'human' }],
-      },
-      {
-        createdAt: new Date(),
-        id: uuidv4(),
-        name: 'What is Love?',
-        type: 'chat',
-        content: [{ text: 'Some conversation 2', type: 'human' }],
-      },
-    ],
-  },
-];
+import { findChatById } from './conversations.selectors';
 
 interface ConversationsState {
   conversations: (Chat | Folder)[];
@@ -105,7 +11,6 @@ interface ConversationsState {
 
 const initialState: ConversationsState = {
   conversations: [],
-  // conversations: conversationExamples, // TODO remove after tests
 };
 
 export const conversationsSlice = createSlice({
@@ -114,11 +19,10 @@ export const conversationsSlice = createSlice({
   reducers: {
     saveChat: (
       state,
-      action: PayloadAction<Omit<Chat, 'type' | 'id' | 'createdAt'>>,
+      action: PayloadAction<Omit<Chat, 'type' | 'createdAt'>>,
     ) => {
       state.conversations.unshift({
         type: 'chat',
-        id: uuidv4(),
         createdAt: new Date(),
         ...action.payload,
       });
@@ -135,28 +39,73 @@ export const conversationsSlice = createSlice({
         ...action.payload,
       });
     },
-    renameConversation: (
+    renameFolder: (
       state,
       action: PayloadAction<{ conversationId: string; name: string }>,
     ) => {
       const { conversationId, name } = action.payload;
       const conversationToRename = state.conversations.find(
-        conversation => conversation.id === conversationId,
+        ({ id }) => id === conversationId,
       );
       if (conversationToRename) {
         conversationToRename.name = name;
       }
     },
-    updateChatContent: (
+    renameChat: (
+      state,
+      action: PayloadAction<{ conversationId: string; name: string }>,
+    ) => {
+      const { conversationId, name } = action.payload;
+      const conversationToRename = findChatById(
+        state.conversations,
+        conversationId,
+      );
+      if (conversationToRename) {
+        conversationToRename.name = name;
+      }
+    },
+    updateChatContents: (
       state,
       action: PayloadAction<{ chatId: string; contents: ChatContent[] }>,
     ) => {
       const { chatId, contents } = action.payload;
-      const chatToUpdate = state.conversations.find(
-        conversation => conversation.id === chatId,
-      );
+      const chatToUpdate = findChatById(state.conversations, chatId);
       if (chatToUpdate) {
         (chatToUpdate as Chat).content = contents;
+      }
+    },
+    updateContentById: (
+      state,
+      action: PayloadAction<{
+        chatId: string;
+        contentId: string;
+        text: string;
+      }>,
+    ) => {
+      const { chatId, contentId, text } = action.payload;
+      const chat = findChatById(state.conversations, chatId);
+
+      const contentToUpdate = chat?.content?.find(
+        content => content.id === contentId,
+      );
+      if (contentToUpdate) {
+        contentToUpdate.text = text;
+      }
+    },
+    addPromptToChat: (
+      state,
+      action: PayloadAction<{ chatId: string; content: ChatContent }>,
+    ) => {
+      const { chatId, content } = action.payload;
+
+      const chat = findChatById(state.conversations, chatId);
+
+      if (chat && chat.content) {
+        chat.content.push(content);
+      } else if (chat) {
+        chat.content = [content];
+      } else {
+        console.error(`Chat with ID ${chatId} not found`);
       }
     },
     deleteConversation: (
@@ -266,13 +215,16 @@ export const conversationsSlice = createSlice({
 export const {
   saveChat,
   deleteConversation,
-  renameConversation,
+  renameChat,
   reorderConversation,
   saveFolder,
-  updateChatContent,
+  updateChatContents,
   clearConversations,
   moveChatFromFolderToFolder,
   moveChatToFolder,
   moveChatToGeneralList,
   moveChatFromGeneralListToFolder,
+  addPromptToChat,
+  updateContentById,
+  renameFolder,
 } = conversationsSlice.actions;

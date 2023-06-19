@@ -26,7 +26,6 @@ export const RouterComponent = () => (
       <Route
         path={`${ROUTES.Chat}/:id`}
         element={
-          // TODO insert chat/id page to ChatLayoutPage children}
           <PrivateRoute>
             <ChatLayoutPage>
               <ChatSelected />
@@ -34,7 +33,16 @@ export const RouterComponent = () => (
           </PrivateRoute>
         }
       />
-      <Route path="*" element={<ChatLayoutPage />} />
+      <Route
+        path="*"
+        element={
+          <PrivateRoute>
+            <ChatLayoutPage>
+              <ChatNew />
+            </ChatLayoutPage>
+          </PrivateRoute>
+        }
+      />
     </Routes>
   </Suspense>
 );
