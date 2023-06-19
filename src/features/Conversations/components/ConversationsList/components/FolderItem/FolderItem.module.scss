@@ -57,6 +57,8 @@
 
     svg {
       stroke: var(--bg-default);
+      transition: 0.3s;
+      cursor: pointer;
 
       &:hover {
         stroke: var(--text-primary);

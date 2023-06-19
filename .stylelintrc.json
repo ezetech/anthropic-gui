@@ -12,6 +12,7 @@
     "color-function-notation": null,
     "color-hex-length": "long",
     "selector-class-pattern": null,
+    "no-descending-specificity": null,
     "selector-pseudo-class-no-unknown": [
       true,
       {

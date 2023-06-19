@@ -14,6 +14,7 @@ export interface ApiSettingOptions {
 }
 
 export interface ChatContent {
+  id: string;
   type: 'human' | 'assistant';
   text: string;
 }

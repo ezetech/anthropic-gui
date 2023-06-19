@@ -1,8 +1,5 @@
 .wrapper {
   height: 100vh;
   display: grid;
-  grid-template-columns: minmax(280px, 344px) minmax(600px, 1fr) minmax(
-      280px,
-      344px
-    );
+  grid-template-columns: minmax(250px, 400px) minmax(650px, 1fr) minmax(250px, 400px);
 }
