@@ -1,4 +1,4 @@
-import { FocusEvent, useState } from 'react';
+import { FocusEvent, useState, MouseEvent } from 'react';
 
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -37,6 +37,11 @@ export const AiPrompt = ({
     setIsEditing(false);
   };
 
+  const onCopyClick = (textToCopy: string) => (event: MouseEvent) => {
+    event.stopPropagation();
+    navigator.clipboard.writeText(textToCopy);
+  };
+
   return isEditing ? (
     <EditablePrompt
       deletePromptRow={deletePromptRow}
@@ -64,14 +69,24 @@ export const AiPrompt = ({
             code({ node, inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
-                <SyntaxHighlighter
-                  {...props}
-                  style={oneDark}
-                  language={match[1]}
-                  PreTag="div"
-                >
-                  {String(children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
+                <div className={styles.codeWrapper}>
+                  <div className={styles.codeHeader}>
+                    <span>{match[1]}</span>
+                    <IconComponent
+                      type="copy"
+                      onClick={onCopyClick(String(children).replace(/\n$/, ''))}
+                      className={styles.copyIcon}
+                    />
+                  </div>
+                  <SyntaxHighlighter
+                    {...props}
+                    style={oneDark}
+                    language={match[1]}
+                    PreTag="div"
+                  >
+                    {String(children).replace(/\n$/, '')}
+                  </SyntaxHighlighter>
+                </div>
               ) : (
                 <code {...props} className={className}>
                   {children}

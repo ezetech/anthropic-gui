@@ -73,6 +73,12 @@ export const ChatSelected: React.FC = () => {
     }
   }, [chat, navigate]);
 
+  useEffect(() => {
+    if (chat?.name) {
+      setConversationName(chat.name);
+    }
+  }, [chatId, chat?.name]);
+
   const addPromptRow = useCallback(
     (promptType = '') =>
       () => {
@@ -272,12 +278,14 @@ export const ChatSelected: React.FC = () => {
   };
 
   const onSuccessGhangeChatName = useCallback(() => {
-    dispatch(
-      renameChat({
-        conversationId: chat?.id || '',
-        name: conversationName,
-      }),
-    );
+    if (conversationName) {
+      dispatch(
+        renameChat({
+          conversationId: chat?.id || '',
+          name: conversationName,
+        }),
+      );
+    }
   }, [dispatch, conversationName, chat?.id]);
 
   const onCancelGhangeChatName = useCallback(() => {
@@ -291,9 +299,6 @@ export const ChatSelected: React.FC = () => {
     [setConversationName],
   );
 
-  // TODO Implement
-  // const generateConversationName = () => {};
-
   return (
     <div className={styles.chatGeneralContainer}>
       <Box paddingLeft="60px" display="block" width="100%" mb={4}>
@@ -301,6 +306,7 @@ export const ChatSelected: React.FC = () => {
           value={conversationName}
           onChange={onGhangeConversationName}
           fullWidth
+          error={!conversationName}
           InputProps={{
             endAdornment: (
               <div

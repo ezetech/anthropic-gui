@@ -8,6 +8,7 @@ import { ReactComponent as cancel } from '@/assets/icons/cancel.svg';
 import { ReactComponent as closedFolder } from '@/assets/icons/closed-folder.svg';
 import { ReactComponent as confirm } from '@/assets/icons/confirm.svg';
 import { ReactComponent as conversation } from '@/assets/icons/conversation.svg';
+import { ReactComponent as copy } from '@/assets/icons/copy.svg';
 import { ReactComponent as deleteIcon } from '@/assets/icons/delete.svg';
 import { ReactComponent as edit } from '@/assets/icons/edit.svg';
 import { ReactComponent as human } from '@/assets/icons/human.svg';
@@ -46,6 +47,7 @@ const ICONS = {
   backgroundDefaultChat,
   regenerate,
   submit,
+  copy,
 } as const;
 
 export type IconType = keyof typeof ICONS;

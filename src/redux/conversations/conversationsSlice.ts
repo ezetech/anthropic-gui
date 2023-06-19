@@ -104,8 +104,6 @@ export const conversationsSlice = createSlice({
         chat.content.push(content);
       } else if (chat) {
         chat.content = [content];
-      } else {
-        console.error(`Chat with ID ${chatId} not found`);
       }
     },
     deleteConversation: (
@@ -116,6 +114,21 @@ export const conversationsSlice = createSlice({
         conversation => conversation.id !== action.payload.conversationId,
       );
     },
+    deleteChatInFolder: (
+      state,
+      action: PayloadAction<{ chatId: string; folderId: string }>,
+    ) => {
+      const { chatId, folderId } = action.payload;
+
+      const folder = state.conversations.find(
+        ({ id }) => id === folderId,
+      ) as Folder;
+
+      if (folder) {
+        folder.chats = folder.chats?.filter(chat => chat.id !== chatId);
+      }
+    },
+
     reorderConversation: (
       state,
       action: PayloadAction<{ startIndex: number; endIndex: number }>,
@@ -227,4 +240,5 @@ export const {
   addPromptToChat,
   updateContentById,
   renameFolder,
+  deleteChatInFolder,
 } = conversationsSlice.actions;

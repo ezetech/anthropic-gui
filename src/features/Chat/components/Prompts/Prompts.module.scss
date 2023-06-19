@@ -46,12 +46,17 @@
   line-height: 22px;
 
   .markdown {
+    .codeWrapper {
+    }
+
     pre {
       div {
         background: var(--bg-secondary) !important;
+        border-radius: 8px;
 
         code {
           background: var(--bg-secondary) !important;
+          border-radius: 8px;
 
           span {
             background: transparent !important;
@@ -62,6 +67,25 @@
 
     & > * {
       margin-bottom: 25px;
+    }
+
+    & > :last-child {
+      margin-bottom: 0;
+    }
+
+    .codeHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #515a6e !important;
+      border-radius: 8px 8px 0 0;
+      padding: 10px 15px;
+      color: var(--text-secondary);
+    }
+
+    .copyIcon {
+      cursor: pointer;
+      stroke: var(--text-secondary);
     }
   }
 }
@@ -83,7 +107,7 @@
   border-radius: 8px;
 
   & > div {
-    padding: 40px 15px 15px;
+    padding: 45px 15px 15px;
     color: var(--text-conversation);
     font-family: var(--font-family-main);
     font-weight: 500;
