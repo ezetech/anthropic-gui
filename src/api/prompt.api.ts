@@ -45,6 +45,6 @@ export const submitPrompt = async ({
 
     return response;
   } catch (error) {
-    console.log(error); // TODO remove
+    console.error(error); // TODO show error message
   }
 };

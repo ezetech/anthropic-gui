@@ -32,3 +32,33 @@ const searchChats = (
 export const selectConversationsSearchedList =
   (searchedName: string) => (state: RootState) =>
     searchChats(state.chats.conversations, searchedName);
+
+export const findChatById = (
+  conversations: (Chat | Folder)[],
+  id: string,
+): Chat | undefined => {
+  let result: Chat | undefined;
+
+  for (const item of conversations) {
+    if (item.type === 'chat' && item.id === id) {
+      result = item as Chat;
+
+      break;
+    }
+
+    if (item.type === 'folder') {
+      const folder = item as Folder;
+      if (folder.chats) {
+        result = findChatById(folder.chats, id);
+        if (result) {
+          break;
+        }
+      }
+    }
+  }
+
+  return result;
+};
+
+export const selectChatById = (id: string) => (state: RootState) =>
+  findChatById(state.chats.conversations, id);

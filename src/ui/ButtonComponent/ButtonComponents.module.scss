@@ -28,7 +28,7 @@
 
   &.outlined {
     border: 1px solid var(--text-secondary);
-    border-color: 1px solid var(--text-primary);
+    color: var(--text-primary);
 
     &:disabled {
       border-color: var(--disabled);
@@ -39,6 +39,10 @@
       color: var(--btn-outlined-hover);
       border-color: var(--btn-outlined-hover);
       background-color: transparent;
+    }
+
+    svg {
+      stroke: var(--text-primary);
     }
   }
 
