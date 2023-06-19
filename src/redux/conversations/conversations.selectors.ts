@@ -1,9 +1,29 @@
+import { createSelector } from '@reduxjs/toolkit';
+
 import { Chat, Folder } from '@/typings/common';
 
 import { RootState } from '../store';
 
 export const selectConversationsList = (state: RootState) =>
   state.chats.conversations;
+
+export const selectChatCount = createSelector(
+  selectConversationsList,
+  conversations => {
+    let chatCount = 0;
+    conversations.forEach(conversation => {
+      if (conversation.type === 'chat') {
+        chatCount += 1;
+      } else if (
+        conversation.type === 'folder' &&
+        (conversation as Folder).chats
+      ) {
+        chatCount += (conversation as Folder)?.chats?.length ?? 0;
+      }
+    });
+    return chatCount;
+  },
+);
 
 const searchChats = (
   conversations: (Chat | Folder)[],

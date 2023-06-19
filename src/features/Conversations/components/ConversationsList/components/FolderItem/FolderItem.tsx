@@ -2,6 +2,7 @@ import { ChangeEvent, MouseEvent, memo, useEffect, useState } from 'react';
 
 import classNames from 'classnames';
 import { Draggable } from 'react-beautiful-dnd';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 import { Drop } from '@/components/Drop';
 import { PortalAwareItem } from '@/components/PortalAwareItem';
@@ -48,10 +49,13 @@ export const FolderItem = memo(({ folderItem }: FolderItemProps) => {
     setIsDeleting(true);
   };
 
-  const onCancel = (event: MouseEvent) => {
-    event.stopPropagation();
+  const onCancel = (event?: MouseEvent) => {
+    event?.stopPropagation();
     setIsDeleting(false);
     setIsEditing(false);
+    if (folderItem.name !== editedFolderName) {
+      setEditedFolderName(folderItem.name);
+    }
   };
 
   const onConfirm = (event: MouseEvent) => {
@@ -88,8 +92,18 @@ export const FolderItem = memo(({ folderItem }: FolderItemProps) => {
     }
   };
 
+  const onClickInput = (event: MouseEvent) => {
+    event.stopPropagation();
+  };
+
+  const onOutsideClick = () => {
+    if (isDeleting || isEditing) {
+      onCancel();
+    }
+  };
+
   return (
-    <div>
+    <OutsideClickHandler onOutsideClick={onOutsideClick}>
       <div
         className={classNames(styles.wrapper, {
           [styles.editing]: isEditing,
@@ -117,6 +131,7 @@ export const FolderItem = memo(({ folderItem }: FolderItemProps) => {
             className={styles.editInput}
             autoFocus
             fullWidth
+            onClick={onClickInput}
           />
         ) : (
           <span onMouseDownCapture={onMouseDownCapture}>{folderItem.name}</span>
@@ -146,7 +161,11 @@ export const FolderItem = memo(({ folderItem }: FolderItemProps) => {
                   <Draggable key={chat.id} draggableId={chat.id} index={index}>
                     {(provided, snapshot) => (
                       <PortalAwareItem provided={provided} snapshot={snapshot}>
-                        <ChatItem key={chat.id} conversationItem={chat} />
+                        <ChatItem
+                          key={chat.id}
+                          conversationItem={chat}
+                          folderId={folderItem.id}
+                        />
                       </PortalAwareItem>
                     )}
                   </Draggable>
@@ -162,7 +181,7 @@ export const FolderItem = memo(({ folderItem }: FolderItemProps) => {
           )}
         </Drop>
       )}
-    </div>
+    </OutsideClickHandler>
   );
 });
 

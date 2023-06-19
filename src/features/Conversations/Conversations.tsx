@@ -1,13 +1,16 @@
 import { ChangeEvent, memo, useState } from 'react';
 
 import { InputAdornment } from '@mui/material';
+import OutsideClickHandler from 'react-outside-click-handler';
 import { useDispatch } from 'react-redux';
 
 import { useDebounce } from '@/hooks/useDebounce';
+import { selectChatCount } from '@/redux/conversations/conversations.selectors';
 import {
   clearConversations,
   saveFolder,
 } from '@/redux/conversations/conversationsSlice';
+import { useAppSelector } from '@/redux/hooks';
 import { ButtonComponent } from '@/ui/ButtonComponent';
 import { IconComponent } from '@/ui/IconComponent';
 import { TextFieldComponent } from '@/ui/TextFieldComponent';
@@ -24,6 +27,7 @@ export const Conversations = memo(() => {
   const dispatch = useDispatch();
   const [searchedName, setSearchedName] = useState('');
   const debouncedSearch = useDebounce(searchedName, 500);
+  const conversationLength = useAppSelector(selectChatCount);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchedName(event.target.value);
@@ -46,6 +50,10 @@ export const Conversations = memo(() => {
     setIsClearing(false);
   };
 
+  const onOutsideClick = () => {
+    onClickCancel();
+  };
+
   return (
     <>
       <TextFieldComponent
@@ -62,17 +70,19 @@ export const Conversations = memo(() => {
         }}
       />
       <div className={styles.header}>
-        <p>Conversations</p>
-        {isClearing ? (
-          <div className={styles.confirmationClear}>
-            <IconComponent type="confirm" onClick={onClearConfirm} />
-            <IconComponent type="cancel" onClick={onClickCancel} />
-          </div>
-        ) : (
-          <ButtonComponent onClick={onClickClear} variant="text">
-            Clear
-          </ButtonComponent>
-        )}
+        <p>{`Conversations (${conversationLength})`}</p>
+        <OutsideClickHandler onOutsideClick={onOutsideClick}>
+          {isClearing ? (
+            <div className={styles.confirmationClear}>
+              <IconComponent type="confirm" onClick={onClearConfirm} />
+              <IconComponent type="cancel" onClick={onClickCancel} />
+            </div>
+          ) : (
+            <ButtonComponent onClick={onClickClear} variant="text">
+              Clear
+            </ButtonComponent>
+          )}
+        </OutsideClickHandler>
       </div>
       <div className={styles.newFolder} onClick={onClickNewFolder}>
         <button>
