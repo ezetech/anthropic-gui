@@ -1,25 +1,24 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react';
 
 import Stack from '@mui/material/Stack';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { submitPrompt } from '@/api/prompt.api';
 import { ROUTES } from '@/app/router/constants/routes';
+import { selectApiModel } from '@/redux/apiSettings/apiSettings.selectors';
 import { setApiKey as dispatchApiKey } from '@/redux/apiSettings/apiSettings.slice';
 import { useAppDispatch } from '@/redux/hooks';
-import { ButtonComponent } from '@/ui/ButtonComponent';
-import { TextFieldComponent } from '@/ui/TextFieldComponent';
+import { ButtonAuthComponent } from '@/ui/ButtonAuthComponent';
+import { IconComponent } from '@/ui/IconComponent';
+import { TextFieldAuthComponent } from '@/ui/TextFieldAuthComponent';
 
 import styles from './AuthPage.module.scss';
 
 export const AuthPage = () => {
   const [apiKey, setApiKey] = useState('');
+  const [invalidKey, setInvalidKey] = useState(false);
+  const model = useSelector(selectApiModel);
 
   const navigate = useNavigate();
 
@@ -29,21 +28,51 @@ export const AuthPage = () => {
 
   const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setApiKey(event.target.value);
+    setInvalidKey(false);
   }, []);
 
+  async function validateApiKey(keyApi: string): Promise<boolean> {
+    try {
+      const prompt = 'hello';
+      const response = await submitPrompt({
+        model: model,
+        temperature: 0,
+        topK: 0,
+        topP: 0,
+        apiKey: keyApi,
+        maxTokens: 20,
+        prompt: `\n\nHuman: ${prompt}\n\nAssistant: `,
+      });
+      if (response?.ok) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
   const onSubmit = useCallback(
-    (event?: FormEvent<HTMLFormElement>) => {
+    async (event?: FormEvent<HTMLFormElement>) => {
       event?.preventDefault();
-      if (apiKey) {
-        dispatch(dispatchApiKey(apiKey));
-        navigate(ROUTES.Home, { replace: true });
+      if (apiKey.length > 10) {
+        const isValidKey = await validateApiKey(apiKey);
+        if (isValidKey) {
+          dispatch(dispatchApiKey(apiKey));
+          navigate(ROUTES.Home, { replace: true });
+        } else {
+          setInvalidKey(true);
+        }
+      } else {
+        setInvalidKey(true);
       }
     },
-    [dispatch, apiKey, navigate],
+    [apiKey, validateApiKey, dispatch, navigate],
   );
 
   const onEnter = useCallback(
-    (event: KeyboardEvent) => {
+    (event: any) => {
       if (event.key === 'Enter' || event.code === 'NumpadEnter') {
         onSubmit();
       }
@@ -51,28 +80,44 @@ export const AuthPage = () => {
     [onSubmit],
   );
 
-  useEffect(() => {
-    document.addEventListener('keydown', onEnter);
-
-    return () => document.removeEventListener('keydown', onEnter);
-  }, [onEnter]);
-
   return (
     <div className={styles.wrapper}>
-      <form onSubmit={onSubmit} ref={formRef}>
-        <Stack spacing={2}>
-          <TextFieldComponent
-            placeholder="Api Key"
-            value={apiKey}
-            required
-            onChange={onChange}
-            autoFocus
-          />
-          <ButtonComponent type="submit" variant="contained" disabled={!apiKey}>
-            Enter
-          </ButtonComponent>
-        </Stack>
-      </form>
+      <div className={styles.backgroundWrapper}></div>
+      <div className={styles.logoWrapper}>
+        <IconComponent type="logoAuthLight" className={styles.logoAuth} />
+        <IconComponent type="anthropicLight" className={styles.anthropic} />
+      </div>
+      <div className={styles.formWrapper}>
+        <form onSubmit={onSubmit} ref={formRef} className={styles.form}>
+          <Stack spacing={1}>
+            <div className={styles.errorContainer}>
+              <p className={styles.textApiKey}>API Key</p>
+              {invalidKey && (
+                <div>
+                  <IconComponent type="warning" />
+                  <span className={styles.textInvalidKey}>Invalid key</span>
+                </div>
+              )}
+            </div>
+            <TextFieldAuthComponent
+              className={invalidKey ? styles.invalid : ''}
+              placeholder="Enter key"
+              value={apiKey}
+              onChange={onChange}
+              onKeyDown={onEnter}
+              error={invalidKey}
+            />
+
+            <ButtonAuthComponent
+              type="submit"
+              variant="contained"
+              disabled={invalidKey}
+            >
+              Enter
+            </ButtonAuthComponent>
+          </Stack>
+        </form>
+      </div>
     </div>
   );
 };

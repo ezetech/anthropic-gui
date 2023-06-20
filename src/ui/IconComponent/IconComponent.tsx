@@ -2,6 +2,8 @@ import { HTMLAttributes, memo } from 'react';
 
 import { ReactComponent as ai } from '@/assets/icons/ai.svg';
 import { ReactComponent as aiResponse } from '@/assets/icons/aiResponse.svg';
+import { ReactComponent as anthropicDark } from '@/assets/icons/anthropic-dark.svg';
+import { ReactComponent as anthropicLight } from '@/assets/icons/anthropic-light.svg';
 import { ReactComponent as arrowDown } from '@/assets/icons/arrow-down.svg';
 import { ReactComponent as backgroundDefaultChat } from '@/assets/icons/backgroundDefaultChat.svg';
 import { ReactComponent as cancel } from '@/assets/icons/cancel.svg';
@@ -11,7 +13,10 @@ import { ReactComponent as conversation } from '@/assets/icons/conversation.svg'
 import { ReactComponent as copy } from '@/assets/icons/copy.svg';
 import { ReactComponent as deleteIcon } from '@/assets/icons/delete.svg';
 import { ReactComponent as edit } from '@/assets/icons/edit.svg';
+import { ReactComponent as heart } from '@/assets/icons/heart.svg';
 import { ReactComponent as human } from '@/assets/icons/human.svg';
+import { ReactComponent as logoAuthDark } from '@/assets/icons/logo-auth-dark.svg';
+import { ReactComponent as logoAuthLight } from '@/assets/icons/logo-auth-light.svg';
 import { ReactComponent as logoDark } from '@/assets/icons/logo-dark.svg';
 import { ReactComponent as logoLight } from '@/assets/icons/logo-light.svg';
 import { ReactComponent as logout } from '@/assets/icons/logout.svg';
@@ -23,6 +28,7 @@ import { ReactComponent as search } from '@/assets/icons/search.svg';
 import { ReactComponent as submit } from '@/assets/icons/submit.svg';
 import { ReactComponent as themeDark } from '@/assets/icons/theme-dark.svg';
 import { ReactComponent as themeLight } from '@/assets/icons/theme-light.svg';
+import { ReactComponent as warning } from '@/assets/icons/warning.svg';
 
 const ICONS = {
   themeLight,
@@ -47,7 +53,12 @@ const ICONS = {
   backgroundDefaultChat,
   regenerate,
   submit,
-  copy,
+  warning,
+  logoAuthDark,
+  logoAuthLight,
+  anthropicDark,
+  anthropicLight,
+  heart,
 } as const;
 
 export type IconType = keyof typeof ICONS;

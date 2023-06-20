@@ -1,0 +1,54 @@
+.wrapper.textField {
+  min-width: 264px;
+  margin-bottom: 5px;
+  fieldset {
+    border: 1px solid var(--text-secondary);
+    border-radius: 8px;
+  }
+
+  input {
+    border: 0;
+    color: var(--text-primary);
+    padding-top: 12px;
+    padding-bottom: 12px;
+
+    &::placeholder {
+      color: #AEAEAE;
+      font-family: var(--font-family-bold);
+      font-weight: 700;
+      font-size: 16px;
+      
+    }
+  }
+
+  input:focus + fieldset {
+    border-color: var(--primary-color);
+  }
+
+  &.invalid {
+    input {
+      color: #EB4040;
+      border: 1px solid #EB4040;
+      border-radius: 8px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+    }
+    fieldset {
+      border-color: #EB4040;
+      color: #EB4040;
+      border: 1px solid #EB4040;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+
+  &.invalid input:focus + fieldset {
+    border-color: #EB4040;
+  }
+
+  &:hover.invalid input {
+    border-color: #EB4040;
+  }
+}

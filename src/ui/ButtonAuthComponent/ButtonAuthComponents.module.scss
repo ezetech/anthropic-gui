@@ -1,0 +1,43 @@
+.buttonWrapper.button {
+  padding-top: 13px;
+  padding-bottom: 13px;
+  transition: 0.3s;
+  font-family: var(--font-family-bold);
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: none;
+  border-radius: 8px;
+  min-width: 264px;
+
+  &.contained {
+    background-color: var(--primary-color);
+    color: #ffffff;
+
+    &:hover {
+      background-color: var(--primary-hover);
+    }
+  }
+
+  &.disabled {
+    background-color: #363c4a;
+    color: #828592;
+    pointer-events: none;
+  }
+  
+  &.text {
+    color: var(--text-primary);
+    padding: 3px;
+    font-family: var(--font-family-main);
+    font-weight: 500;
+    border-radius: 8px;
+
+    &:disabled {
+      color: var(--disabled);
+    }
+
+    &:hover {
+      border: 0;
+      background-color: var(--bg-primary);
+    }
+  }
+}
