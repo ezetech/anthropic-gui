@@ -11,6 +11,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
 
 import { submitPrompt } from '@/api/prompt.api';
@@ -241,9 +243,23 @@ export const ChatSelected: React.FC = () => {
   };
 
   const handlePromptSubmit = useCallback(async () => {
+    if (chat?.content) {
+      const lastPrompt = chat.content[chat.content.length - 1];
+
+      if (lastPrompt.text === '') {
+        toast.dark(
+          <div className={styles.toasterDiv}>
+            <span className={styles.toasterSpan}>Add content please</span>
+            <IconComponent type="heart" className={styles.iconHeart} />
+          </div>,
+        );
+        return;
+      }
+    }
+
     await generateResponse();
     setHasSubmitted(true);
-  }, [generateResponse]);
+  }, [chat?.content, generateResponse]);
 
   useEffect(() => {
     if (didNewChatNavigate && !hasSubmitted) {
@@ -300,86 +316,97 @@ export const ChatSelected: React.FC = () => {
   );
 
   return (
-    <div className={styles.chatGeneralContainer}>
-      <Box paddingLeft="60px" display="block" width="100%" mb={4}>
-        <TextFieldComponent
-          value={conversationName}
-          onChange={onGhangeConversationName}
-          fullWidth
-          error={!conversationName}
-          InputProps={{
-            endAdornment: (
-              <div
-                className={classNames(styles.confirmationRename, {
-                  [styles.edited]: chat?.name !== conversationName,
-                })}
-              >
-                <InputAdornment
-                  position="end"
-                  onClick={onSuccessGhangeChatName}
+    <div className={styles.chatMainContainer}>
+      <div className={styles.chatGeneralContainer}>
+        <Box paddingLeft="60px" display="block" width="100%" mb={4}>
+          <TextFieldComponent
+            value={conversationName}
+            onChange={onGhangeConversationName}
+            fullWidth
+            InputProps={{
+              endAdornment: (
+                <div
+                  className={classNames(styles.confirmationRename, {
+                    [styles.edited]: chat?.name !== conversationName,
+                  })}
                 >
-                  <IconComponent type="confirm" />
-                </InputAdornment>
-                <InputAdornment position="end" onClick={onCancelGhangeChatName}>
-                  <IconComponent type="cancel" />
-                </InputAdornment>
-              </div>
-            ),
-          }}
-        />
-      </Box>
-      {chat?.content?.map(({ text, type, id }) => (
-        <div className={styles.chatPromptContainer} key={id}>
-          {type === 'human' ? (
-            <EditablePrompt
-              id={id}
-              deletePromptRow={deletePromptRow}
-              handlePromptBlur={handlePromptBlur}
-              type={type}
-              text={text}
-            />
-          ) : (
-            <AiPrompt
-              id={id}
-              text={text}
-              deletePromptRow={deletePromptRow}
-              handlePromptBlur={handlePromptBlur}
-              type={type}
-            />
-          )}
-        </div>
-      ))}
-      <div className={styles.chatButtonsContainer}>
-        <div className={styles.buttonsColumn}>
-          <button onClick={addPromptRow()} className={styles.buttonAddChat}>
-            <IconComponent type="plus" className={styles.iconPlus} />
-          </button>
-          <ButtonComponent
-            type="submit"
-            variant="contained"
-            onClick={handlePromptSubmit}
-          >
-            <span>Submit</span>
-            <IconComponent type="submit" />
-          </ButtonComponent>
-        </div>
-        <div className={styles.buttonsColumn}>
-          <ButtonComponent variant="outlined" onClick={stopStream}>
-            <span>Stop</span>
-          </ButtonComponent>
-          <ButtonComponent
-            type="submit"
-            variant="outlined"
-            onClick={handleRegenerate}
-          >
-            <span>Regenerate</span>
-            <IconComponent
-              className={styles.iconRegenerate}
-              type="regenerate"
-            />
-          </ButtonComponent>
+                  <InputAdornment
+                    position="end"
+                    onClick={onSuccessGhangeChatName}
+                  >
+                    <IconComponent type="confirm" />
+                  </InputAdornment>
+                  <InputAdornment
+                    position="end"
+                    onClick={onCancelGhangeChatName}
+                  >
+                    <IconComponent type="cancel" />
+                  </InputAdornment>
+                </div>
+              ),
+            }}
+          />
+        </Box>
+        {chat?.content?.map(({ text, type, id }) => (
+          <div className={styles.chatPromptContainer} key={id}>
+            {type === 'human' ? (
+              <EditablePrompt
+                id={id}
+                deletePromptRow={deletePromptRow}
+                handlePromptBlur={handlePromptBlur}
+                type={type}
+                text={text}
+              />
+            ) : (
+              <AiPrompt
+                id={id}
+                text={text}
+                deletePromptRow={deletePromptRow}
+                handlePromptBlur={handlePromptBlur}
+                type={type}
+              />
+            )}
+          </div>
+        ))}
+        <div className={styles.chatButtonsContainer}>
+          <div className={styles.buttonsColumn}>
+            <button onClick={addPromptRow()} className={styles.buttonAddChat}>
+              <IconComponent type="plus" className={styles.iconPlus} />
+            </button>
+            <ButtonComponent
+              type="submit"
+              variant="contained"
+              onClick={handlePromptSubmit}
+            >
+              <span>Submit</span>
+              <IconComponent type="submit" />
+            </ButtonComponent>
+          </div>
+          <div className={styles.buttonsColumn}>
+            <ButtonComponent variant="outlined" onClick={stopStream}>
+              <span>Stop</span>
+            </ButtonComponent>
+            <ButtonComponent
+              type="submit"
+              variant="outlined"
+              onClick={handleRegenerate}
+            >
+              <span>Regenerate</span>
+              <IconComponent
+                className={styles.iconRegenerate}
+                type="regenerate"
+              />
+            </ButtonComponent>
+          </div>
         </div>
       </div>
+      <ToastContainer
+        style={{
+          width: '100%',
+          position: 'absolute',
+        }}
+        position="bottom-center"
+      />
     </div>
   );
 };

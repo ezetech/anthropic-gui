@@ -1,3 +1,8 @@
+.chatMainContainer {
+  width: 100%;
+  position: relative;
+}
+
 .chatGeneralContainer {
   display: flex;
   flex-direction: column;
@@ -9,6 +14,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   max-width: 900px;
+  position: relative;
 }
 
 .chatPromptContainer {
@@ -112,3 +118,32 @@
     opacity: 1;
   }
 }
+
+.toastContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toasterDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.toasterSpan {
+  font-family: var(--font-family-main);
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
+}
+
+.iconHeart {
+  align-self: center;
+  margin-left: 8px;
+}
+
+
+
