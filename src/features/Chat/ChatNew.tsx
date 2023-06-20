@@ -1,6 +1,9 @@
 import React, { useState, useContext } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
+import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
 
 import { NavigationContext } from '@/app/App';
@@ -20,21 +23,21 @@ interface ChatPrompt {
   text: string;
 }
 
+if (typeof window !== 'undefined') {
+  injectStyle();
+}
+
 type ExtendedChatPrompt = ChatPrompt & { id: string };
 
 export const ChatNew: React.FC = () => {
   const [prompts, setPrompts] = useState<ExtendedChatPrompt[]>([
     { type: 'human', text: '', id: uuidv4() },
   ]);
-
   useState<AbortController | null>(null);
   const [isVisibleBg, setIsVisibleBg] = useState<boolean>(true);
   const { setDidNewChatNavigate } = useContext(NavigationContext);
-
   const theme = useAppSelector(selectThemeMode);
-
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
 
   const addPromptRow =
@@ -81,8 +84,14 @@ export const ChatNew: React.FC = () => {
   };
 
   const handlePromptSubmit = async () => {
-    // TODO show error if no content
-    if (!prompts.some(prompt => prompt.text)) {
+    if (!prompts.some(prompt => prompt.text.trim() !== '')) {
+      toast.dark(
+        <div className={styles.toasterDiv}>
+          <span className={styles.toasterSpan}>Add content please</span>
+          <IconComponent type="heart" className={styles.iconHeart} />
+        </div>,
+      );
+
       return;
     }
 
@@ -104,60 +113,69 @@ export const ChatNew: React.FC = () => {
     };
 
   return (
-    <div className={styles.chatGeneralContainer}>
-      {prompts.map(({ text, type, id }) => (
-        <div className={styles.chatPromptContainer} key={id}>
-          {type === 'human' ? (
-            <EditablePrompt
-              id={id}
-              deletePromptRow={deletePromptRow}
-              handlePromptBlur={handlePromptBlur}
-              type={type}
-              text={text}
-            />
-          ) : (
-            <AiPrompt
-              id={id}
-              text={text}
-              deletePromptRow={deletePromptRow}
-              handlePromptBlur={handlePromptBlur}
-              type={type}
-            />
-          )}
-        </div>
-      ))}
-      {isVisibleBg && (
-        <div className={styles.chatBgContainer}>
-          <div className={styles.titleAiContainer}>
-            <IconComponent
-              type="backgroundDefaultChat"
-              className={styles.bgImg}
-            />
-          </div>
-          <div className={styles.titleAiContainer}>
-            {theme === 'dark' ? (
-              <IconComponent type="logoDark" className={styles.iconTitle} />
+    <div className={styles.chatMainContainer}>
+      <div className={styles.chatGeneralContainer}>
+        {prompts.map(({ text, type, id }) => (
+          <div className={styles.chatPromptContainer} key={id}>
+            {type === 'human' ? (
+              <EditablePrompt
+                id={id}
+                deletePromptRow={deletePromptRow}
+                handlePromptBlur={handlePromptBlur}
+                type={type}
+                text={text}
+              />
             ) : (
-              <IconComponent type="logoLight" className={styles.iconTitle} />
+              <AiPrompt
+                id={id}
+                text={text}
+                deletePromptRow={deletePromptRow}
+                handlePromptBlur={handlePromptBlur}
+                type={type}
+              />
             )}
           </div>
-        </div>
-      )}
-      <div className={styles.chatButtonsContainer}>
-        <div className={styles.buttonsColumn}>
-          <button onClick={addPromptRow()} className={styles.buttonAddChat}>
-            <IconComponent type="plus" className={styles.iconPlus} />
-          </button>
-          <ButtonComponent
-            type="submit"
-            variant="contained"
-            onClick={handlePromptSubmit}
-          >
-            <span>Submit</span>
-            <IconComponent type="submit" />
-          </ButtonComponent>
+        ))}
+        {isVisibleBg && (
+          <div className={styles.chatBgContainer}>
+            <div className={styles.titleAiContainer}>
+              <IconComponent
+                type="backgroundDefaultChat"
+                className={styles.bgImg}
+              />
+            </div>
+            <div className={styles.titleAiContainer}>
+              {theme === 'dark' ? (
+                <IconComponent type="logoDark" className={styles.iconTitle} />
+              ) : (
+                <IconComponent type="logoLight" className={styles.iconTitle} />
+              )}
+            </div>
+          </div>
+        )}
+        <div className={styles.chatButtonsContainer}>
+          <div className={styles.buttonsColumn}>
+            <button onClick={addPromptRow()} className={styles.buttonAddChat}>
+              <IconComponent type="plus" className={styles.iconPlus} />
+            </button>
+            <ButtonComponent
+              type="submit"
+              variant="contained"
+              onClick={handlePromptSubmit}
+            >
+              <span>Submit</span>
+              <IconComponent type="submit" />
+            </ButtonComponent>
+          </div>
         </div>
       </div>
+      <ToastContainer
+        style={{
+          width: '100%',
+          position: 'absolute',
+        }}
+        position="bottom-center"
+      />
     </div>
   );
 };
