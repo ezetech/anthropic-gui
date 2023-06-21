@@ -2,19 +2,19 @@
   min-width: 264px;
   margin-bottom: 5px;
   fieldset {
-    border: 1px solid var(--text-secondary);
+    border: 1px solid #AEAEAE;
     border-radius: 8px;
   }
 
   input {
     border: 0;
-    color: var(--text-primary);
+    color: #000000;
     padding-top: 12px;
     padding-bottom: 12px;
 
     &::placeholder {
       color: #AEAEAE;
-      font-family: var(--font-family-bold);
+      font-family: 'AeonikBold', serif;
       font-weight: 700;
       font-size: 16px;
       
@@ -22,7 +22,7 @@
   }
 
   input:focus + fieldset {
-    border-color: var(--primary-color);
+    border-color: #6129ff;
   }
 
   &.invalid {
