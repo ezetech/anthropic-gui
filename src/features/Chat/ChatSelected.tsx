@@ -17,6 +17,11 @@ import { submitPrompt } from '@/api/prompt.api';
 import { NavigationContext } from '@/app/App';
 import { ROUTES } from '@/app/router/constants/routes';
 import {
+  escapeHtml,
+  splitTextAndCode,
+  unEscapeHtml,
+} from '@/helpers/textParser';
+import {
   selectApiKey,
   selectApiMaxTokens,
   selectApiModel,
@@ -36,8 +41,6 @@ import { ChatContent } from '@/typings/common';
 import { ButtonComponent } from '@/ui/ButtonComponent';
 import { IconComponent } from '@/ui/IconComponent';
 import { TextFieldComponent } from '@/ui/TextFieldComponent';
-
-import { AiPrompt, EditablePrompt } from './components/Prompts';
 
 import styles from './Chat.module.scss';
 
@@ -187,7 +190,9 @@ export const ChatSelected: React.FC = () => {
               ? lastLineArray[lastLineArray.length - 1]
               : lastLineArray[lastLineArray.length - 2];
 
-            if (lastLine.startsWith('{"completion":')) {
+            console.log(lastLine);
+
+            if (lastLine?.startsWith('{"completion":')) {
               try {
                 const eventData = JSON.parse(lastLine);
 
@@ -243,7 +248,7 @@ export const ChatSelected: React.FC = () => {
   const handlePromptSubmit = useCallback(async () => {
     await generateResponse();
     setHasSubmitted(true);
-  }, [chat?.content, generateResponse]);
+  }, [generateResponse]);
 
   useEffect(() => {
     if (didNewChatNavigate && !hasSubmitted) {
@@ -258,14 +263,14 @@ export const ChatSelected: React.FC = () => {
   ]);
 
   const handlePromptBlur =
-    (id: string) => (event: React.FocusEvent<HTMLTextAreaElement>) => {
-      const { value } = event.target;
-
+    (id: string) => (event: React.FocusEvent<HTMLDivElement>) => {
+      // TODO
+      const target = event.target as HTMLDivElement;
       dispatch(
         updateContentById({
           chatId: chat?.id || '',
           contentId: id,
-          text: value,
+          text: unEscapeHtml(target.innerHTML),
         }),
       );
     };
@@ -329,23 +334,57 @@ export const ChatSelected: React.FC = () => {
       </Box>
       {chat?.content?.map(({ text, type, id }) => (
         <div className={styles.chatPromptContainer} key={id}>
-          {type === 'human' ? (
-            <EditablePrompt
-              id={id}
-              deletePromptRow={deletePromptRow}
-              handlePromptBlur={handlePromptBlur}
-              type={type}
-              text={text}
-            />
-          ) : (
-            <AiPrompt
-              id={id}
-              text={text}
-              deletePromptRow={deletePromptRow}
-              handlePromptBlur={handlePromptBlur}
-              type={type}
-            />
-          )}
+          <div className={styles.promptContainer}>
+            {type === 'human' ? (
+              <div>
+                <IconComponent type="human" />
+              </div>
+            ) : (
+              <div>
+                <IconComponent type="ai" />
+              </div>
+            )}
+            <div className={styles.fieldContainer}>
+              <div className={styles.promptContainerHeader}>
+                {type === 'human' ? (
+                  <div className={styles.placeholderText}>You</div>
+                ) : (
+                  <div className={styles.placeholderText}>AI</div>
+                )}
+                <div
+                  className={styles.iconDelete}
+                  onClick={deletePromptRow(id)}
+                >
+                  <IconComponent type="deleteIcon" />
+                </div>
+              </div>
+              <div
+                contentEditable
+                onBlur={handlePromptBlur(id)}
+                suppressContentEditableWarning
+                className={styles.promptField}
+                // dangerouslySetInnerHTML={{ __html: escapeHtml(text) }}
+              >
+                {splitTextAndCode(text).map(fragment =>
+                  fragment.type === 'text' ? (
+                    <div
+                      key={fragment.content}
+                      dangerouslySetInnerHTML={{
+                        __html: escapeHtml(fragment.content),
+                      }}
+                    />
+                  ) : (
+                    <div
+                      key={fragment.content}
+                      dangerouslySetInnerHTML={{
+                        __html: escapeHtml(fragment.content),
+                      }}
+                    />
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       ))}
       <div className={styles.chatButtonsContainer}>
