@@ -26,11 +26,19 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
+  z-index: 1;
 }
 
+
 .chatBgContainer {
+  margin-top: 10vh;
   justify-content: center;
   align-items: center;
+  align-self: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .titleAiContainer {
@@ -144,6 +152,3 @@
   align-self: center;
   margin-left: 8px;
 }
-
-
-

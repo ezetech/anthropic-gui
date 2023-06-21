@@ -34,7 +34,6 @@ export const ChatNew: React.FC = () => {
     { type: 'human', text: '', id: uuidv4() },
   ]);
   useState<AbortController | null>(null);
-  const [isVisibleBg, setIsVisibleBg] = useState<boolean>(true);
   const { setDidNewChatNavigate } = useContext(NavigationContext);
   const theme = useAppSelector(selectThemeMode);
   const navigate = useNavigate();
@@ -56,7 +55,6 @@ export const ChatNew: React.FC = () => {
       };
 
       setPrompts(prevPrompt => [...prevPrompt, newPrompt]);
-      setIsVisibleBg(false);
     };
 
   const deletePromptRow = (id: string) => () => {
@@ -136,23 +134,28 @@ export const ChatNew: React.FC = () => {
             )}
           </div>
         ))}
-        {isVisibleBg && (
-          <div className={styles.chatBgContainer}>
-            <div className={styles.titleAiContainer}>
+        <div className={styles.chatBgContainer}>
+          <div className={styles.titleAiContainer}>
+            {theme === 'dark' ? (
               <IconComponent
-                type="backgroundDefaultChat"
+                type="backgroundChatDark"
                 className={styles.bgImg}
               />
-            </div>
-            <div className={styles.titleAiContainer}>
-              {theme === 'dark' ? (
-                <IconComponent type="logoDark" className={styles.iconTitle} />
-              ) : (
-                <IconComponent type="logoLight" className={styles.iconTitle} />
-              )}
-            </div>
+            ) : (
+              <IconComponent
+                type="backgroundChatLight"
+                className={styles.bgImg}
+              />
+            )}
           </div>
-        )}
+          <div className={styles.titleAiContainer}>
+            {theme === 'dark' ? (
+              <IconComponent type="logoDark" className={styles.iconTitle} />
+            ) : (
+              <IconComponent type="logoLight" className={styles.iconTitle} />
+            )}
+          </div>
+        </div>
         <div className={styles.chatButtonsContainer}>
           <div className={styles.buttonsColumn}>
             <button onClick={addPromptRow()} className={styles.buttonAddChat}>
