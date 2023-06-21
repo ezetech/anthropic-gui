@@ -59,6 +59,7 @@ const ICONS = {
   anthropicDark,
   anthropicLight,
   heart,
+  copy,
 } as const;
 
 export type IconType = keyof typeof ICONS;
