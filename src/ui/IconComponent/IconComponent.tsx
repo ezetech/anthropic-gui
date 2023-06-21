@@ -5,7 +5,8 @@ import { ReactComponent as aiResponse } from '@/assets/icons/aiResponse.svg';
 import { ReactComponent as anthropicDark } from '@/assets/icons/anthropic-dark.svg';
 import { ReactComponent as anthropicLight } from '@/assets/icons/anthropic-light.svg';
 import { ReactComponent as arrowDown } from '@/assets/icons/arrow-down.svg';
-import { ReactComponent as backgroundDefaultChat } from '@/assets/icons/backgroundDefaultChat.svg';
+import { ReactComponent as backgroundChatDark } from '@/assets/icons/backgroundChat-dark.svg';
+import { ReactComponent as backgroundChatLight } from '@/assets/icons/backgroundChat-light.svg';
 import { ReactComponent as cancel } from '@/assets/icons/cancel.svg';
 import { ReactComponent as closedFolder } from '@/assets/icons/closed-folder.svg';
 import { ReactComponent as confirm } from '@/assets/icons/confirm.svg';
@@ -50,7 +51,7 @@ const ICONS = {
   ai,
   aiResponse,
   human,
-  backgroundDefaultChat,
+  backgroundChatLight,
   regenerate,
   submit,
   warning,
@@ -60,6 +61,7 @@ const ICONS = {
   anthropicLight,
   heart,
   copy,
+  backgroundChatDark,
 } as const;
 
 export type IconType = keyof typeof ICONS;
