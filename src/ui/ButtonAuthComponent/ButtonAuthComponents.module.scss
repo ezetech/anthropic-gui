@@ -2,7 +2,7 @@
   padding-top: 13px;
   padding-bottom: 13px;
   transition: 0.3s;
-  font-family: var(--font-family-bold);
+  font-family: 'AeonikBold', serif;
   font-weight: 700;
   font-size: 16px;
   text-transform: none;
@@ -10,11 +10,11 @@
   min-width: 264px;
 
   &.contained {
-    background-color: var(--primary-color);
+    background-color: #6129ff;
     color: #ffffff;
 
     &:hover {
-      background-color: var(--primary-hover);
+      background-color: #480fea
     }
   }
 
@@ -25,19 +25,19 @@
   }
   
   &.text {
-    color: var(--text-primary);
+    color: #000000;
     padding: 3px;
-    font-family: var(--font-family-main);
+    font-family: 'AeonikMedium', serif;
     font-weight: 500;
     border-radius: 8px;
 
     &:disabled {
-      color: var(--disabled);
+      color: #828592;
     }
 
     &:hover {
       border: 0;
-      background-color: var(--bg-primary);
+      background-color: #252836;
     }
   }
 }

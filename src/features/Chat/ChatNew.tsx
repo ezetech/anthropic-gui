@@ -84,7 +84,7 @@ export const ChatNew: React.FC = () => {
   };
 
   const handlePromptSubmit = async () => {
-    if (!prompts.some(prompt => prompt.text.trim() !== '')) {
+    if (!prompts.some(prompt => prompt.text)) {
       toast.dark(
         <div className={styles.toasterDiv}>
           <span className={styles.toasterSpan}>Add content please</span>

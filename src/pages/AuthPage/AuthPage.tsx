@@ -33,15 +33,14 @@ export const AuthPage = () => {
 
   async function validateApiKey(keyApi: string): Promise<boolean> {
     try {
-      const prompt = 'hello';
       const response = await submitPrompt({
         model: model,
         temperature: 0,
         topK: 0,
         topP: 0,
         apiKey: keyApi,
-        maxTokens: 20,
-        prompt: `\n\nHuman: ${prompt}\n\nAssistant: `,
+        maxTokens: 1,
+        prompt: '',
       });
       if (response?.ok) {
         return true;
@@ -72,7 +71,7 @@ export const AuthPage = () => {
   );
 
   const onEnter = useCallback(
-    (event: any) => {
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter' || event.code === 'NumpadEnter') {
         onSubmit();
       }
