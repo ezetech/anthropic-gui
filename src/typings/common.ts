@@ -23,6 +23,7 @@ interface ConversationCommon {
   id: string;
   name: string;
   createdAt: Date;
+  children: ConversationCommon[];
   type: 'folder' | 'chat';
 }
 

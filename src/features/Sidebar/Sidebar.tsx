@@ -7,10 +7,9 @@ import { ROUTES } from '@/app/router/constants/routes';
 import { Logo } from '@/components/Logo';
 import { Logout } from '@/components/Logout';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import { Conversations } from '@/features/Conversations';
 import { ButtonComponent } from '@/ui/ButtonComponent';
 import { IconComponent } from '@/ui/IconComponent';
-
-import { Conversations } from '../Conversations';
 
 import styles from './Sidebar.module.scss';
 

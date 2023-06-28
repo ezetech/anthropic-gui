@@ -4,8 +4,9 @@ import { InputAdornment } from '@mui/material';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { useDispatch } from 'react-redux';
 
+import { ChatsTree } from '@/features/Conversations/ChatsTree';
 import { useDebounce } from '@/hooks/useDebounce';
-import { selectChatCount } from '@/redux/conversations/conversations.selectors';
+import { selectCountConversations } from '@/redux/conversations/conversations.selectors';
 import {
   clearConversations,
   saveFolder,
@@ -15,10 +16,7 @@ import { ButtonComponent } from '@/ui/ButtonComponent';
 import { IconComponent } from '@/ui/IconComponent';
 import { TextFieldComponent } from '@/ui/TextFieldComponent';
 
-import {
-  ConversationSearchedList,
-  ConversationsDraggableList,
-} from './components/ConversationsList';
+import { ChatsTreeSearch } from './ChatsTreeSearch';
 
 import styles from './Conversations.module.scss';
 
@@ -27,7 +25,7 @@ export const Conversations = memo(() => {
   const dispatch = useDispatch();
   const [searchedName, setSearchedName] = useState('');
   const debouncedSearch = useDebounce(searchedName, 500);
-  const conversationLength = useAppSelector(selectChatCount);
+  const conversationLength = useAppSelector(selectCountConversations);
 
   const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchedName(event.target.value);
@@ -91,9 +89,11 @@ export const Conversations = memo(() => {
         <span>Add new folder</span>
       </div>
       {debouncedSearch ? (
-        <ConversationSearchedList searchName={debouncedSearch} />
+        <ChatsTreeSearch searchName={debouncedSearch} />
       ) : (
-        <ConversationsDraggableList />
+        <div style={{ rowGap: '0px' }}>
+          <ChatsTree collapsible removable />
+        </div>
       )}
     </>
   );

@@ -1,52 +1,65 @@
-import { createSelector } from '@reduxjs/toolkit';
-
 import { Chat, Folder } from '@/typings/common';
+import { FlattenedItem, TreeItems } from '@/typings/types';
 
 import { RootState } from '../store';
+
+export const flatten = (
+  items: TreeItems,
+  parentType: string | null = null,
+  parentId: string | null = null,
+  depth = 0,
+): FlattenedItem[] =>
+  items?.reduce<FlattenedItem[]>(
+    (acc, item, index) => [
+      ...acc,
+      { ...item, parentType, parentId, depth, index },
+      ...flatten(item.children, item.type, item.id, depth + 1),
+    ],
+    [],
+  );
+
+const countChatsTree = (items: any[], chatType = 'chat'): number => {
+  let countItems = 0;
+  for (const item of items) {
+    if (item.type === chatType) {
+      countItems += 1;
+    }
+    if (item.children.length) {
+      countItems += countChatsTree(item.children, chatType);
+    }
+  }
+  return countItems;
+};
 
 export const selectConversationsList = (state: RootState) =>
   state.chats.conversations;
 
-export const selectChatCount = createSelector(
-  selectConversationsList,
-  conversations => {
-    let chatCount = 0;
-    conversations.forEach(conversation => {
-      if (conversation.type === 'chat') {
-        chatCount += 1;
-      } else if (
-        conversation.type === 'folder' &&
-        (conversation as Folder).chats
-      ) {
-        chatCount += (conversation as Folder)?.chats?.length ?? 0;
-      }
-    });
-    return chatCount;
-  },
-);
+export const selectConversationFlattenList = (state: RootState) =>
+  flatten(state.chats.conversations);
 
-const searchChats = (
-  conversations: (Chat | Folder)[],
+export const selectCountConversations = (state: RootState) =>
+  countChatsTree(state.chats.conversations, 'chat');
+
+export const searchChats = (
+  conversations: any[],
   searchedName: string,
-): Chat[] => {
-  let result: Chat[] = [];
-  const search = searchedName.toLowerCase();
+): any[] => {
+  const newItems: any[] = [];
 
-  conversations.forEach(item => {
-    if (item.type === 'chat' && item.name.toLowerCase().includes(search)) {
-      result.push(item as Chat);
-    }
+  const searchRecursively = (items: any[]) => {
+    for (const item of items) {
+      if (item.name === searchedName && item.type === 'chat') {
+        newItems.push(item);
+      }
 
-    if (item.type === 'folder') {
-      const folder = item as Folder;
-      if (folder.chats) {
-        const folderChats = searchChats(folder.chats, search);
-        result = [...result, ...folderChats];
+      if (item?.children?.length) {
+        searchRecursively(item.children);
       }
     }
-  });
+  };
 
-  return result;
+  searchRecursively(conversations);
+  return newItems;
 };
 
 export const selectConversationsSearchedList =
@@ -68,8 +81,8 @@ export const findChatById = (
 
     if (item.type === 'folder') {
       const folder = item as Folder;
-      if (folder.chats) {
-        result = findChatById(folder.chats, id);
+      if (folder.children) {
+        result = findChatById(folder.children, id);
         if (result) {
           break;
         }
