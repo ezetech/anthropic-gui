@@ -2,8 +2,6 @@ import { HTMLAttributes, memo } from 'react';
 
 import { ReactComponent as ai } from '@/assets/icons/ai.svg';
 import { ReactComponent as aiResponse } from '@/assets/icons/aiResponse.svg';
-import { ReactComponent as anthropicDark } from '@/assets/icons/anthropic-dark.svg';
-import { ReactComponent as anthropicLight } from '@/assets/icons/anthropic-light.svg';
 import { ReactComponent as arrowDown } from '@/assets/icons/arrow-down.svg';
 import { ReactComponent as backgroundChatDark } from '@/assets/icons/backgroundChat-dark.svg';
 import { ReactComponent as backgroundChatLight } from '@/assets/icons/backgroundChat-light.svg';
@@ -17,8 +15,6 @@ import { ReactComponent as deleteIcon } from '@/assets/icons/delete.svg';
 import { ReactComponent as edit } from '@/assets/icons/edit.svg';
 import { ReactComponent as heart } from '@/assets/icons/heart.svg';
 import { ReactComponent as human } from '@/assets/icons/human.svg';
-import { ReactComponent as logoAuthDark } from '@/assets/icons/logo-auth-dark.svg';
-import { ReactComponent as logoAuthLight } from '@/assets/icons/logo-auth-light.svg';
 import { ReactComponent as logoDark } from '@/assets/icons/logo-dark.svg';
 import { ReactComponent as logoLight } from '@/assets/icons/logo-light.svg';
 import { ReactComponent as logout } from '@/assets/icons/logout.svg';
@@ -57,10 +53,6 @@ const ICONS = {
   regenerate,
   submit,
   warning,
-  logoAuthDark,
-  logoAuthLight,
-  anthropicDark,
-  anthropicLight,
   heart,
   copy,
   backgroundChatDark,

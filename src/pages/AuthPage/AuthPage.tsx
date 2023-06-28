@@ -86,8 +86,7 @@ export const AuthPage = () => {
     <div className={styles.wrapper}>
       <div className={styles.backgroundWrapper}></div>
       <div className={styles.logoWrapper}>
-        <IconComponent type="logoAuthLight" className={styles.logoAuth} />
-        <IconComponent type="anthropicLight" className={styles.anthropic} />
+        <IconComponent type="logoLight" className={styles.logoAuth} />
       </div>
       <div className={styles.formWrapper}>
         <form onSubmit={onSubmit} ref={formRef} className={styles.form}>
