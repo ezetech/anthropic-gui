@@ -86,11 +86,18 @@ export const ChatNew: React.FC = () => {
 
   const handlePromptSubmit = async () => {
     if (!prompts.some(prompt => prompt.text.replace(/\n/g, ''))) {
-      toast.dark(
+      toast(
         <div className={styles.toasterDiv}>
-          <span className={styles.toasterSpan}>Add content please</span>
+          <span className={styles.toasterSpan}>Add content, please</span>
           <IconComponent type="heart" className={styles.iconHeart} />
         </div>,
+        {
+          closeButton: (
+            <>
+              <IconComponent type="close" className={styles.iconClose} />
+            </>
+          ),
+        },
       );
 
       return;
@@ -167,6 +174,12 @@ export const ChatNew: React.FC = () => {
         </div>
       </div>
       <ToastContainer
+        hideProgressBar
+        toastStyle={
+          theme === 'dark'
+            ? { background: '#363C4A' }
+            : { background: '#000000' }
+        }
         style={{
           width: '100%',
           position: 'absolute',

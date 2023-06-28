@@ -8,6 +8,7 @@ import { ReactComponent as arrowDown } from '@/assets/icons/arrow-down.svg';
 import { ReactComponent as backgroundChatDark } from '@/assets/icons/backgroundChat-dark.svg';
 import { ReactComponent as backgroundChatLight } from '@/assets/icons/backgroundChat-light.svg';
 import { ReactComponent as cancel } from '@/assets/icons/cancel.svg';
+import { ReactComponent as close } from '@/assets/icons/close.svg';
 import { ReactComponent as closedFolder } from '@/assets/icons/closed-folder.svg';
 import { ReactComponent as confirm } from '@/assets/icons/confirm.svg';
 import { ReactComponent as conversation } from '@/assets/icons/conversation.svg';
@@ -64,6 +65,7 @@ const ICONS = {
   copy,
   backgroundChatDark,
   stop,
+  close,
 } as const;
 
 export type IconType = keyof typeof ICONS;
