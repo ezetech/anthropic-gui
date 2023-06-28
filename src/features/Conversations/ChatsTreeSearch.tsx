@@ -1,15 +1,11 @@
 import { selectConversationsSearchedList } from '@/redux/conversations/conversations.selectors';
 import { useAppSelector } from '@/redux/hooks';
 
-import { ChatItem } from './components/ChatItem';
+import { SearchItem } from './components/SearchItem';
 
-import styles from './ConversationsList.module.scss';
+import styles from './ChatsTreeSearch.module.scss';
 
-export const ConversationSearchedList = ({
-  searchName,
-}: {
-  searchName: string;
-}) => {
+export const ChatsTreeSearch = ({ searchName }: { searchName: string }) => {
   const conversations = useAppSelector(
     selectConversationsSearchedList(searchName),
   );
@@ -17,8 +13,8 @@ export const ConversationSearchedList = ({
   return (
     <div className={styles.wrapper}>
       {conversations?.length ? (
-        conversations.map(conversation => (
-          <ChatItem conversationItem={conversation} key={conversation.id} />
+        conversations.map((conversation: any) => (
+          <SearchItem conversationItem={conversation} key={conversation.id} />
         ))
       ) : (
         <p>No results</p>
@@ -26,3 +22,5 @@ export const ConversationSearchedList = ({
     </div>
   );
 };
+
+ChatsTreeSearch.displayName = 'ChatsTreeSearch';

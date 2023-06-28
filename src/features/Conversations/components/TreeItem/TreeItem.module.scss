@@ -1,0 +1,247 @@
+.Wrapper {
+  list-style: none;
+  box-sizing: border-box;
+  padding-left: var(--spacing);
+  margin-bottom: -1px;
+
+  &.clone {
+    display: inline-block;
+    pointer-events: none;
+    padding: 0;
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+
+  &.ghost {
+    &.indicator {
+      opacity: 1;
+      position: relative;
+      z-index: 1;
+      margin-bottom: -1px;
+    }
+
+    &:not(.indicator) {
+      opacity: 0.5;
+    }
+  }
+}
+
+.TextFolder {
+  display: block;
+  text-align: start;
+  padding-top: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.TextChat {
+  display: block;
+  text-align: start;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.disableInteraction {
+  pointer-events: none;
+}
+
+.disableSelection,
+.clone {
+  .TextFolder, .TextChat {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+.wrapperItem {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  height: 45px;
+  padding: 0 13px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 8px;
+  color: var(--bg-default);
+  text-decoration: none;
+  transition-property: color, background, border;
+  transition-duration: 0.3s;
+  
+  svg {
+    flex-shrink: 0;
+  }
+  
+  svg:focus {
+    outline: none;
+  }
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  a {
+    text-decoration: none;
+    color: var(--bg-default);
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  a:hover {
+    color: var(--text-primary);
+  }
+  
+  &.editing {
+    padding: 9px 13px;
+  }
+
+  .editInput {
+    input {
+      padding: 2px 5px;
+    }
+
+    fieldset {
+      border-radius: 4px;
+    }
+  }
+  
+  .conversationIcon {
+    transition: 0.3s;
+    stroke: var(--bg-default);
+  }
+  
+  .folderIcon {
+    transition: 0.3s;
+    stroke: var(--bg-default);
+  }
+  
+  &:active {
+    background-color: var(--bg-primary);
+    border: 1px dashed var(--text-primary);
+    color: var(--text-primary);
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+    }
+  }
+  
+  &:hover {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+
+    .folderIcon {
+      stroke: var(--text-primary);
+    }
+    
+    .conversationIcon {
+      stroke: var(--text-primary);
+    }
+    
+    .deleteIcon {
+      display: block;
+      opacity: 1;
+    }
+
+    .settings {
+      display: flex;
+      opacity: 1;
+    }
+  }
+
+  &.selected {
+    color: var(--text-primary);
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+      fill: var(--text-primary);
+    }
+  }
+  
+  .settings {
+    margin-left: auto;
+    opacity: 0;
+    display: none;
+    column-gap: 8px;
+    align-items: center;
+    transition: 0.3s;
+
+    svg {
+      transition: 0.3s;
+      cursor: pointer;
+      stroke: var(--bg-default);
+    }
+  }
+  
+  .settings svg:hover {
+    stroke: var(--text-primary);
+  }
+
+  .confirmation {
+    flex-shrink: 0;
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    margin-left: auto;
+
+    svg {
+      stroke: var(--bg-default);
+      transition: 0.3s;
+      cursor: pointer;
+
+      &:hover {
+        stroke: var(--text-primary);
+      }
+    }
+  }
+
+  .deleteIcon {
+    margin-left: auto;
+    opacity: 0;
+    display: none;
+    transition: 0.3s;
+    cursor: pointer;
+    stroke: var(--bg-default);
+
+    &:hover {
+      stroke: var(--text-primary);
+    }
+  }
+
+  .confirmationDelete {
+    flex-shrink: 0;
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    margin-left: auto;
+
+    svg {
+      stroke: var(--bg-default);
+
+      &:hover {
+        stroke: var(--text-primary);
+      }
+    }
+  }
+}
+
+.nestedContent {
+  flex-basis: 100%;
+  position: relative;
+  color: var(--bg-default);
+  margin: 10px 0 10px 20px;
+  border-left: 1px solid var(--bg-default);
+
+  p {
+    padding: 0 10px 0 18px;
+  }
+}

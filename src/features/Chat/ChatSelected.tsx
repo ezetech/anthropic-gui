@@ -27,7 +27,7 @@ import {
 import { selectChatById } from '@/redux/conversations/conversations.selectors';
 import {
   addPromptToChat,
-  renameChat,
+  renameChatTreeItem,
   updateChatContents,
   updateContentById,
 } from '@/redux/conversations/conversationsSlice';
@@ -280,9 +280,9 @@ export const ChatSelected: React.FC = () => {
   const onSuccessGhangeChatName = useCallback(() => {
     if (conversationName) {
       dispatch(
-        renameChat({
-          conversationId: chat?.id || '',
-          name: conversationName,
+        renameChatTreeItem({
+          chatTreeId: chat?.id || '',
+          chatTreeName: conversationName,
         }),
       );
     }
