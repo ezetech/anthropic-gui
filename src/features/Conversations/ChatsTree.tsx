@@ -29,17 +29,16 @@ import {
   selectConversationFlattenList,
 } from '@/redux/conversations/conversations.selectors';
 import {
-  collapseChatTreeItem,
-  deleteChatTreeItem,
   updateChatTree,
+  deleteChatTreeItem,
+  collapseChatTreeItem,
 } from '@/redux/conversations/conversationsSlice';
-
-import type {
+import {
+  TreeItems,
   FlattenedItem,
   SensorContext,
-  TreeItems,
   TreeItem,
-} from '../../typings/types';
+} from '@/typings/common';
 
 import { SortableTreeItem } from './components/TreeItem/SortableTreeItem';
 

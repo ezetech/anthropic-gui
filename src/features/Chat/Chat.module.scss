@@ -1,6 +1,7 @@
 .chatMainContainer {
   width: 100%;
   position: relative;
+  height: 100%;
 }
 
 .chatGeneralContainer {
@@ -31,20 +32,21 @@
 }
 
 .chatBgContainer {
-  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   align-self: center;
   position: absolute;
+  row-gap: 50px;
   width: 100%;
   height: 100%;
+  margin-top: -60px;
 }
 
 .titleAiContainer {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
-  margin-bottom: 64px;
 }
 
 .iconTitle {
@@ -67,7 +69,7 @@
 .buttonsColumn {
   align-items: center;
   display: flex;
-  column-gap: 20px;
+  column-gap: 15px;
 }
 
 .buttonAddChat {
@@ -82,14 +84,19 @@
   border-radius: 50%;
   background-color: var(--primary-color);
   transition: 0.3s;
+  z-index: 1;
 
   svg {
     transition: 0.3s;
     stroke: #ffffff;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--primary-hover);
+  }
+
+  &:disabled {
+    background-color: var(--disabled);
   }
 }
 
@@ -150,135 +157,4 @@
 .iconHeart {
   align-self: center;
   margin-left: 8px;
-}
-
-.promptContainerHeader {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  width: 100%;
-  padding: 15px;
-}
-
-.promptText {
-  font-family: var(--font-family-main);
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  color: var(--text-conversation);
-  margin: 14px 18px;
-  outline: none;
-  height: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-.placeholderText {
-  font-family: var(--font-family-bold);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--text-primary);
-  width: 100%;
-  display: block;
-}
-
-.fieldContainer {
-  position: relative;
-  width: 100%;
-}
-
-.promptField {
-  min-height: 81px;
-  height: 100%;
-  background: var(--bg-primary);
-  color: var(--text-conversation);
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 50px 15px 15px;
-  overflow-x: auto;
-  cursor: text;
-  font-family: var(--font-family-main);
-  font-weight: 500;
-  line-height: 22px;
-  width: 100%;
-  z-index: 1;
-  white-space: pre-wrap;
-  outline: none;
-
-  &:focus {
-    border: 1px solid var(--primary-color);
-  }
-}
-
-.promptContainer {
-  position: relative;
-  display: flex;
-  column-gap: 15px;
-  width: 100%;
-
-  & > :first-child {
-    flex-shrink: 0;
-  }
-}
-
-.textAreaMuiContainer {
-  width: 100%;
-  min-height: 81px;
-  border-radius: 8px;
-
-  & > div {
-    padding: 45px 15px 15px;
-    color: var(--text-conversation);
-    font-family: var(--font-family-main);
-    font-weight: 500;
-    border-radius: 8px;
-  }
-
-  fieldset {
-    border-radius: 8px;
-    transition: 0.3s;
-    border: 1px solid transparent;
-  }
-}
-
-.textArea {
-  background-color: var(--bg-primary);
-  border-radius: 8px;
-}
-
-.textAreaLabel {
-  position: absolute;
-  top: 15px;
-  left: 70px;
-  z-index: 1;
-}
-
-.textAreaDeleteIcon {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 15px 15px 0;
-  cursor: pointer;
-  z-index: 1;
-
-  &:hover svg {
-    stroke: var(--text-primary);
-  }
-}
-
-.textAreaContainer {
-  width: 100%;
-}
-
-.iconDelete {
-  cursor: pointer;
-  transition: 0.3s;
-  stroke: var(--text-secondary);
-  z-index: 1;
-
-  &:hover {
-    stroke: var(--text-primary);
-  }
 }

@@ -7,7 +7,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { ROUTES } from '@/app/router/constants/routes';
 import { deleteChatTreeItem } from '@/redux/conversations/conversationsSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import { TreeItem } from '@/typings/types';
+import { TreeItem } from '@/typings/common';
 import { IconComponent } from '@/ui/IconComponent';
 
 import styles from './SearchItem.module.scss';

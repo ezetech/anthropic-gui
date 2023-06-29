@@ -1,8 +1,8 @@
-@import 'normalize.css/normalize.css';
-@import 'fonts';
-@import 'themes/light';
-@import 'themes/dark';
-@import 'variables/global';
+@import "normalize.css/normalize.css";
+@import "fonts";
+@import "themes/light";
+@import "themes/dark";
+@import "variables/global";
 
 * {
   box-sizing: border-box;
@@ -15,9 +15,12 @@ body {
   font-family: var(--font-family-main);
   font-weight: 500;
 }
+
 .app {
   background-color: var(--bg-color-main);
   color: var(--text-primary);
+  width: 100%;
+  overflow-x: auto;
 }
 
 // reset autofill background color for inputs in chrome
@@ -28,7 +31,7 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-input[type='number'] {
+input[type="number"] {
   appearance: textfield;
 
   // remove arrows in number picker input

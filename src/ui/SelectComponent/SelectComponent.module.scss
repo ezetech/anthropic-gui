@@ -40,10 +40,6 @@
     border-color: var(--btn-outlined-hover);
   }
 
-  .select div input:focus + fieldset {
-    border-color: var(--primary-color);
-  }
-
   .label {
     position: static;
     transform: none;
