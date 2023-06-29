@@ -1,5 +1,6 @@
 import { selectConversationsSearchedList } from '@/redux/conversations/conversations.selectors';
 import { useAppSelector } from '@/redux/hooks';
+import { TreeItem } from '@/typings/types';
 
 import { SearchItem } from './components/SearchItem';
 
@@ -13,7 +14,7 @@ export const ChatsTreeSearch = ({ searchName }: { searchName: string }) => {
   return (
     <div className={styles.wrapper}>
       {conversations?.length ? (
-        conversations.map((conversation: any) => (
+        conversations.map((conversation: TreeItem) => (
           <SearchItem conversationItem={conversation} key={conversation.id} />
         ))
       ) : (
