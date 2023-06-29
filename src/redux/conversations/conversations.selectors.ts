@@ -1,5 +1,7 @@
+import { createSelector } from '@reduxjs/toolkit';
+
 import { Chat, Folder } from '@/typings/common';
-import { FlattenedItem, TreeItems } from '@/typings/types';
+import { FlattenedItem, TreeItem, TreeItems } from '@/typings/types';
 
 import { RootState } from '../store';
 
@@ -18,35 +20,35 @@ export const flatten = (
     [],
   );
 
-const countChatsTree = (items: any[], chatType = 'chat'): number => {
-  let countItems = 0;
-  for (const item of items) {
-    if (item.type === chatType) {
-      countItems += 1;
-    }
-    if (item.children.length) {
-      countItems += countChatsTree(item.children, chatType);
-    }
-  }
-  return countItems;
-};
-
 export const selectConversationsList = (state: RootState) =>
   state.chats.conversations;
 
 export const selectConversationFlattenList = (state: RootState) =>
   flatten(state.chats.conversations);
 
-export const selectCountConversations = (state: RootState) =>
-  countChatsTree(state.chats.conversations, 'chat');
+export const selectCountConversations = createSelector(
+  selectConversationsList,
+  conversation => {
+    let countItems = 0;
+    for (const item of conversation) {
+      if (item.type === 'chat') {
+        countItems += 1;
+      }
+      if (item.children?.length) {
+        countItems += item.children.length;
+      }
+    }
+    return countItems;
+  },
+);
 
 export const searchChats = (
-  conversations: any[],
+  conversations: TreeItem[],
   searchedName: string,
-): any[] => {
-  const newItems: any[] = [];
+): TreeItem[] => {
+  const newItems: TreeItem[] = [];
 
-  const searchRecursively = (items: any[]) => {
+  const searchRecursively = (items: TreeItem[]) => {
     for (const item of items) {
       if (item.name === searchedName && item.type === 'chat') {
         newItems.push(item);
@@ -67,7 +69,7 @@ export const selectConversationsSearchedList =
     searchChats(state.chats.conversations, searchedName);
 
 export const findChatById = (
-  conversations: (Chat | Folder)[],
+  conversations: TreeItem[],
   id: string,
 ): Chat | undefined => {
   let result: Chat | undefined;

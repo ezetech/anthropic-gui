@@ -1,13 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Chat, ChatContent, Folder } from '@/typings/common';
-import { TreeItem, TreeItems } from '@/typings/types';
+import { ChatContent, TreeItem, TreeItems } from '@/typings/types';
 
 import { findChatById } from './conversations.selectors';
 
 interface ConversationsState {
-  conversations: any[];
+  conversations: TreeItem[];
 }
 
 const initialState: ConversationsState = {
@@ -15,10 +14,10 @@ const initialState: ConversationsState = {
 };
 
 const renameChatTree = (
-  items: Record<string, any>[],
+  items: TreeItem[],
   chatTreeId: string,
   chatTreeName: string,
-): any[] =>
+): TreeItem[] =>
   items.map(item => {
     if (item.id === chatTreeId) {
       return { ...item, name: chatTreeName };
@@ -34,7 +33,7 @@ const renameChatTree = (
     return item;
   });
 
-const deleteChatTree = (items: any[], chatTreeId: string): any[] => {
+const deleteChatTree = (items: TreeItem[], chatTreeId: string): TreeItem[] => {
   const newItems = [];
   for (const item of items) {
     if (item.id === chatTreeId) {
@@ -76,7 +75,7 @@ export const conversationsSlice = createSlice({
   reducers: {
     saveChat: (
       state,
-      action: PayloadAction<Omit<Chat, 'type' | 'createdAt' | 'children'>>,
+      action: PayloadAction<Omit<TreeItem, 'type' | 'createdAt' | 'children'>>,
     ) => {
       state.conversations.unshift({
         type: 'chat',
@@ -88,7 +87,7 @@ export const conversationsSlice = createSlice({
     saveFolder: (
       state,
       action: PayloadAction<
-        Omit<Folder, 'type' | 'id' | 'createdAt' | 'children'>
+        Omit<TreeItem, 'type' | 'id' | 'createdAt' | 'children'>
       >,
     ) => {
       state.conversations.unshift({
@@ -118,7 +117,7 @@ export const conversationsSlice = createSlice({
       const { chatId, contents } = action.payload;
       const chatToUpdate = findChatById(state.conversations, chatId);
       if (chatToUpdate) {
-        (chatToUpdate as Chat).content = contents;
+        (chatToUpdate as TreeItem).content = contents;
       }
     },
     updateContentById: (
@@ -172,7 +171,7 @@ export const conversationsSlice = createSlice({
       const { chatTreeId } = action.payload;
       state.conversations = deleteChatTree(state.conversations, chatTreeId);
     },
-    updateChatTree: (state, action: PayloadAction<{ chatTree: any }>) => {
+    updateChatTree: (state, action: PayloadAction<{ chatTree: TreeItems }>) => {
       const { chatTree } = action.payload;
       state.conversations = chatTree;
     },
