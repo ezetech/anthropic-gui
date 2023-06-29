@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import { selectConversationsSearchedList } from '@/redux/conversations/conversations.selectors';
 import { useAppSelector } from '@/redux/hooks';
-import { TreeItem } from '@/typings/types';
+import { TreeItem } from '@/typings/common';
 
 import { SearchItem } from './components/SearchItem';
 

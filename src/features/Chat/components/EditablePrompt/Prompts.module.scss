@@ -1,6 +1,33 @@
+.promptAiField {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 81px;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-conversation);
+  border-radius: 8px;
+  padding: 15px;
+  overflow-x: auto;
+  cursor: text;
+  font-family: var(--font-family-main);
+  font-weight: 500;
+  line-height: 22px;
+
+  .markdown {
+    .codeWrapper {
+    }
+  }
+}
+
 .promptContainerHeader {
   display: flex;
   justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  padding: 15px;
+  z-index: 2;
 }
 
 .promptText {
@@ -23,54 +50,55 @@
   font-weight: 700;
   font-size: 16px;
   color: var(--text-primary);
-  margin-bottom: 15px;
   width: 100%;
   display: block;
 }
 
-.promptAiField {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  min-height: 81px;
+.fieldContainer {
+  position: relative;
   width: 100%;
+  overflow: hidden;
+}
+
+.promptField {
+  min-height: 81px;
   height: 100%;
   background: var(--bg-primary);
   color: var(--text-conversation);
   border-radius: 8px;
-  padding: 15px;
+  border: 1px solid transparent;
+  padding: 50px 15px 15px;
   overflow-x: auto;
   cursor: text;
   font-family: var(--font-family-main);
   font-weight: 500;
   line-height: 22px;
+  width: 100%;
+  z-index: 1;
+  white-space: pre-wrap;
+  outline: none;
+  overflow-wrap: anywhere !important;
 
-  .markdown {
-    .codeWrapper {
-    }
+  &:focus {
+    border: 1px solid var(--primary-color);
+  }
 
+  .codeWrapper {
     pre {
-      div {
-        background: var(--bg-secondary) !important;
+      color: #ffffff;
+      background: var(--bg-secondary);
+      border-radius: 0 0 8px 8px;
+      padding: 15px;
+      overflow-x: auto;
+
+      code {
+        background: var(--bg-secondary);
         border-radius: 8px;
 
-        code {
-          background: var(--bg-secondary) !important;
-          border-radius: 8px;
-
-          span {
-            background: transparent !important;
-          }
+        span {
+          background: transparent;
         }
       }
-    }
-
-    & > * {
-      margin-bottom: 25px;
-    }
-
-    & > :last-child {
-      margin-bottom: 0;
     }
 
     .codeHeader {
@@ -81,12 +109,27 @@
       border-radius: 8px 8px 0 0;
       padding: 10px 15px;
       color: var(--text-secondary);
+      margin: 0;
+
+      * {
+        margin: 0;
+      }
     }
 
     .copyIcon {
       cursor: pointer;
       stroke: var(--text-secondary);
+      margin: 0;
     }
+  }
+
+  * {
+    white-space: pre-wrap;
+    margin-bottom: 15px;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
   }
 }
 
@@ -101,55 +144,6 @@
   }
 }
 
-.textAreaMuiContainer {
-  width: 100%;
-  min-height: 81px;
-  border-radius: 8px;
-
-  & > div {
-    padding: 45px 15px 15px;
-    color: var(--text-conversation);
-    font-family: var(--font-family-main);
-    font-weight: 500;
-    border-radius: 8px;
-  }
-
-  fieldset {
-    border-radius: 8px;
-    transition: 0.3s;
-    border: 1px solid transparent;
-  }
-}
-
-.textArea {
-  background-color: var(--bg-primary);
-  border-radius: 8px;
-}
-
-.textAreaLabel {
-  position: absolute;
-  top: 15px;
-  left: 70px;
-  z-index: 1;
-}
-
-.textAreaDeleteIcon {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 15px 15px 0;
-  cursor: pointer;
-  z-index: 1;
-
-  &:hover svg {
-    stroke: var(--text-primary);
-  }
-}
-
-.textAreaContainer {
-  width: 100%;
-}
-
 .iconDelete {
   cursor: pointer;
   transition: 0.3s;
@@ -159,4 +153,10 @@
   &:hover {
     stroke: var(--text-primary);
   }
+}
+
+.inlineCode {
+  color: var(--inline-code);
+  font-family: var(--font-family-extra);
+  font-weight: 900;
 }

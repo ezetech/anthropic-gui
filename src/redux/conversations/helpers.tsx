@@ -1,4 +1,4 @@
-import { FlattenedItem, TreeItems } from '@/typings/types';
+import { TreeItems, FlattenedItem } from '@/typings/common';
 
 export const flatten = (
   items: TreeItems,

@@ -17,7 +17,7 @@ export const submitPrompt = async ({
   signal,
 }: PromptRequest) => {
   const requestBody = {
-    prompt: `\n\nHuman: ${prompt}\n\nAssistant: `,
+    prompt,
     model,
     temperature,
     top_k: topK,
@@ -32,6 +32,7 @@ export const submitPrompt = async ({
     headers: {
       'x-api-key': apiKey,
       'Content-Type': 'application/json',
+      accept: 'application/json',
     },
     signal: signal,
     body: JSON.stringify(requestBody),

@@ -3,6 +3,8 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
 } from 'react';
 
@@ -17,11 +19,6 @@ import { submitPrompt } from '@/api/prompt.api';
 import { NavigationContext } from '@/app/App';
 import { ROUTES } from '@/app/router/constants/routes';
 import {
-  escapeHtml,
-  splitTextAndCode,
-  unEscapeHtml,
-} from '@/helpers/textParser';
-import {
   selectApiKey,
   selectApiMaxTokens,
   selectApiModel,
@@ -32,17 +29,33 @@ import {
 import { selectChatById } from '@/redux/conversations/conversations.selectors';
 import {
   addPromptToChat,
-  renameChatTreeItem,
   updateChatContents,
   updateContentById,
+  renameChatTreeItem,
 } from '@/redux/conversations/conversationsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { ChatContent } from '@/typings/common';
+import { Chat, ChatContent } from '@/typings/common';
 import { ButtonComponent } from '@/ui/ButtonComponent';
 import { IconComponent } from '@/ui/IconComponent';
 import { TextFieldComponent } from '@/ui/TextFieldComponent';
 
+import { EditablePrompt } from './components/EditablePrompt';
+
 import styles from './Chat.module.scss';
+
+const findLastAssistantContent = (chat?: Chat): ChatContent | null => {
+  if (!chat || !chat?.content) {
+    return null;
+  }
+
+  for (let i = chat.content.length - 1; i >= 0; i--) {
+    const content = chat.content[i];
+    if (content.type === 'Assistant' && content.text) {
+      return content;
+    }
+  }
+  return null;
+};
 
 export const ChatSelected: React.FC = () => {
   const { id: chatId = '' } = useParams();
@@ -61,6 +74,10 @@ export const ChatSelected: React.FC = () => {
 
   const [conversationName, setConversationName] = useState(chat?.name ?? '');
 
+  const [updatingAiPromptId, setUpdatingAiPromptId] = useState('');
+
+  const [isStreaming, setIsStreaming] = useState(false);
+
   const apiKey = useSelector(selectApiKey);
   const model = useSelector(selectApiModel);
   const temperature = useSelector(selectApiTemperature);
@@ -69,6 +86,11 @@ export const ChatSelected: React.FC = () => {
   const topP = useSelector(selectApiTopP);
 
   const dispatch = useAppDispatch();
+
+  const lastAssistantPrompt = useMemo(
+    () => findLastAssistantContent(chat),
+    [chat],
+  );
 
   useEffect(() => {
     if (!chat) {
@@ -87,12 +109,12 @@ export const ChatSelected: React.FC = () => {
       () => {
         const newPromptType =
           promptType ||
-          (chat?.content?.[chat.content.length - 1]?.type === 'human'
-            ? 'assistant'
-            : 'human');
+          (chat?.content?.[chat.content.length - 1]?.type === 'Human'
+            ? 'Assistant'
+            : 'Human');
 
         const newPrompt: ChatContent = {
-          type: newPromptType as 'human' | 'assistant',
+          type: newPromptType as 'Human' | 'Assistant',
           text: '',
           id: uuidv4(),
         };
@@ -124,27 +146,28 @@ export const ChatSelected: React.FC = () => {
       const newAbortController = new AbortController();
       const signal = newAbortController.signal;
       setAbortController(newAbortController);
-      let lastAssistantId = '';
 
-      if (isRegenerate) {
-        const lastAssistant =
-          chat?.content?.filter(item => item.type === 'assistant') ?? [];
-        if (lastAssistant?.length > 0) {
-          lastAssistantId = lastAssistant[lastAssistant?.length - 1].id;
-        }
-      }
-
-      const chatContent = lastAssistantId
-        ? chat?.content?.filter(content => content.id !== lastAssistantId)
+      const chatContent = isRegenerate
+        ? chat?.content?.filter(
+            content => content.id !== lastAssistantPrompt?.id,
+          )
         : chat?.content;
 
-      const promptTexts =
+      let promptTexts = (
         chatContent?.map(prompt => {
           const type = prompt.type;
           const promptText = prompt.text;
 
           return `\n\n${type}: ${promptText}`;
-        }) || [];
+        }) || []
+      ).join('');
+
+      if (
+        chatContent &&
+        chatContent[chatContent?.length - 1].type === 'Human'
+      ) {
+        promptTexts += '\n\nAssistant:';
+      }
 
       const requestBody = {
         model,
@@ -153,13 +176,14 @@ export const ChatSelected: React.FC = () => {
         topP,
         apiKey,
         maxTokens,
-        prompt: promptTexts.join(''),
+        prompt: promptTexts,
         signal,
       };
 
       try {
         const response = await submitPrompt(requestBody);
         if (response?.ok) {
+          setIsStreaming(true);
           const reader = response?.body?.getReader();
           const decoder = new TextDecoder('utf-8');
 
@@ -167,7 +191,7 @@ export const ChatSelected: React.FC = () => {
 
           if (!isRegenerate) {
             newPrompt = {
-              type: 'assistant',
+              type: 'Assistant',
               text: '',
               id: uuidv4(),
             };
@@ -178,7 +202,12 @@ export const ChatSelected: React.FC = () => {
 
           while (true) {
             const res = await reader?.read();
-            if (res?.done) break;
+            console.log(res);
+
+            if (res?.done) {
+              setIsStreaming(false);
+              break;
+            }
             let lastLine: any = '';
             const lastLineData = decoder.decode(res?.value);
 
@@ -197,10 +226,18 @@ export const ChatSelected: React.FC = () => {
                 const eventData = JSON.parse(lastLine);
 
                 if (eventData.completion) {
+                  if (isRegenerate) {
+                    setUpdatingAiPromptId(lastAssistantPrompt?.id || '');
+                  } else {
+                    setUpdatingAiPromptId(newPrompt?.id || '');
+                  }
                   dispatch(
                     updateContentById({
                       chatId: chat?.id ?? '',
-                      contentId: lastAssistantId || newPrompt?.id || '',
+                      contentId:
+                        (isRegenerate
+                          ? lastAssistantPrompt?.id
+                          : newPrompt?.id) || '',
                       text: eventData.completion,
                     }),
                   );
@@ -213,7 +250,7 @@ export const ChatSelected: React.FC = () => {
             }
           }
           if (!isRegenerate) {
-            addPromptRow('human')();
+            addPromptRow('Human')();
           }
         } else {
           console.error('Error: ' + response?.statusText);
@@ -233,14 +270,14 @@ export const ChatSelected: React.FC = () => {
       topK,
       topP,
       chat?.content,
+      lastAssistantPrompt?.id,
     ],
   );
 
   const handleRegenerate = async () => {
-    if (chat?.content) {
-      if (!chat.content[chat.content.length - 1].text) {
-        deletePromptRow(chat.content[chat.content.length - 1].id);
-      }
+    if (lastAssistantPrompt) {
+      deletePromptRow(lastAssistantPrompt.id);
+
       await generateResponse(true);
     }
   };
@@ -262,20 +299,18 @@ export const ChatSelected: React.FC = () => {
     hasSubmitted,
   ]);
 
-  const handlePromptBlur =
-    (id: string) => (event: React.FocusEvent<HTMLDivElement>) => {
-      // TODO
-      const target = event.target as HTMLDivElement;
-      dispatch(
-        updateContentById({
-          chatId: chat?.id || '',
-          contentId: id,
-          text: unEscapeHtml(target.innerHTML),
-        }),
-      );
-    };
+  const handlePromptBlur = (id: string, text: string) => {
+    dispatch(
+      updateContentById({
+        chatId: chat?.id || '',
+        contentId: id,
+        text,
+      }),
+    );
+  };
 
   const stopStream = () => {
+    setIsStreaming(false);
     if (abortController) {
       abortController.abort();
       setAbortController(null);
@@ -304,8 +339,60 @@ export const ChatSelected: React.FC = () => {
     [setConversationName],
   );
 
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(true);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const observerRef = useRef<MutationObserver | null>(null);
+
+  useEffect(() => {
+    const containerElement = containerRef.current;
+
+    const handleScroll = () => {
+      if (!containerElement) return;
+
+      const { scrollTop, scrollHeight, clientHeight } = containerElement;
+      const isAtBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+      setIsScrolledToBottom(isAtBottom);
+    };
+
+    if (containerElement) {
+      containerElement.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (containerElement) {
+        containerElement.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (container) {
+      const scrollToBottom = () => {
+        container.scrollTop = container.scrollHeight;
+      };
+
+      observerRef.current = new MutationObserver(() => {
+        if (isScrolledToBottom) {
+          scrollToBottom();
+        }
+      });
+
+      observerRef.current.observe(container, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+    }
+
+    return () => observerRef.current?.disconnect();
+  }, [isScrolledToBottom]);
+
   return (
-    <div className={styles.chatGeneralContainer}>
+    <div className={styles.chatGeneralContainer} ref={containerRef}>
       <Box paddingLeft="60px" display="block" width="100%" mb={4}>
         <TextFieldComponent
           value={conversationName}
@@ -332,83 +419,52 @@ export const ChatSelected: React.FC = () => {
           }}
         />
       </Box>
-      {chat?.content?.map(({ text, type, id }) => (
-        <div className={styles.chatPromptContainer} key={id}>
-          <div className={styles.promptContainer}>
-            {type === 'human' ? (
-              <div>
-                <IconComponent type="human" />
-              </div>
-            ) : (
-              <div>
-                <IconComponent type="ai" />
-              </div>
-            )}
-            <div className={styles.fieldContainer}>
-              <div className={styles.promptContainerHeader}>
-                {type === 'human' ? (
-                  <div className={styles.placeholderText}>You</div>
-                ) : (
-                  <div className={styles.placeholderText}>AI</div>
-                )}
-                <div
-                  className={styles.iconDelete}
-                  onClick={deletePromptRow(id)}
-                >
-                  <IconComponent type="deleteIcon" />
-                </div>
-              </div>
-              <div
-                contentEditable
-                onBlur={handlePromptBlur(id)}
-                suppressContentEditableWarning
-                className={styles.promptField}
-                // dangerouslySetInnerHTML={{ __html: escapeHtml(text) }}
-              >
-                {splitTextAndCode(text).map(fragment =>
-                  fragment.type === 'text' ? (
-                    <div
-                      key={fragment.content}
-                      dangerouslySetInnerHTML={{
-                        __html: escapeHtml(fragment.content),
-                      }}
-                    />
-                  ) : (
-                    <div
-                      key={fragment.content}
-                      dangerouslySetInnerHTML={{
-                        __html: escapeHtml(fragment.content),
-                      }}
-                    />
-                  ),
-                )}
-              </div>
-            </div>
+      {chat?.content?.map(({ text, type, id }) => {
+        console.log(text, 'text');
+
+        return (
+          <div className={styles.chatPromptContainer} key={id}>
+            <EditablePrompt
+              id={id}
+              text={text}
+              deletePromptRow={deletePromptRow}
+              type={type}
+              handlePromptBlur={handlePromptBlur}
+              disabled={updatingAiPromptId === id && isStreaming}
+            />
           </div>
-        </div>
-      ))}
+        );
+      })}
       <div className={styles.chatButtonsContainer}>
         <div className={styles.buttonsColumn}>
-          <button onClick={addPromptRow()} className={styles.buttonAddChat}>
+          <button
+            onClick={addPromptRow()}
+            className={styles.buttonAddChat}
+            disabled={isStreaming}
+          >
             <IconComponent type="plus" className={styles.iconPlus} />
           </button>
-          <ButtonComponent
-            type="submit"
-            variant="contained"
-            onClick={handlePromptSubmit}
-          >
-            <span>Submit</span>
-            <IconComponent type="submit" />
-          </ButtonComponent>
+          {!isStreaming ? (
+            <ButtonComponent
+              type="submit"
+              variant="contained"
+              onClick={handlePromptSubmit}
+            >
+              <span>Submit</span>
+              <IconComponent type="submit" />
+            </ButtonComponent>
+          ) : (
+            <ButtonComponent variant="outlined" onClick={stopStream}>
+              <span>Stop</span>
+            </ButtonComponent>
+          )}
         </div>
         <div className={styles.buttonsColumn}>
-          <ButtonComponent variant="outlined" onClick={stopStream}>
-            <span>Stop</span>
-          </ButtonComponent>
           <ButtonComponent
             type="submit"
             variant="outlined"
             onClick={handleRegenerate}
+            disabled={isStreaming || !lastAssistantPrompt}
           >
             <span>Regenerate</span>
             <IconComponent

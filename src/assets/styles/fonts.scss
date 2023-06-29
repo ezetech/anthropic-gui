@@ -1,13 +1,20 @@
 @font-face {
-  font-family: AeonikMedium;
-  src: url('../fonts/Aeonik-Medium.otf');
+  font-family: InterMedium;
+  src: url("../fonts/Inter-Medium.ttf");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: AeonikBold;
-  src: url('../fonts//Aeonik-Bold.otf');
-  font-weight: 500;
+  font-family: InterBold;
+  src: url("../fonts/Inter-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: InterExtra;
+  src: url("../fonts/Inter-ExtraBold.ttf");
+  font-weight: 900;
   font-style: normal;
 }

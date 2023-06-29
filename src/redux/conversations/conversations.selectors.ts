@@ -1,10 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { flatten } from '@/redux/conversations/helpers';
-import { Chat, Folder } from '@/typings/common';
-import { TreeItem } from '@/typings/types';
+import { Chat, Folder, TreeItem } from '@/typings/common';
 
 import { RootState } from '../store';
+
+import { flatten } from './helpers';
 
 export const selectConversationsList = (state: RootState) =>
   state.chats.conversations;
