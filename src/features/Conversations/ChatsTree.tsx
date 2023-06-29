@@ -351,9 +351,7 @@ export const ChatsTree = memo(
           return;
         }
 
-        const clonedItems: FlattenedItem[] = JSON.parse(
-          JSON.stringify(flattenedTree),
-        );
+        const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
         const overIndex = clonedItems.findIndex(({ id }) => id === over.id);
         const activeIndex = clonedItems.findIndex(({ id }) => id === active.id);
         const activeTreeItem = clonedItems[activeIndex];
@@ -368,13 +366,25 @@ export const ChatsTree = memo(
       resetState();
     };
 
-    const handleRemove = (id: string) => {
+    const handleRemoveItem = (id: string) => {
       dispatch(deleteChatTreeItem({ chatTreeId: id }));
     };
 
-    const handleCollapse = (id: string) => {
+    const handleCollapseItem = (id: string) => {
       dispatch(collapseChatTreeItem({ chatTreeId: id }));
     };
+
+    const handleCollapse = (
+      id: string,
+      collapsibleItem: boolean | undefined,
+      children: TreeItem[],
+    ) =>
+      collapsibleItem && children?.length
+        ? () => handleCollapseItem(id)
+        : undefined;
+
+    const handleRemove = (id: string, removableItem: boolean | undefined) =>
+      removableItem ? () => handleRemoveItem(id) : undefined;
 
     return (
       <DndContext
@@ -403,14 +413,8 @@ export const ChatsTree = memo(
                 indentationWidth={indentationWidth}
                 indicator={indicator}
                 collapsed={Boolean(collapsed && children.length)}
-                onCollapse={
-                  collapsible && children.length
-                    ? () => {
-                        handleCollapse(id);
-                      }
-                    : undefined
-                }
-                onRemove={removable ? () => handleRemove(id) : undefined}
+                onCollapse={handleCollapse(id, collapsible, children)}
+                onRemove={handleRemove(id, removable)}
               />
             ),
           )}

@@ -91,7 +91,7 @@ export const Conversations = memo(() => {
       {debouncedSearch ? (
         <ChatsTreeSearch searchName={debouncedSearch} />
       ) : (
-        <div style={{ rowGap: '0px' }}>
+        <div className={styles.treeContainer}>
           <ChatsTree collapsible removable />
         </div>
       )}
