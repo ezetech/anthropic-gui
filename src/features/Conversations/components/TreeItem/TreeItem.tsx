@@ -4,6 +4,7 @@ import React, {
   useState,
   forwardRef,
   HTMLAttributes,
+  memo,
 } from 'react';
 
 import classNames from 'classnames';
@@ -37,7 +38,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   wrapperRef?(node: HTMLLIElement): void;
 }
 
-export const TreeItem = forwardRef<HTMLDivElement, Props>(
+const TreeItem = forwardRef<HTMLDivElement, Props>(
   (
     {
       childCount,
@@ -142,10 +143,10 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           {...props}
           className={classNames(
             styles.Wrapper,
-            clone && styles.clone,
-            ghost && styles.ghost,
-            disableSelection && styles.disableSelection,
-            disableInteraction && styles.disableInteraction,
+            { [styles.clone]: clone },
+            { [styles.ghost]: ghost },
+            { [styles.disableSelection]: disableSelection },
+            { [styles.disableInteraction]: disableInteraction },
           )}
           ref={wrapperRef}
           style={
@@ -250,5 +251,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     );
   },
 );
+
+export const TreeItemMemo = memo(TreeItem);
 
 TreeItem.displayName = 'TreeItem';

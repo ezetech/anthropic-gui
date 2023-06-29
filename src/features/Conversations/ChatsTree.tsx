@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   DndContext,
@@ -71,7 +71,7 @@ export const ChatsTree = memo(
     const [activeId, setActiveId] = useState<string | null>(null);
     const [overId, setOverId] = useState<string | null>(null);
     const [offsetLeft, setOffsetLeft] = useState(0);
-    const [currentPosition, setCurrentPosition] = useState<{
+    const [_, setCurrentPosition] = useState<{
       parentId: string | null;
       parentType: string | null;
       overId: string;
