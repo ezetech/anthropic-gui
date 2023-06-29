@@ -31,26 +31,29 @@ export const AuthPage = () => {
     setInvalidKey(false);
   }, []);
 
-  async function validateApiKey(keyApi: string): Promise<boolean> {
-    try {
-      const response = await submitPrompt({
-        model: model,
-        temperature: 0,
-        topK: 0,
-        topP: 0,
-        apiKey: keyApi,
-        maxTokens: 1,
-        prompt: '',
-      });
-      if (response?.ok) {
-        return true;
-      } else {
+  const validateApiKey = useCallback(
+    async (keyApi: string): Promise<boolean> => {
+      try {
+        const response = await submitPrompt({
+          model: model,
+          temperature: 0,
+          topK: 0,
+          topP: 0,
+          apiKey: keyApi,
+          maxTokens: 1,
+          prompt: `\n\nHuman: ' '\n\nAssistant:`,
+        });
+        if (response?.ok) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
         return false;
       }
-    } catch (error) {
-      return false;
-    }
-  }
+    },
+    [model],
+  );
 
   const onSubmit = useCallback(
     async (event?: FormEvent<HTMLFormElement>) => {

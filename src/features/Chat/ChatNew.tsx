@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -11,15 +11,16 @@ import { ROUTES } from '@/app/router/constants/routes';
 import { saveChat } from '@/redux/conversations/conversationsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { selectThemeMode } from '@/redux/theme/theme.selectors';
+import { PromptType } from '@/typings/common';
 import { ButtonComponent } from '@/ui/ButtonComponent';
 import { IconComponent } from '@/ui/IconComponent';
 
-import { AiPrompt, EditablePrompt } from './components/Prompts';
+import { EditablePrompt } from './components/EditablePrompt';
 
 import styles from './Chat.module.scss';
 
 interface ChatPrompt {
-  type: 'human' | 'assistant';
+  type: PromptType;
   text: string;
 }
 
@@ -31,7 +32,7 @@ type ExtendedChatPrompt = ChatPrompt & { id: string };
 
 export const ChatNew: React.FC = () => {
   const [prompts, setPrompts] = useState<ExtendedChatPrompt[]>([
-    { type: 'human', text: '', id: uuidv4() },
+    { type: 'Human', text: '', id: uuidv4() },
   ]);
   useState<AbortController | null>(null);
   const { setDidNewChatNavigate } = useContext(NavigationContext);
@@ -44,12 +45,12 @@ export const ChatNew: React.FC = () => {
     () => {
       const newPromptType =
         promptType ||
-        (prompts[prompts?.length - 1]?.type === 'human'
-          ? 'assistant'
-          : 'human');
+        (prompts[prompts?.length - 1]?.type === 'Human'
+          ? 'Assistant'
+          : 'Human');
 
       const newPrompt: ExtendedChatPrompt = {
-        type: newPromptType as 'human' | 'assistant',
+        type: newPromptType as 'Human' | 'Assistant',
         text: '',
         id: uuidv4(),
       };
@@ -104,34 +105,22 @@ export const ChatNew: React.FC = () => {
     navigate(`${ROUTES.Chat}/${newChat.id}`);
   };
 
-  const handlePromptBlur =
-    (id: string) => (event: React.FocusEvent<HTMLTextAreaElement>) => {
-      const { value } = event.target;
-      updatePromptByKey(id, value);
-    };
+  const handlePromptBlur = (id: string, text: string) => {
+    updatePromptByKey(id, text);
+  };
 
   return (
     <div className={styles.chatMainContainer}>
       <div className={styles.chatGeneralContainer}>
         {prompts.map(({ text, type, id }) => (
           <div className={styles.chatPromptContainer} key={id}>
-            {type === 'human' ? (
-              <EditablePrompt
-                id={id}
-                deletePromptRow={deletePromptRow}
-                handlePromptBlur={handlePromptBlur}
-                type={type}
-                text={text}
-              />
-            ) : (
-              <AiPrompt
-                id={id}
-                text={text}
-                deletePromptRow={deletePromptRow}
-                handlePromptBlur={handlePromptBlur}
-                type={type}
-              />
-            )}
+            <EditablePrompt
+              id={id}
+              text={text}
+              deletePromptRow={deletePromptRow}
+              type={type}
+              handlePromptBlur={handlePromptBlur}
+            />
           </div>
         ))}
         <div className={styles.chatBgContainer}>

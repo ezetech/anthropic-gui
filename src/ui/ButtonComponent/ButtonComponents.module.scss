@@ -1,6 +1,5 @@
 .buttonWrapper.button {
-  padding-top: 13px;
-  padding-bottom: 13px;
+  padding: 8.5px 30px;
   transition: 0.3s;
   font-family: var(--font-family-bold);
   font-weight: 700;
@@ -15,6 +14,7 @@
   &.contained {
     background-color: var(--primary-color);
     color: #ffffff;
+    min-width: 150px;
 
     &:disabled {
       background-color: var(--bg-btn-disabled);
@@ -27,12 +27,17 @@
   }
 
   &.outlined {
+    min-width: 150px;
     border: 1px solid var(--text-secondary);
     color: var(--text-primary);
 
     &:disabled {
       border-color: var(--disabled);
       color: var(--disabled);
+
+      svg {
+        stroke: var(--disabled);
+      }
     }
 
     &:hover {

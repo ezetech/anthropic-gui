@@ -1,3 +1,5 @@
+import type { MutableRefObject } from 'react';
+
 export type ApiErrorDetails = {
   fields?: Record<string, string>;
   message?: string;
@@ -13,13 +15,9 @@ export interface ApiSettingOptions {
   topP: number;
 }
 
-export interface ChatContent {
-  id: string;
-  type: 'human' | 'assistant';
-  text: string;
-}
+export type PromptType = 'Human' | 'Assistant';
 
-interface ConversationCommon {
+export interface ConversationCommon {
   id: string;
   name: string;
   createdAt: Date;
@@ -34,3 +32,33 @@ export interface Chat extends ConversationCommon {
 export interface Folder extends ConversationCommon {
   chats?: Chat[];
 }
+
+export interface ChatContent {
+  id: string;
+  type: PromptType;
+  text: string;
+}
+
+export interface TreeItem {
+  id: string;
+  name: string;
+  type: string;
+  content?: ChatContent[];
+  children: TreeItem[];
+  createdAt?: Date;
+  collapsed?: boolean;
+}
+
+export type TreeItems = TreeItem[];
+
+export interface FlattenedItem extends TreeItem {
+  parentId: null | string;
+  parentType: null | string;
+  depth: number;
+  index: number;
+}
+
+export type SensorContext = MutableRefObject<{
+  items: FlattenedItem[];
+  offset: number;
+}>;

@@ -28,7 +28,16 @@ export const SelectComponent = (props: SelectComponentProps) => {
 
   return (
     <FormControl className={styles.wrapper} onClick={handleOpen} fullWidth>
-      <InputLabel className={styles.label}>{props.label}</InputLabel>
+      <InputLabel
+        className={styles.label}
+        sx={{
+          '&.Mui-focused': {
+            color: 'var(--text-primary)',
+          },
+        }}
+      >
+        {props.label}
+      </InputLabel>
       <Select
         {...otherProps}
         open={isOpen}
@@ -37,6 +46,22 @@ export const SelectComponent = (props: SelectComponentProps) => {
         variant="outlined"
         className={classNames(styles.select, { [styles.open]: isOpen })}
         IconComponent={arrowDown}
+        sx={{
+          '&.Mui-focused': {
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: '1px solid var(--btn-outlined-hover)',
+            },
+          },
+        }}
+        MenuProps={{
+          sx: {
+            '& .MuiMenuItem-root.Mui-selected, .MuiMenuItem-root.Mui-selected:hover':
+              {
+                backgroundColor: 'var(--primary-color)',
+                color: '#ffffff',
+              },
+          },
+        }}
       >
         {selectItems.map(({ label, value }) => (
           <MenuItem value={value} key={value}>

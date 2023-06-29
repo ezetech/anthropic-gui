@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ChatContent, TreeItem, TreeItems } from '@/typings/types';
+import { TreeItem, TreeItems, ChatContent } from '@/typings/common';
 
 import { findChatById } from './conversations.selectors';
 
