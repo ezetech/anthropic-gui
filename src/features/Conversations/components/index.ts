@@ -1,3 +1,3 @@
-export { TreeItem, SortableTreeItem } from './TreeItem';
+export { TreeItemMemo, SortableTreeItem } from './TreeItem';
 
 export { SearchItem } from './SearchItem';

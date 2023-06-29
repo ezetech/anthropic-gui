@@ -1,24 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+import { flatten } from '@/redux/conversations/helpers';
 import { Chat, Folder } from '@/typings/common';
-import { FlattenedItem, TreeItem, TreeItems } from '@/typings/types';
+import { TreeItem } from '@/typings/types';
 
 import { RootState } from '../store';
-
-export const flatten = (
-  items: TreeItems,
-  parentType: string | null = null,
-  parentId: string | null = null,
-  depth = 0,
-): FlattenedItem[] =>
-  items?.reduce<FlattenedItem[]>(
-    (acc, item, index) => [
-      ...acc,
-      { ...item, parentType, parentId, depth, index },
-      ...flatten(item.children, item.type, item.id, depth + 1),
-    ],
-    [],
-  );
 
 export const selectConversationsList = (state: RootState) =>
   state.chats.conversations;
@@ -49,8 +35,9 @@ export const searchChats = (
   const newItems: TreeItem[] = [];
 
   const searchRecursively = (items: TreeItem[]) => {
+    const search = searchedName.toLowerCase();
     for (const item of items) {
-      if (item.name === searchedName && item.type === 'chat') {
+      if (item.type === 'chat' && item.name.toLowerCase().includes(search)) {
         newItems.push(item);
       }
 
