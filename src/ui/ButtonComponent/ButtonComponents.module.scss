@@ -32,11 +32,11 @@
     color: var(--text-primary);
 
     &:disabled {
-      border-color: var(--disabled);
-      color: var(--disabled);
+      border-color: var(--bg-btn-disabled);
+      color: var(--bg-btn-disabled);
 
       svg {
-        stroke: var(--disabled);
+        stroke: var(--bg-btn-disabled);
       }
     }
 
@@ -59,7 +59,7 @@
     border-radius: 8px;
 
     &:disabled {
-      color: var(--disabled);
+      color: var(--text-secondary);
     }
 
     &:hover {

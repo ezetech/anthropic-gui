@@ -5,19 +5,12 @@
   flex-direction: column;
 
   .backgroundWrapper {
-    background: linear-gradient(
-        188.69deg,
-        rgba(97, 41, 255, 0.6) 0.56%,
-        rgba(255, 255, 255, 0.135065) 41.89%
-      );
+    background: linear-gradient(188.69deg, rgba(97, 41, 255, 0.6) 0.56%, rgba(255, 255, 255, 0.1351) 41.89%);
     backdrop-filter: blur(200px);
     transform: matrix(1, 0, 0, -1, 0, 0);
     height: 100vh;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: -1;
   }
 
@@ -46,7 +39,7 @@
       justify-content: space-between;
 
       .textApiKey {
-        font-family: 'AeonikBold', serif;
+        font-family: var(--font-family-bold);
         font-style: normal;
         font-weight: 700;
         font-size: 16px;
@@ -57,7 +50,7 @@
       }
 
       .textInvalidKey {
-        font-family: 'AeonikBold', serif;
+        font-family: var(--font-family-bold);
         font-style: normal;
         font-weight: 500;
         font-size: 14px;
