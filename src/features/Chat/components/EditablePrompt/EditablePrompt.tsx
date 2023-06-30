@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
+import classNames from 'classnames';
 import 'prismjs/themes/prism-funky.min.css';
 import markdown from 'remark-parse';
 import { remarkToSlate } from 'remark-slate-transformer';
@@ -40,7 +41,8 @@ export const EditablePrompt = memo(
     id,
     type,
     handlePromptBlur,
-    disabled,
+    readOnly,
+    deleteDisabled,
   }: IEditablePrompt) => {
     const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
@@ -50,6 +52,10 @@ export const EditablePrompt = memo(
         children: [{ text: '' }],
       } as CustomElement,
     ]);
+
+    useEffect(() => {
+      console.log(valueRef.current);
+    }, []);
 
     const onCopyClick = (textToCopy: string) => (event: React.MouseEvent) => {
       event.stopPropagation();
@@ -415,13 +421,20 @@ export const EditablePrompt = memo(
             ) : (
               <div className={styles.placeholderText}>AI</div>
             )}
-            <div className={styles.iconDelete} onClick={deletePromptRow(id)}>
+            <div
+              className={classNames(styles.iconDelete, {
+                [styles.iconDeleteDisabled]: readOnly || deleteDisabled,
+              })}
+              onClick={
+                readOnly || deleteDisabled ? undefined : deletePromptRow(id)
+              }
+            >
               <IconComponent type="deleteIcon" />
             </div>
           </div>
           {valueRef.current ? (
             <Slate
-              editor={editor as any}
+              editor={editor}
               initialValue={valueRef.current}
               onChange={onChange}
             >
@@ -433,7 +446,7 @@ export const EditablePrompt = memo(
                 renderLeaf={renderLeaf}
                 decorate={decorate}
                 onKeyDown={onKeyDown}
-                readOnly={disabled}
+                readOnly={readOnly}
               />
             </Slate>
           ) : null}

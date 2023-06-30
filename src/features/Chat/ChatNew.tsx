@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -70,6 +70,8 @@ export const ChatNew: React.FC = () => {
     }
   };
 
+  const deleteDisabled = useMemo(() => prompts.length === 1, [prompts]);
+
   const updatePromptByKey = (id: string, text: string) => {
     setPrompts(prevPrompts => {
       const newPrompts = prevPrompts.map(obj => {
@@ -83,7 +85,7 @@ export const ChatNew: React.FC = () => {
   };
 
   const handlePromptSubmit = async () => {
-    if (!prompts.some(prompt => prompt.text)) {
+    if (!prompts.some(prompt => prompt.text.replace(/\n/g, ''))) {
       toast.dark(
         <div className={styles.toasterDiv}>
           <span className={styles.toasterSpan}>Add content please</span>
@@ -120,6 +122,7 @@ export const ChatNew: React.FC = () => {
               deletePromptRow={deletePromptRow}
               type={type}
               handlePromptBlur={handlePromptBlur}
+              deleteDisabled={deleteDisabled}
             />
           </div>
         ))}
@@ -146,18 +149,20 @@ export const ChatNew: React.FC = () => {
           </div>
         </div>
         <div className={styles.chatButtonsContainer}>
-          <div className={styles.buttonsColumn}>
-            <button onClick={addPromptRow()} className={styles.buttonAddChat}>
-              <IconComponent type="plus" className={styles.iconPlus} />
-            </button>
-            <ButtonComponent
-              type="submit"
-              variant="contained"
-              onClick={handlePromptSubmit}
-            >
-              <span>Submit</span>
-              <IconComponent type="submit" />
-            </ButtonComponent>
+          <div>
+            <div className={styles.buttonsColumn}>
+              <button onClick={addPromptRow()} className={styles.buttonAddChat}>
+                <IconComponent type="plus" className={styles.iconPlus} />
+              </button>
+              <ButtonComponent
+                type="submit"
+                variant="contained"
+                onClick={handlePromptSubmit}
+              >
+                <span>Submit</span>
+                <IconComponent type="submit" />
+              </ButtonComponent>
+            </div>
           </div>
         </div>
       </div>

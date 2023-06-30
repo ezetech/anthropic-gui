@@ -9,8 +9,10 @@ import { flatten } from './helpers';
 export const selectConversationsList = (state: RootState) =>
   state.chats.conversations;
 
-export const selectConversationFlattenList = (state: RootState) =>
-  flatten(state.chats.conversations);
+export const selectConversationFlattenList = createSelector(
+  selectConversationsList,
+  conversation => flatten(conversation),
+);
 
 export const selectCountConversations = createSelector(
   selectConversationsList,
@@ -51,9 +53,10 @@ export const searchChats = (
   return newItems;
 };
 
-export const selectConversationsSearchedList =
-  (searchedName: string) => (state: RootState) =>
-    searchChats(state.chats.conversations, searchedName);
+export const selectConversationsSearchedList = (searchedName: string) =>
+  createSelector(selectConversationsList, conversations =>
+    searchChats(conversations, searchedName),
+  );
 
 export const findChatById = (
   conversations: TreeItem[],
@@ -82,5 +85,7 @@ export const findChatById = (
   return result;
 };
 
-export const selectChatById = (id: string) => (state: RootState) =>
-  findChatById(state.chats.conversations, id);
+export const selectChatById = (id: string) =>
+  createSelector(selectConversationsList, conversations =>
+    findChatById(conversations, id),
+  );

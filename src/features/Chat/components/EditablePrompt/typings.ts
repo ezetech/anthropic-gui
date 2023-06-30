@@ -37,5 +37,6 @@ export interface IEditablePrompt {
   deletePromptRow: (id: string) => () => void;
   id: string;
   handlePromptBlur: (id: string, text: string) => void;
-  disabled?: boolean;
+  deleteDisabled: boolean;
+  readOnly?: boolean;
 }

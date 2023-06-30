@@ -26,6 +26,7 @@ import { ReactComponent as openedFolder } from '@/assets/icons/opened-folder.svg
 import { ReactComponent as plus } from '@/assets/icons/plus.svg';
 import { ReactComponent as regenerate } from '@/assets/icons/regenerate.svg';
 import { ReactComponent as search } from '@/assets/icons/search.svg';
+import { ReactComponent as stop } from '@/assets/icons/stop.svg';
 import { ReactComponent as submit } from '@/assets/icons/submit.svg';
 import { ReactComponent as themeDark } from '@/assets/icons/theme-dark.svg';
 import { ReactComponent as themeLight } from '@/assets/icons/theme-light.svg';
@@ -62,6 +63,7 @@ const ICONS = {
   heart,
   copy,
   backgroundChatDark,
+  stop,
 } as const;
 
 export type IconType = keyof typeof ICONS;

@@ -2,6 +2,7 @@
   width: 100%;
   position: relative;
   height: 100%;
+  overflow-y: auto;
 }
 
 .chatGeneralContainer {
@@ -20,7 +21,7 @@
 
 .chatPromptContainer {
   display: flex;
-  margin-bottom: 26px;
+  margin-bottom: 15px;
   justify-content: center;
   align-self: center;
   flex-direction: row;
@@ -59,11 +60,16 @@
 }
 
 .chatButtonsContainer {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width: 100%;
+  margin-top: auto;
+
+  & > div {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 
 .buttonsColumn {
@@ -96,7 +102,12 @@
   }
 
   &:disabled {
-    background-color: var(--disabled);
+    background-color: var(--bg-btn-disabled);
+    cursor: default;
+
+    svg {
+      stroke: var(--text-disabled);
+    }
   }
 }
 
@@ -148,7 +159,7 @@
 }
 
 .toasterSpan {
-  font-family: AeonikMedium, serif;
+  font-family: var(--font-family-main);
   font-weight: 500;
   font-size: 16px;
   color: #ffffff;

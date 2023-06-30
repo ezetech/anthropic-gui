@@ -125,7 +125,7 @@
 
   * {
     white-space: pre-wrap;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   & > :last-child {
@@ -149,6 +149,14 @@
   transition: 0.3s;
   stroke: var(--text-secondary);
   z-index: 1;
+
+  &.iconDeleteDisabled {
+    cursor: default;
+
+    &:hover {
+      stroke: var(--text-secondary);
+    }
+  }
 
   &:hover {
     stroke: var(--text-primary);
