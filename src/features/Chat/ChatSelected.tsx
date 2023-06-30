@@ -50,7 +50,7 @@ const findLastAssistantContent = (chat?: Chat): ChatContent | null => {
 
   for (let i = chat.content.length - 1; i >= 0; i--) {
     const content = chat.content[i];
-    if (content.type === 'Assistant' && content.text) {
+    if (content.type === 'Assistant' && content.text.replace(/\n/g, '')) {
       return content;
     }
   }
@@ -127,6 +127,10 @@ export const ChatSelected: React.FC = () => {
   );
 
   const deletePromptRow = (id: string) => () => {
+    if (chat?.content?.length === 1) {
+      return;
+    }
+
     if (chat?.content) {
       const index = chat?.content?.findIndex(prompt => prompt.id === id);
 
@@ -391,6 +395,11 @@ export const ChatSelected: React.FC = () => {
     return () => observerRef.current?.disconnect();
   }, [isScrolledToBottom]);
 
+  const deleteDisabled = useMemo(
+    () => chat?.content?.length === 1,
+    [chat?.content],
+  );
+
   return (
     <div className={styles.chatGeneralContainer} ref={containerRef}>
       <Box paddingLeft="60px" display="block" width="100%" mb={4}>
@@ -430,48 +439,52 @@ export const ChatSelected: React.FC = () => {
               deletePromptRow={deletePromptRow}
               type={type}
               handlePromptBlur={handlePromptBlur}
-              disabled={updatingAiPromptId === id && isStreaming}
+              readOnly={updatingAiPromptId === id && isStreaming}
+              deleteDisabled={deleteDisabled}
             />
           </div>
         );
       })}
       <div className={styles.chatButtonsContainer}>
-        <div className={styles.buttonsColumn}>
-          <button
-            onClick={addPromptRow()}
-            className={styles.buttonAddChat}
-            disabled={isStreaming}
-          >
-            <IconComponent type="plus" className={styles.iconPlus} />
-          </button>
-          {!isStreaming ? (
+        <div>
+          <div className={styles.buttonsColumn}>
+            <button
+              onClick={addPromptRow()}
+              className={styles.buttonAddChat}
+              disabled={isStreaming}
+            >
+              <IconComponent type="plus" className={styles.iconPlus} />
+            </button>
+            {!isStreaming ? (
+              <ButtonComponent
+                type="submit"
+                variant="contained"
+                onClick={handlePromptSubmit}
+              >
+                <span>Submit</span>
+                <IconComponent type="submit" />
+              </ButtonComponent>
+            ) : (
+              <ButtonComponent variant="outlined" onClick={stopStream}>
+                <span>Stop</span>
+                <IconComponent className={styles.iconRegenerate} type="stop" />
+              </ButtonComponent>
+            )}
+          </div>
+          <div className={styles.buttonsColumn}>
             <ButtonComponent
               type="submit"
-              variant="contained"
-              onClick={handlePromptSubmit}
+              variant="outlined"
+              onClick={handleRegenerate}
+              disabled={isStreaming || !lastAssistantPrompt}
             >
-              <span>Submit</span>
-              <IconComponent type="submit" />
+              <span>Regenerate</span>
+              <IconComponent
+                className={styles.iconRegenerate}
+                type="regenerate"
+              />
             </ButtonComponent>
-          ) : (
-            <ButtonComponent variant="outlined" onClick={stopStream}>
-              <span>Stop</span>
-            </ButtonComponent>
-          )}
-        </div>
-        <div className={styles.buttonsColumn}>
-          <ButtonComponent
-            type="submit"
-            variant="outlined"
-            onClick={handleRegenerate}
-            disabled={isStreaming || !lastAssistantPrompt}
-          >
-            <span>Regenerate</span>
-            <IconComponent
-              className={styles.iconRegenerate}
-              type="regenerate"
-            />
-          </ButtonComponent>
+          </div>
         </div>
       </div>
     </div>
