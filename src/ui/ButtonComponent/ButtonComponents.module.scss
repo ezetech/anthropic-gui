@@ -22,10 +22,10 @@
 
     &:disabled {
       background-color: var(--bg-btn-disabled);
-      color: var(--text-secondary);
+      color: var(--text-disabled);
 
       svg {
-        stroke: var(--text-secondary);
+        stroke: var(--text-disabled);
       }
     }
 

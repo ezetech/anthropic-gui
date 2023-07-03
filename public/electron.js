@@ -61,7 +61,6 @@ async function createServerAndWindow() {
   createWindow();
 }
 
-
 app.whenReady().then(createServerAndWindow);
 
 app.on('window-all-closed', () => {

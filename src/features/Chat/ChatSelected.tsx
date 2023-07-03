@@ -136,9 +136,13 @@ export const ChatSelected: React.FC = () => {
       if (chat?.content) {
         const index = chat?.content?.findIndex(prompt => prompt.id === id);
 
+        console.log(index);
+
         if (index !== -1) {
           const newPrompts = [...chat.content];
           newPrompts.splice(index, 1);
+
+          console.log(newPrompts, 'newPrompts');
 
           dispatch(
             updateChatContents({
@@ -160,7 +164,9 @@ export const ChatSelected: React.FC = () => {
       setAbortController(newAbortController);
 
       const chatContent =
-        isRegenerate && chat?.content && lastAssistantPrompt?.id !== undefined
+        isRegenerate &&
+        chat?.content?.length &&
+        lastAssistantPrompt?.id !== undefined
           ? chat.content.slice(
               0,
               chat.content.findIndex(
@@ -169,24 +175,26 @@ export const ChatSelected: React.FC = () => {
             )
           : chat?.content;
 
-      let promptTexts = (
-        chatContent?.map(prompt => {
-          const type = prompt.type;
-          const promptText = prompt.text.trim();
+      let promptTexts = chatContent?.length
+        ? chatContent
+            .map(prompt => {
+              const type = prompt?.type;
+              const promptText = prompt?.text.trim();
 
-          return `\n\n${type}: ${promptText}`;
-        }) || []
-      ).join('');
+              return `\n\n${type}: ${promptText}`;
+            })
+            .join('')
+        : '\n\nHuman: \n\nAssistant:';
 
       if (
-        chatContent &&
-        (chatContent[chatContent?.length - 1].type === 'Human' ||
-          chatContent[chatContent?.length - 1].text.trim().length)
+        chatContent?.length &&
+        (chatContent[chatContent?.length - 1]?.type === 'Human' ||
+          chatContent[chatContent?.length - 1]?.text.trim().length)
       ) {
         promptTexts += '\n\nAssistant:';
       }
 
-      if (chatContent && chatContent[0].type === 'Assistant') {
+      if (chatContent?.length && chatContent[0]?.type === 'Assistant') {
         promptTexts = '\n\nHuman: ' + promptTexts;
       }
 
@@ -292,11 +300,9 @@ export const ChatSelected: React.FC = () => {
 
   const handleRegenerate = useCallback(async () => {
     if (lastAssistantPrompt) {
-      deletePromptRow(lastAssistantPrompt.id);
-
       await generateResponse(true);
     }
-  }, [generateResponse, deletePromptRow, lastAssistantPrompt]);
+  }, [generateResponse, lastAssistantPrompt]);
 
   const handlePromptSubmit = useCallback(async () => {
     await generateResponse();
