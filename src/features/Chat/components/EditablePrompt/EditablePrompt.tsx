@@ -55,7 +55,7 @@ export const EditablePrompt = memo(
 
     useEffect(() => {
       console.log(valueRef.current);
-    }, []);
+    }, [valueRef.current]);
 
     const onCopyClick = (textToCopy: string) => (event: React.MouseEvent) => {
       event.stopPropagation();
@@ -345,7 +345,11 @@ export const EditablePrompt = memo(
                 parentListPath,
               );
 
-              const newPath = Path.next(grandParentListPath);
+              const newPath = Path.next(
+                grandParentListPath.length
+                  ? grandParentListPath
+                  : parentListPath,
+              );
 
               const paragraph = { type: 'paragraph', children: [{ text: '' }] };
 
@@ -403,6 +407,23 @@ export const EditablePrompt = memo(
       [editor, CustomEditor],
     );
 
+    const handlePaste = useCallback(
+      (event: React.ClipboardEvent<HTMLDivElement>) => {
+        if (CustomEditor.isCodeBlock(editor)) {
+          event.preventDefault();
+          const pastedText = event.clipboardData.getData('text/plain');
+          const lines = pastedText.split('\n');
+
+          Transforms.insertText(editor, lines[0]);
+
+          for (let i = 1; i < lines.length; i++) {
+            Transforms.insertText(editor, '\n' + lines[i]);
+          }
+        }
+      },
+      [editor, CustomEditor],
+    );
+
     return (
       <div className={styles.promptContainer}>
         {type === 'Human' ? (
@@ -447,6 +468,7 @@ export const EditablePrompt = memo(
                 decorate={decorate}
                 onKeyDown={onKeyDown}
                 readOnly={readOnly}
+                onPaste={handlePaste}
               />
             </Slate>
           ) : null}
