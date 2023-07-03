@@ -26,14 +26,14 @@ export const getDragDepth = (offset: number, width: number) =>
 
 const getMaxDepth = ({ previousItem }: { previousItem: FlattenedItem }) => {
   if (previousItem) {
-    return previousItem.depth + 1;
+    return previousItem?.depth + 1;
   }
 
   return 0;
 };
 export const getMinDepth = ({ nextItem }: { nextItem: FlattenedItem }) => {
   if (nextItem) {
-    return nextItem.depth;
+    return nextItem?.depth;
   }
 
   return 0;
@@ -49,9 +49,14 @@ export const getProjection = (
   const overItemIndex = items.findIndex(({ id }) => id === overTheId);
   const activeItemIndex = items.findIndex(({ id }) => id === actvId);
   const activeCurrentItem = items[activeItemIndex];
+
+  if (!activeCurrentItem) {
+    return null;
+  }
+
   const newItems = arrayMove(items, activeItemIndex, overItemIndex);
-  const previousItem = newItems[overItemIndex - 1];
-  const nextItem = newItems[overItemIndex + 1];
+  const previousItem = newItems[overItemIndex - 1] || null;
+  const nextItem = newItems[overItemIndex + 1] || null;
   const dragDepth = getDragDepth(dragOffset, width);
   const projectedDepth = activeCurrentItem.depth + dragDepth;
   const maxDepth = getMaxDepth({
@@ -76,7 +81,7 @@ export const getProjection = (
     const newParent = newItems
       .slice(0, overItemIndex)
       .reverse()
-      .find(item => item.depth === depth)?.parentId;
+      .find(item => item?.depth === depth)?.parentId;
 
     return newParent ?? null;
   };
@@ -97,7 +102,7 @@ export const getProjection = (
     const newParent = newItems
       .slice(0, overItemIndex)
       .reverse()
-      .find(item => item.depth === depth)?.parentType;
+      .find(item => item?.depth === depth)?.parentType;
 
     return newParent ?? null;
   };
@@ -190,11 +195,11 @@ export const findChatParent = (
   itemId: string,
 ): TreeItem | undefined => {
   for (const item of items) {
-    const { id, children, type } = item;
+    const { id, children } = item;
     if (id === itemId) {
       return undefined;
     }
-    if (children.length && type !== 'folder') {
+    if (children.length) {
       const child = findItem(children, itemId);
       if (child) {
         return item;

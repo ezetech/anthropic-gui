@@ -24,7 +24,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   childCount?: number;
   clone?: boolean;
   collapsed?: boolean;
-  depth: number;
+  depth?: number;
   disableInteraction?: boolean;
   disableSelection?: boolean;
   ghost?: boolean;
@@ -44,7 +44,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     {
       childCount,
       clone,
-      depth,
+      depth = 0,
       disableSelection,
       disableInteraction,
       ghost,
@@ -66,7 +66,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedItemName, setEditedItemName] = useState(name);
-    const [itemPlaceholder, setItemPlaceholder] = useState(true);
+    const [itemPlaceholder, setItemPlaceholder] = useState(false);
     const dispatch = useAppDispatch();
     const { id } = useParams();
     const navigation = useNavigate();
@@ -109,6 +109,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
       preventDefault: () => void;
     }) => {
       event.stopPropagation();
+      setEditedItemName(name);
       setIsEditing(true);
       event.preventDefault();
     };
@@ -166,7 +167,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     };
 
     useEffect(() => {
-      setItemPlaceholder(false);
+      setItemPlaceholder(true);
     }, [collapsed]);
 
     return (
