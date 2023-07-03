@@ -53,10 +53,6 @@ export const EditablePrompt = memo(
       } as CustomElement,
     ]);
 
-    useEffect(() => {
-      console.log(valueRef.current);
-    }, [valueRef.current]);
-
     const onCopyClick = (textToCopy: string) => (event: React.MouseEvent) => {
       event.stopPropagation();
       navigator.clipboard.writeText(textToCopy);
