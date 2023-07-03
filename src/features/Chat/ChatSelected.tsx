@@ -197,7 +197,7 @@ export const ChatSelected: React.FC = () => {
         topP,
         apiKey,
         maxTokens,
-        prompt: promptTexts.trim(),
+        prompt: promptTexts.replace(/\s+$/, ''),
         signal,
       };
 
