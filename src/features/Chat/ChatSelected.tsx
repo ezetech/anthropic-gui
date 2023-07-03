@@ -223,7 +223,6 @@ export const ChatSelected: React.FC = () => {
 
           while (true) {
             const res = await reader?.read();
-            console.log(res);
 
             if (res?.done) {
               setIsStreaming(false);
@@ -240,33 +239,27 @@ export const ChatSelected: React.FC = () => {
               ? lastLineArray[lastLineArray.length - 1]
               : lastLineArray[lastLineArray.length - 2];
 
-            console.log(lastLine);
-
             if (lastLine?.startsWith('{"completion":')) {
-              try {
-                const eventData = JSON.parse(lastLine);
+              const eventData = JSON.parse(lastLine);
 
-                if (eventData.completion) {
-                  if (isRegenerate) {
-                    setUpdatingAiPromptId(lastAssistantPrompt?.id || '');
-                  } else {
-                    setUpdatingAiPromptId(newPrompt?.id || '');
-                  }
-                  dispatch(
-                    updateContentById({
-                      chatId: chat?.id ?? '',
-                      contentId:
-                        (isRegenerate
-                          ? lastAssistantPrompt?.id
-                          : newPrompt?.id) || '',
-                      text: eventData.completion,
-                    }),
-                  );
-                } else if (eventData.error) {
-                  alert('Error: ' + eventData.error.message);
+              if (eventData.completion) {
+                if (isRegenerate) {
+                  setUpdatingAiPromptId(lastAssistantPrompt?.id || '');
+                } else {
+                  setUpdatingAiPromptId(newPrompt?.id || '');
                 }
-              } catch (error) {
-                console.log(error);
+                dispatch(
+                  updateContentById({
+                    chatId: chat?.id ?? '',
+                    contentId:
+                      (isRegenerate
+                        ? lastAssistantPrompt?.id
+                        : newPrompt?.id) || '',
+                    text: eventData.completion,
+                  }),
+                );
+              } else if (eventData.error) {
+                alert('Error: ' + eventData.error.message);
               }
             }
           }
@@ -452,23 +445,19 @@ export const ChatSelected: React.FC = () => {
           }}
         />
       </Box>
-      {chat?.content?.map(({ text, type, id }) => {
-        console.log(text, 'text');
-
-        return (
-          <div className={styles.chatPromptContainer} key={id}>
-            <EditablePrompt
-              id={id}
-              text={text}
-              deletePromptRow={deletePromptRow}
-              type={type}
-              handlePromptBlur={handlePromptBlur}
-              readOnly={updatingAiPromptId === id && isStreaming}
-              deleteDisabled={deleteDisabled}
-            />
-          </div>
-        );
-      })}
+      {chat?.content?.map(({ text, type, id }) => (
+        <div className={styles.chatPromptContainer} key={id}>
+          <EditablePrompt
+            id={id}
+            text={text}
+            deletePromptRow={deletePromptRow}
+            type={type}
+            handlePromptBlur={handlePromptBlur}
+            readOnly={updatingAiPromptId === id && isStreaming}
+            deleteDisabled={deleteDisabled}
+          />
+        </div>
+      ))}
       <div className={styles.chatButtonsContainer}>
         <div>
           <div className={styles.buttonsColumn}>

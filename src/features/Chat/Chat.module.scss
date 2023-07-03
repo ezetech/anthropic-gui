@@ -15,8 +15,12 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  max-width: 900px;
+  max-width: 1500px;
   position: relative;
+
+  @media (width >= 1900px) {
+    padding: 40px 100px 25px;
+  }
 }
 
 .chatPromptContainer {
