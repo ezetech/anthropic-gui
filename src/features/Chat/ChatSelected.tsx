@@ -174,11 +174,7 @@ export const ChatSelected: React.FC = () => {
           const type = prompt.type;
           const promptText = prompt.text.trim();
 
-          if (promptText || type === 'Human') {
-            return `\n\n${type}: ${promptText}`;
-          }
-
-          return `\n\n${type}:`;
+          return `\n\n${type}: ${promptText}`;
         }) || []
       ).join('');
 
@@ -201,7 +197,7 @@ export const ChatSelected: React.FC = () => {
         topP,
         apiKey,
         maxTokens,
-        prompt: promptTexts,
+        prompt: promptTexts.trim(),
         signal,
       };
 
