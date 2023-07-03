@@ -66,5 +66,9 @@
 }
 
 .treeContainer {
-  row-gap: '0px'
+  height: 70vh;
+  row-gap: '0px';
+  overflow-y: auto;
+  padding-right: 15px;
+  scrollbar-width: thin;
 }

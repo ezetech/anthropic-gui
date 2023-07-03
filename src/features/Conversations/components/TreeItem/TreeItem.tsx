@@ -5,6 +5,7 @@ import React, {
   forwardRef,
   HTMLAttributes,
   memo,
+  useEffect,
 } from 'react';
 
 import classNames from 'classnames';
@@ -27,7 +28,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   disableInteraction?: boolean;
   disableSelection?: boolean;
   ghost?: boolean;
-  handleProps?: any;
+  handleProps?: HTMLAttributes<HTMLDivElement>;
   indicator?: boolean;
   indentationWidth: number;
   value: string;
@@ -66,7 +67,6 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     const [isEditing, setIsEditing] = useState(false);
     const [editedItemName, setEditedItemName] = useState(name);
     const [itemPlaceholder, setItemPlaceholder] = useState(true);
-
     const dispatch = useAppDispatch();
     const { id } = useParams();
     const navigation = useNavigate();
@@ -104,18 +104,18 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     };
 
-    const onClickEdit = (event: MouseEvent) => {
+    const onClickEdit = (event: {
+      stopPropagation: () => void;
+      preventDefault: () => void;
+    }) => {
       event.stopPropagation();
       setIsEditing(true);
+      event.preventDefault();
     };
 
     const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
       event.stopPropagation();
       setEditedItemName(event.target.value);
-    };
-
-    const onClickInput = (event: MouseEvent) => {
-      event.stopPropagation();
     };
 
     const onOutsideClick = () => {
@@ -135,7 +135,39 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
       if (onCollapse) {
         onCollapse();
       }
+      if (type === 'chat') {
+        onChatClick(event, `${ROUTES.Chat}/${value}`);
+      }
     };
+
+    const handleNoDrag = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target?.dataset?.nodrag && (!isEditing || !isDeleting)) {
+        return;
+      } else {
+        handleProps?.onPointerDown?.(
+          event as React.PointerEvent<HTMLDivElement>,
+        );
+      }
+    };
+
+    const truncateText = (text: string, maxLength: number) => {
+      const mediaWidth =
+        window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth;
+      const truncationLength = mediaWidth < 1260 ? 5 : maxLength;
+
+      if (text.length <= truncationLength) {
+        return text;
+      }
+
+      return text.slice(0, truncationLength) + '...';
+    };
+
+    useEffect(() => {
+      setItemPlaceholder(false);
+    }, [collapsed]);
 
     return (
       <OutsideClickHandler onOutsideClick={onOutsideClick}>
@@ -143,106 +175,126 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
           {...props}
           className={classNames(
             styles.Wrapper,
-            { [styles.clone]: clone },
-            { [styles.ghost]: ghost },
-            { [styles.disableSelection]: disableSelection },
-            { [styles.disableInteraction]: disableInteraction },
+            clone && styles.clone,
+            ghost && styles.ghost,
+            indicator && styles.indicator,
+            disableSelection && styles.disableSelection,
+            disableInteraction && styles.disableInteraction,
           )}
           ref={wrapperRef}
           style={
             {
               marginLeft: `${indentationWidth * depth}px`,
-              borderLeft:
-                depth && !clone && !ghost
-                  ? '1px solid var(--bg-default)'
-                  : 'none',
-              borderRadius: depth && !clone && !ghost ? '0px' : '',
             } as React.CSSProperties
           }
         >
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div
-              className={classNames(styles.wrapperItem, {
-                [styles.editing]: isEditing,
-                [styles.selected]: value === id,
-              })}
-              ref={ref}
-              style={style}
-              onMouseDown={onCollapsePlaceholder}
-            >
-              {type === 'chat' && (
+          <div
+            onPointerDown={handleNoDrag}
+            className={classNames(styles.wrapperItem, {
+              [styles.editing]: isEditing,
+              [styles.selected]: value === id,
+            })}
+            ref={ref}
+            style={{
+              ...style,
+              borderLeft:
+                depth && !clone ? '1px solid var(--bg-default)' : 'none',
+              borderRadius: depth && !clone ? '0' : '8px',
+            }}
+            onMouseDown={onCollapsePlaceholder}
+          >
+            {type === 'chat' && (
+              <IconComponent
+                className={styles.conversationIcon}
+                type="conversation"
+              />
+            )}
+
+            {type === 'folder' &&
+              (onCollapse ? (
                 <IconComponent
-                  {...handleProps}
-                  className={styles.conversationIcon}
-                  type="conversation"
+                  className={styles.folderIcon}
+                  type="openedFolder"
                 />
-              )}
+              ) : (
+                <IconComponent
+                  className={styles.folderIcon}
+                  type="closedFolder"
+                />
+              ))}
 
-              {type === 'folder' &&
-                (collapsed ? (
-                  <IconComponent
-                    {...handleProps}
-                    className={styles.folderIcon}
-                    type="openedFolder"
-                  />
+            {isEditing ? (
+              <TextFieldComponent
+                inputProps={{ 'data-nodrag': true }}
+                value={editedItemName}
+                onChange={onChangeName}
+                className={styles.editInput}
+                autoFocus
+                fullWidth
+                onClick={handleNoDrag}
+              />
+            ) : (
+              <>
+                {type === 'folder' ? (
+                  <span className={styles.TextFolder}>
+                    {truncateText(name, 15)}
+                  </span>
                 ) : (
-                  <IconComponent
-                    {...handleProps}
-                    className={styles.folderIcon}
-                    type="closedFolder"
-                  />
-                ))}
-
-              {isEditing ? (
-                <TextFieldComponent
-                  value={editedItemName}
-                  onChange={onChangeName}
-                  className={styles.editInput}
-                  autoFocus
-                  fullWidth
-                  onClick={onClickInput}
-                />
-              ) : (
-                <>
-                  {type === 'folder' ? (
-                    <span {...handleProps} className={styles.TextFolder}>
-                      {name}
+                  <NavLink
+                    to={`${ROUTES.Chat}/${value}`}
+                    className={classNames({
+                      [styles.selected]: value === id,
+                    })}
+                  >
+                    <span
+                      className={classNames(styles.TextChat, {
+                        [styles.selected]: value === id,
+                      })}
+                    >
+                      {truncateText(name, 10)}
                     </span>
-                  ) : (
-                    <NavLink to={`${ROUTES.Chat}/${value}`}>
-                      <span
-                        {...handleProps}
-                        onMouseDown={e =>
-                          onChatClick(e, `${ROUTES.Chat}/${value}`)
-                        }
-                        className={styles.TextChat}
-                      >
-                        {name}
-                      </span>
-                    </NavLink>
-                  )}
-                </>
-              )}
+                  </NavLink>
+                )}
+              </>
+            )}
 
-              {isEditing || isDeleting ? (
-                <div className={styles.confirmation}>
-                  <IconComponent type="confirm" onClick={onConfirm} />
-                  <IconComponent type="cancel" onClick={onCancel} />
-                </div>
-              ) : (
-                <div className={styles.settings}>
-                  <IconComponent type="edit" onClick={onClickEdit} />
-                  <IconComponent type="deleteIcon" onClick={onClickDelete} />
-                </div>
-              )}
-            </div>
+            {isEditing || isDeleting ? (
+              <div className={styles.confirmation}>
+                <IconComponent
+                  data-nodrag="true"
+                  type="confirm"
+                  onMouseDown={onConfirm}
+                />
+                <IconComponent
+                  data-nodrag="true"
+                  type="cancel"
+                  onMouseDown={onCancel}
+                />
+              </div>
+            ) : (
+              <div className={styles.settings}>
+                <IconComponent
+                  data-nodrag="true"
+                  type="edit"
+                  onMouseDown={onClickEdit}
+                />
+                <IconComponent
+                  data-nodrag="true"
+                  type="deleteIcon"
+                  onMouseDown={onClickDelete}
+                />
+              </div>
+            )}
+
             {type === 'folder' && !onCollapse && (
               <div
                 className={classNames(styles.nestedContent)}
                 hidden={itemPlaceholder}
               >
-                <p>Empty folder</p>
-                <p>Drag conversations to add</p>
+                <div>
+                  <p>Empty folder</p>
+                  <p>Drag conversations to add</p>
+                </div>
               </div>
             )}
           </div>
