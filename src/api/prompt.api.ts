@@ -46,6 +46,6 @@ export const submitPrompt = async ({
 
     return response;
   } catch (error) {
-    console.error(error); // TODO show error message
+    console.error(error);
   }
 };
