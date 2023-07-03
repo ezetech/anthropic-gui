@@ -2,7 +2,7 @@
   padding-top: 13px;
   padding-bottom: 13px;
   transition: 0.3s;
-  font-family: 'AeonikBold', serif;
+  font-family: var(--font-family-bold);
   font-weight: 700;
   font-size: 16px;
   text-transform: none;
@@ -14,7 +14,7 @@
     color: #ffffff;
 
     &:hover {
-      background-color: #480fea
+      background-color: #480fea;
     }
   }
 
@@ -23,11 +23,11 @@
     color: #828592;
     pointer-events: none;
   }
-  
+
   &.text {
     color: #000000;
     padding: 3px;
-    font-family: 'AeonikMedium', serif;
+    font-family: var(--font-family-main);
     font-weight: 500;
     border-radius: 8px;
 

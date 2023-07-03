@@ -83,8 +83,6 @@ export const decorateCodeFunc = (
     PrismLanguages[language],
   ) as PrismToken[];
 
-  console.log(tokens, 'tokens');
-
   let start = 0;
   for (const token of tokens) {
     start = recurseTokenize(token, path, ranges, start) ?? 0;

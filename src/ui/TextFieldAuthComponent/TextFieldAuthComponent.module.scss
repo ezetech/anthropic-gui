@@ -1,9 +1,11 @@
 .wrapper.textField {
   min-width: 264px;
   margin-bottom: 5px;
+
   fieldset {
-    border: 1px solid #AEAEAE;
+    border: 1px solid #aeaeae;
     border-radius: 8px;
+    transition: 0.3s;
   }
 
   input {
@@ -13,11 +15,10 @@
     padding-bottom: 12px;
 
     &::placeholder {
-      color: #AEAEAE;
-      font-family: 'AeonikBold', serif;
+      color: #aeaeae;
+      font-family: var(--font-family-bold), serif;
       font-weight: 700;
       font-size: 16px;
-      
     }
   }
 
@@ -25,19 +26,24 @@
     border-color: #6129ff;
   }
 
+  input:not(:focus):hover + fieldset {
+    border-color: #000000;
+  }
+
   &.invalid {
     input {
-      color: #EB4040;
-      border: 1px solid #EB4040;
+      color: #eb4040;
+      border: 1px solid #eb4040;
       border-radius: 8px;
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
     }
+
     fieldset {
-      border-color: #EB4040;
-      color: #EB4040;
-      border: 1px solid #EB4040;
+      border-color: #eb4040;
+      color: #eb4040;
+      border: 1px solid #eb4040;
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
@@ -45,10 +51,10 @@
   }
 
   &.invalid input:focus + fieldset {
-    border-color: #EB4040;
+    border-color: #eb4040;
   }
 
   &:hover.invalid input {
-    border-color: #EB4040;
+    border-color: #eb4040;
   }
 }

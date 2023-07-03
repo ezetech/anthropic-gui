@@ -31,8 +31,14 @@
       transition: 0.3s;
     }
 
-    &.open svg {
-      transform: translateY(-50%) rotate(180deg);
+    &.open {
+      fieldset {
+        border-color: var(--btn-outlined-hover);
+      }
+
+      svg {
+        transform: translateY(-50%) rotate(180deg);
+      }
     }
   }
 
