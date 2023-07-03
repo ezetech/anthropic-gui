@@ -142,7 +142,7 @@ export const ChatsTree = memo(
       if (projected && over) {
         const { depth, parentId, parentType, currentType } = projected;
         const chatInFolder = findChatParent(flattenedTree, parentId || '');
-        if (parentType === 'chat') {
+        if (parentType === 'chat' && currentType === 'chat') {
           if (chatInFolder) {
             const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
             const overIndex =
@@ -160,6 +160,9 @@ export const ChatsTree = memo(
             const newItems = buildTree(sortedItems);
             dispatch(updateChatTree({ chatTree: newItems }));
           }
+          return;
+        }
+        if (parentType === 'chat') {
           return;
         }
         if (currentType === 'folder' && parentType === 'folder') {
@@ -239,7 +242,7 @@ export const ChatsTree = memo(
               {activeId && activeItem ? (
                 <SortableTreeItem
                   id={activeId}
-                  depth={activeItem.depth}
+                  depth={activeItem?.depth}
                   clone
                   childCount={getChildCount(treeItems, activeId) + 1}
                   value={activeId}

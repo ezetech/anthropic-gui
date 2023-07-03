@@ -58,7 +58,7 @@
 .wrapperItem {
   flex-wrap: wrap;
   min-width: 100px;
-  min-height: 25px;
+  min-height: 30px;
   display: flex;
   align-items: center;
   column-gap: 5px;
@@ -117,9 +117,10 @@
       width: 65%;
     }
     input {
+      height: 20px;
       padding: 0px;
+      padding-left: 5px;
     }
-
     fieldset {
       border-radius: 4px;
     }
@@ -262,7 +263,7 @@
   display: block;
   position: relative;
   color: var(--bg-default);
-  margin: 5px 0 0 10px;
+  margin: 5px 0 0 7px;
   border-left: 1px solid var(--bg-default);
   
   p {
