@@ -1,16 +1,16 @@
 import React, {
   ChangeEvent,
-  MouseEvent,
-  useState,
-  forwardRef,
   HTMLAttributes,
+  MouseEvent,
+  forwardRef,
   memo,
   useEffect,
+  useState,
 } from 'react';
 
 import classNames from 'classnames';
 import OutsideClickHandler from 'react-outside-click-handler';
-import { NavLink, useParams, useNavigate, To } from 'react-router-dom';
+import { NavLink, To, useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '@/app/router/constants/routes';
 import { renameChatTreeItem } from '@/redux/conversations/conversationsSlice';
@@ -180,6 +180,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
             className={classNames(styles.wrapperItem, {
               [styles.editing]: isEditing,
               [styles.selected]: value === id,
+              [styles.folder]: type === 'folder',
             })}
             ref={ref}
             style={{
@@ -190,86 +191,88 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
             }}
             onMouseDown={onCollapsePlaceholder}
           >
-            {type === 'chat' && (
-              <IconComponent
-                className={styles.conversationIcon}
-                type="conversation"
-              />
-            )}
-
-            {type === 'folder' &&
-              (onCollapse ? (
+            <div className={styles.itemName}>
+              {type === 'chat' && (
                 <IconComponent
-                  className={styles.folderIcon}
-                  type="openedFolder"
+                  className={styles.conversationIcon}
+                  type="conversation"
+                />
+              )}
+
+              {type === 'folder' &&
+                (onCollapse ? (
+                  <IconComponent
+                    className={styles.folderIcon}
+                    type="openedFolder"
+                  />
+                ) : (
+                  <IconComponent
+                    className={styles.folderIcon}
+                    type="closedFolder"
+                  />
+                ))}
+
+              {isEditing ? (
+                <TextFieldComponent
+                  inputProps={{ 'data-nodrag': true }}
+                  value={editedItemName}
+                  onChange={onChangeName}
+                  className={styles.editInput}
+                  autoFocus
+                  fullWidth
+                  onClick={handleNoDrag}
                 />
               ) : (
-                <IconComponent
-                  className={styles.folderIcon}
-                  type="closedFolder"
-                />
-              ))}
-
-            {isEditing ? (
-              <TextFieldComponent
-                inputProps={{ 'data-nodrag': true }}
-                value={editedItemName}
-                onChange={onChangeName}
-                className={styles.editInput}
-                autoFocus
-                fullWidth
-                onClick={handleNoDrag}
-              />
-            ) : (
-              <>
-                {type === 'folder' ? (
-                  <span className={styles.TextFolder}>{name}</span>
-                ) : (
-                  <NavLink
-                    to={`${ROUTES.Chat}/${value}`}
-                    className={classNames({
-                      [styles.selected]: value === id,
-                    })}
-                  >
-                    <span
-                      className={classNames(styles.TextChat, {
+                <>
+                  {type === 'folder' ? (
+                    <span className={styles.TextFolder}>{name}</span>
+                  ) : (
+                    <NavLink
+                      to={`${ROUTES.Chat}/${value}`}
+                      className={classNames({
                         [styles.selected]: value === id,
                       })}
                     >
-                      {name}
-                    </span>
-                  </NavLink>
-                )}
-              </>
-            )}
+                      <span
+                        className={classNames(styles.TextChat, {
+                          [styles.selected]: value === id,
+                        })}
+                      >
+                        {name}
+                      </span>
+                    </NavLink>
+                  )}
+                </>
+              )}
 
-            {isEditing || isDeleting ? (
-              <div className={styles.confirmation}>
-                <IconComponent
-                  data-nodrag="true"
-                  type="confirm"
-                  onMouseDown={onConfirm}
-                />
-                <IconComponent
-                  data-nodrag="true"
-                  type="cancel"
-                  onMouseDown={onCancel}
-                />
-              </div>
-            ) : (
-              <div className={styles.settings}>
-                <IconComponent
-                  data-nodrag="true"
-                  type="edit"
-                  onMouseDown={onClickEdit}
-                />
-                <IconComponent
-                  data-nodrag="true"
-                  type="deleteIcon"
-                  onMouseDown={onClickDelete}
-                />
-              </div>
-            )}
+              {isEditing || isDeleting ? (
+                <div className={styles.confirmation}>
+                  <IconComponent
+                    data-nodrag="true"
+                    type="confirm"
+                    onMouseDown={onConfirm}
+                  />
+                  <IconComponent
+                    data-nodrag="true"
+                    type="cancel"
+                    onMouseDown={onCancel}
+                  />
+                </div>
+              ) : (
+                <div className={styles.settings}>
+                  <IconComponent
+                    data-nodrag="true"
+                    type="edit"
+                    onMouseDown={onClickEdit}
+                  />
+                  <IconComponent
+                    data-nodrag="true"
+                    type="deleteIcon"
+                    onMouseDown={onClickDelete}
+                  />
+                </div>
+              )}
+            </div>
 
             {type === 'folder' && !onCollapse && (
               <div
