@@ -141,8 +141,8 @@ export const ChatsTree = memo(
       resetState();
       if (projected && over) {
         const { depth, parentId, parentType, currentType } = projected;
-        const chatInFolder = findChatParent(flattenedTree, parentId || '');
         if (parentType === 'chat' && currentType === 'chat') {
+          const chatInFolder = findChatParent(flattenedTree, parentId || '');
           if (chatInFolder) {
             const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
             const overIndex =
@@ -150,6 +150,7 @@ export const ChatsTree = memo(
             const activeIndex = clonedItems.findIndex(
               ({ id }) => id === active.id,
             );
+
             const activeTreeItem = clonedItems[activeIndex];
             clonedItems[activeIndex] = {
               ...activeTreeItem,
