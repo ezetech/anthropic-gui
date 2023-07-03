@@ -49,7 +49,6 @@ export const decorateCodeFunc = (
   lang: string,
 ): CustomRange[] => {
   const ranges: CustomRange[] = [];
-  console.log(node);
 
   if (!Text.isText(node) || !node || !node.text) {
     return ranges;
