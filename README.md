@@ -72,6 +72,10 @@ npm run build
 This will generate builds for Windows, Mac, and Linux in the `dist` folder.
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+## Packaging
+To create a distribution kit for Mac, Windows or Linux OS use these commands
+...
+
 ## More available scripts
 
 In the project directory, you can run:
