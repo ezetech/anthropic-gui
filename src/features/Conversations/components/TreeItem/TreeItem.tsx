@@ -152,20 +152,6 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     };
 
-    const truncateText = (text: string, maxLength: number) => {
-      const mediaWidth =
-        window.innerWidth ||
-        document.documentElement.clientWidth ||
-        document.body.clientWidth;
-      const truncationLength = mediaWidth < 1260 ? 5 : maxLength;
-
-      if (text.length <= truncationLength) {
-        return text;
-      }
-
-      return text.slice(0, truncationLength) + '...';
-    };
-
     useEffect(() => {
       setItemPlaceholder(true);
     }, [collapsed]);
@@ -237,9 +223,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
             ) : (
               <>
                 {type === 'folder' ? (
-                  <span className={styles.TextFolder}>
-                    {truncateText(name, 15)}
-                  </span>
+                  <span className={styles.TextFolder}>{name}</span>
                 ) : (
                   <NavLink
                     to={`${ROUTES.Chat}/${value}`}
@@ -252,7 +236,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
                         [styles.selected]: value === id,
                       })}
                     >
-                      {truncateText(name, 10)}
+                      {name}
                     </span>
                   </NavLink>
                 )}

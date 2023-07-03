@@ -24,6 +24,7 @@
       opacity: 0.5;
     }
   }
+
   &:hover {
     color: var(--text-primary);
   }
@@ -49,20 +50,18 @@
 
 .disableSelection,
 .clone {
-  .TextFolder, .TextChat {
+  .TextFolder,
+  .TextChat {
     user-select: none;
-    -webkit-user-select: none;
   }
 }
 
 .wrapperItem {
-  flex-wrap: wrap;
   min-width: 100px;
   min-height: 30px;
   display: flex;
   align-items: center;
-  column-gap: 5px;
-  padding: 5px 13px;
+  padding: 10px 13px;
   cursor: pointer;
   transition: 0.3s;
   border-radius: 8px;
@@ -70,14 +69,12 @@
   text-decoration: none;
   transition-property: color, background, border;
   transition-duration: 0.3s;
-  @media (min-width: 670px) {
-    column-gap: 10px;
-  }
-  
+  column-gap: 10px;
+
   svg {
     flex-shrink: 0;
   }
-  
+
   svg:focus {
     outline: none;
   }
@@ -86,12 +83,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-
-    @media (min-width: 670px) {
-      white-space: normal;
-    }
   }
-  
+
   a {
     text-decoration: none;
     color: var(--bg-default);
@@ -99,52 +92,45 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  
+
   a:hover {
     color: var(--text-primary);
   }
-  
-  &.editing {
-    width: 115%;
-    @media (min-width: 1200px) {
-      width: 100%;
-    }
-  }
 
   .editInput {
-    width: 55%;
-    @media (min-width: 1260px) {
-      width: 65%;
-    }
+    width: 100%;
+
     input {
       height: 20px;
-      padding: 0px;
+      padding: 0;
       padding-left: 5px;
     }
+
     fieldset {
       border-radius: 4px;
     }
   }
-  
+
   .conversationIcon {
     transition: 0.3s;
     stroke: var(--bg-default);
   }
-  
+
   .folderIcon {
     transition: 0.3s;
     stroke: var(--bg-default);
   }
-  
+
   &:active {
     background-color: var(--bg-primary);
     border: 1px dashed var(--text-primary) !important;
     color: var(--text-primary);
+
     .conversationIcon {
       stroke: var(--text-primary);
     }
   }
-  
+
   &:hover {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -152,19 +138,19 @@
     .folderIcon {
       stroke: var(--text-primary);
     }
-    
+
     .conversationIcon {
       stroke: var(--text-primary);
     }
-    
+
     .TextChat {
       color: var(--text-primary);
     }
-    
+
     .TextFolder {
       color: var(--text-primary);
     }
-    
+
     .deleteIcon {
       display: block;
       opacity: 1;
@@ -183,11 +169,12 @@
       stroke: var(--text-primary);
       fill: var(--text-primary);
     }
+
     .TextChat {
       color: var(--text-primary);
     }
   }
-  
+
   .settings {
     margin-left: auto;
     opacity: 0;
@@ -204,7 +191,7 @@
       stroke: var(--bg-default);
     }
   }
-  
+
   .settings svg:hover {
     stroke: var(--text-primary);
   }
@@ -265,9 +252,8 @@
   color: var(--bg-default);
   margin: 5px 0 0 7px;
   border-left: 1px solid var(--bg-default);
-  
+
   p {
     padding: 0 10px 0 18px;
   }
 }
-
