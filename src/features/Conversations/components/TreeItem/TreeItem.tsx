@@ -153,7 +153,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     };
 
     useEffect(() => {
-      setItemPlaceholder(true);
+      setItemPlaceholder(false);
     }, [collapsed]);
 
     return (

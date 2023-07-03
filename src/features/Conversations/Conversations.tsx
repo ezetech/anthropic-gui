@@ -59,6 +59,7 @@ export const Conversations = memo(() => {
         fullWidth
         onChange={onSearchChange}
         value={searchedName}
+        autoComplete="off"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
