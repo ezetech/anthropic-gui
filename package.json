@@ -11,6 +11,7 @@
     "electron:dev": "wait-on tcp:3000 && cross-env NODE_ENV=DEV electron .",
     "start:prod": "npm run build && npm run electron:prod",
     "electron:prod": "cross-env NODE_ENV=PROD electron .",
+    "package": "npm run build && electron-builder",
     "lint": "eslint . --ext .ts --ext .js --ext .tsx",
     "lint:fix": "eslint --fix . --ext .ts --ext .js --ext .tsx",
     "prettify": "prettier --write .",
@@ -24,7 +25,10 @@
     "@mui/material": "^5.13.5",
     "@reduxjs/toolkit": "^1.9.5",
     "classnames": "^2.3.2",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "express": "^4.18.2",
+    "get-port": "^7.0.0",
     "http-proxy-middleware": "^2.0.6",
     "normalize.css": "^8.0.1",
     "path": "^0.12.7",
@@ -69,6 +73,7 @@
     "concurrently": "^8.0.1",
     "customize-cra": "^1.0.0",
     "electron": "^25.0.0",
+    "electron-builder": "^24.4.0",
     "electron-devtools-installer": "^3.2.0",
     "eslint": "^8.41.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -94,6 +99,36 @@
     "tsconfig-paths-webpack-plugin": "^4.0.1",
     "wait-on": "^7.0.1"
   },
+  "build": {
+    "directories": {
+      "buildResources": "build"
+    },
+    "files": [
+      "build/**/*",
+      "public/electron.js"
+    ],
+    "dmg": {
+      "sign": false
+    },
+    "appId": "anthropic.app",
+    "productName": "Anthropic Claude",
+    "artifactName": "anthropic-claude.${ext}",
+    "linux": {
+      "target": [
+        "deb",
+        "snap",
+        "rpm"
+      ],
+      "category": "Utility"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "artifactName": "${productName}-${os}.${ext}"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -105,5 +140,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "license": "MIT"
 }
