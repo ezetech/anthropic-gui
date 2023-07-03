@@ -159,26 +159,39 @@ export const ChatSelected: React.FC = () => {
       const signal = newAbortController.signal;
       setAbortController(newAbortController);
 
-      const chatContent = isRegenerate
-        ? chat?.content?.filter(
-            content => content.id !== lastAssistantPrompt?.id,
-          )
-        : chat?.content;
+      const chatContent =
+        isRegenerate && chat?.content && lastAssistantPrompt?.id !== undefined
+          ? chat.content.slice(
+              0,
+              chat.content.findIndex(
+                content => content.id === lastAssistantPrompt.id,
+              ),
+            )
+          : chat?.content;
 
       let promptTexts = (
         chatContent?.map(prompt => {
           const type = prompt.type;
-          const promptText = prompt.text;
+          const promptText = prompt.text.trim();
 
-          return `\n\n${type}: ${promptText}`;
+          if (promptText || type === 'Human') {
+            return `\n\n${type}: ${promptText}`;
+          }
+
+          return `\n\n${type}:`;
         }) || []
       ).join('');
 
       if (
         chatContent &&
-        chatContent[chatContent?.length - 1].type === 'Human'
+        (chatContent[chatContent?.length - 1].type === 'Human' ||
+          chatContent[chatContent?.length - 1].text.trim().length)
       ) {
         promptTexts += '\n\nAssistant:';
+      }
+
+      if (chatContent && chatContent[0].type === 'Assistant') {
+        promptTexts = '\n\nHuman: ' + promptTexts;
       }
 
       const requestBody = {
