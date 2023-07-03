@@ -58,9 +58,6 @@
 
 .wrapperItem {
   min-width: 100px;
-  min-height: 30px;
-  display: flex;
-  align-items: center;
   padding: 10px 13px;
   cursor: pointer;
   transition: 0.3s;
@@ -69,7 +66,12 @@
   text-decoration: none;
   transition-property: color, background, border;
   transition-duration: 0.3s;
-  column-gap: 10px;
+
+  .itemName {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
 
   svg {
     flex-shrink: 0;
@@ -98,8 +100,6 @@
   }
 
   .editInput {
-    width: 100%;
-
     input {
       height: 20px;
       padding: 0;
@@ -254,6 +254,6 @@
   border-left: 1px solid var(--bg-default);
 
   p {
-    padding: 0 10px 0 18px;
+    padding-left: 18px;
   }
 }

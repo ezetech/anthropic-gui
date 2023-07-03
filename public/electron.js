@@ -1,12 +1,11 @@
 const path = require('path');
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain} = require('electron');
 
-const {
-  default: installExtension,
-  REDUX_DEVTOOLS,
-  REACT_DEVELOPER_TOOLS,
-} = require('electron-devtools-installer');
+const cors = require('cors');
+
+const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const isDev = process.env.NODE_ENV === 'DEV';
 
@@ -17,7 +16,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true,
+      devTools: isDev,
       enableRemoteModule: true,
     },
   });
@@ -29,10 +28,13 @@ function createWindow() {
   );
 
   if (isDev) {
+    const {
+      default: installExtension,
+      REDUX_DEVTOOLS,
+    } = require('electron-devtools-installer');
+    
     win.webContents.once('dom-ready', async () => {
-      await installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-        .then(name => console.log(`Added Extension:  ${name}`))
-        .catch(err => console.log('An error occurred: ', err))
+      await installExtension([REDUX_DEVTOOLS])
         .finally(() => {
           win.webContents.openDevTools();
         });
@@ -40,7 +42,27 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(createWindow);
+async function createServerAndWindow() {
+  const server = express();
+  server.use(cors());
+  server.use(
+    '/anthropic',
+    createProxyMiddleware({
+      target: 'https://api.anthropic.com',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/anthropic': '',
+      },
+    })
+  );
+
+  server.listen(8001);
+
+  createWindow();
+}
+
+
+app.whenReady().then(createServerAndWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

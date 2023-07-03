@@ -16,9 +16,17 @@
     color: #ffffff;
     min-width: 150px;
 
+    svg {
+      stroke: #ffffff;
+    }
+
     &:disabled {
       background-color: var(--bg-btn-disabled);
-      color: var(--text-disabled);
+      color: var(--text-secondary);
+
+      svg {
+        stroke: var(--text-secondary);
+      }
     }
 
     &:hover {

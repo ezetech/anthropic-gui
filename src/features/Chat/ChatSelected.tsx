@@ -77,6 +77,7 @@ export const ChatSelected: React.FC = () => {
   const [updatingAiPromptId, setUpdatingAiPromptId] = useState('');
 
   const [isStreaming, setIsStreaming] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const apiKey = useSelector(selectApiKey);
   const model = useSelector(selectApiModel);
@@ -126,27 +127,34 @@ export const ChatSelected: React.FC = () => {
     [chat?.content, chat?.id, dispatch],
   );
 
-  const deletePromptRow = (id: string) => () => {
-    if (chat?.content?.length === 1) {
-      return;
-    }
-
-    if (chat?.content) {
-      const index = chat?.content?.findIndex(prompt => prompt.id === id);
-
-      if (index !== -1) {
-        const newPrompts = [...chat.content];
-        newPrompts.splice(index, 1);
-
-        dispatch(
-          updateChatContents({ chatId: chat?.id || '', contents: newPrompts }),
-        );
+  const deletePromptRow = useCallback(
+    (id: string) => () => {
+      if (chat?.content?.length === 1) {
+        return;
       }
-    }
-  };
+
+      if (chat?.content) {
+        const index = chat?.content?.findIndex(prompt => prompt.id === id);
+
+        if (index !== -1) {
+          const newPrompts = [...chat.content];
+          newPrompts.splice(index, 1);
+
+          dispatch(
+            updateChatContents({
+              chatId: chat?.id || '',
+              contents: newPrompts,
+            }),
+          );
+        }
+      }
+    },
+    [chat?.content, chat?.id, dispatch],
+  );
 
   const generateResponse = useCallback(
     async (isRegenerate?: boolean) => {
+      setIsLoading(true);
       const newAbortController = new AbortController();
       const signal = newAbortController.signal;
       setAbortController(newAbortController);
@@ -261,6 +269,8 @@ export const ChatSelected: React.FC = () => {
         }
       } catch (error) {
         console.error('error', error);
+      } finally {
+        setIsLoading(false);
       }
     },
     [
@@ -278,13 +288,13 @@ export const ChatSelected: React.FC = () => {
     ],
   );
 
-  const handleRegenerate = async () => {
+  const handleRegenerate = useCallback(async () => {
     if (lastAssistantPrompt) {
       deletePromptRow(lastAssistantPrompt.id);
 
       await generateResponse(true);
     }
-  };
+  }, [generateResponse, deletePromptRow, lastAssistantPrompt]);
 
   const handlePromptSubmit = useCallback(async () => {
     await generateResponse();
@@ -313,13 +323,18 @@ export const ChatSelected: React.FC = () => {
     );
   };
 
-  const stopStream = () => {
+  const stopStream = useCallback(() => {
     setIsStreaming(false);
     if (abortController) {
       abortController.abort();
       setAbortController(null);
     }
-  };
+  }, [abortController]);
+
+  useEffect(() => {
+    stopStream();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatId]);
 
   const onSuccessGhangeChatName = useCallback(() => {
     if (conversationName) {
@@ -451,7 +466,7 @@ export const ChatSelected: React.FC = () => {
             <button
               onClick={addPromptRow()}
               className={styles.buttonAddChat}
-              disabled={isStreaming}
+              disabled={isStreaming || isLoading}
             >
               <IconComponent type="plus" className={styles.iconPlus} />
             </button>
@@ -460,6 +475,7 @@ export const ChatSelected: React.FC = () => {
                 type="submit"
                 variant="contained"
                 onClick={handlePromptSubmit}
+                disabled={isLoading}
               >
                 <span>Submit</span>
                 <IconComponent type="submit" />
@@ -476,7 +492,7 @@ export const ChatSelected: React.FC = () => {
               type="submit"
               variant="outlined"
               onClick={handleRegenerate}
-              disabled={isStreaming || !lastAssistantPrompt}
+              disabled={isStreaming || !lastAssistantPrompt || isLoading}
             >
               <span>Regenerate</span>
               <IconComponent

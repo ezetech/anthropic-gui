@@ -2,19 +2,19 @@ import { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   DndContext,
-  closestCenter,
+  DragEndEvent,
+  DragMoveEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  DropAnimation,
+  MeasuringStrategy,
+  Modifier,
   PointerSensor,
+  closestCenter,
+  defaultDropAnimation,
   useSensor,
   useSensors,
-  DragStartEvent,
-  DragOverlay,
-  DragMoveEvent,
-  DragEndEvent,
-  DragOverEvent,
-  MeasuringStrategy,
-  DropAnimation,
-  defaultDropAnimation,
-  Modifier,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -22,7 +22,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   buildTree,
@@ -145,12 +145,13 @@ export const ChatsTree = memo(
           const chatInFolder = findChatParent(flattenedTree, parentId || '');
           if (chatInFolder) {
             const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
-            const overIndex =
-              clonedItems.findIndex(({ id }) => id === parentId) + 1;
+            const overIndex = clonedItems.findIndex(
+              ({ id }) => id === parentId,
+            );
+
             const activeIndex = clonedItems.findIndex(
               ({ id }) => id === active.id,
             );
-
             const activeTreeItem = clonedItems[activeIndex];
             clonedItems[activeIndex] = {
               ...activeTreeItem,
