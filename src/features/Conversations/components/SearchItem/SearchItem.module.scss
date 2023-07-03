@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   column-gap: 10px;
-  padding: 13px;
+  padding: 5px;
   cursor: pointer;
   transition: 0.3s;
   border-radius: 8px;
@@ -57,6 +57,7 @@
     .deleteIcon {
       display: block;
       opacity: 1;
+      margin-right: 5px;
     }
   }
 
