@@ -6,6 +6,7 @@
   "homepage": "./",
   "scripts": {
     "build": "react-app-rewired build",
+    "start": "react-app-rewired start",
     "start:dev": "concurrently -k \"BROWSER=none npm start\" \"npm:electron:dev\"",
     "electron:dev": "wait-on tcp:3000 && cross-env NODE_ENV=DEV electron .",
     "start:prod": "npm run build && npm run electron:prod",
@@ -110,8 +111,8 @@
       "sign": false
     },
     "appId": "anthropic.app",
-    "productName": "Anthropic Claude ft. Aleph1",
-    "artifactName": "anthropic-claude-aleph1.${ext}",
+    "productName": "Claude ft. Aleph1",
+    "artifactName": "claude-aleph1.${ext}",
     "linux": {
       "target": [
         "deb",
