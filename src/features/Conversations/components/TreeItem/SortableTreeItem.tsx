@@ -9,6 +9,7 @@ interface Props extends TreeItemProps {
   id: string;
   name: string;
   type: string;
+  initDrag: boolean;
 }
 
 const iOS = /iPad|iPhone|iPod/.test(navigator.platform);
@@ -18,7 +19,13 @@ const animateLayoutChanges: AnimateLayoutChanges = ({
   wasDragging,
 }) => (isSorting || wasDragging ? false : true);
 
-export const SortableTreeItem = ({ id, depth, ...props }: Props) => {
+export const SortableTreeItem = ({
+  id,
+  initDrag,
+  type,
+  depth,
+  ...props
+}: Props) => {
   const {
     attributes,
     isDragging,
@@ -46,6 +53,8 @@ export const SortableTreeItem = ({ id, depth, ...props }: Props) => {
       ghost={isDragging}
       disableSelection={iOS}
       disableInteraction={isSorting}
+      initDrag={initDrag}
+      type={type}
       handleProps={{
         ...attributes,
         ...listeners,

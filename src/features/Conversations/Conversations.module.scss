@@ -72,3 +72,8 @@
   padding-right: 15px;
   scrollbar-width: thin;
 }
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

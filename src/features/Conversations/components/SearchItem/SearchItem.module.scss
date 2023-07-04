@@ -1,16 +1,35 @@
 .wrapper {
   display: flex;
   align-items: center;
-  column-gap: 10px;
   padding: 10px 13px;
+  margin-bottom: -1px;
   cursor: pointer;
   transition: 0.3s;
   border-radius: 8px;
   color: var(--bg-default);
   text-decoration: none;
+  transition-property: color, background, border;
+  transition-duration: 0.3s;
+  row-gap: 0px;
+
+  &.editing,
+  &.selected {
+    color: var(--text-primary);
+    
+    .conversationIcon {
+      stroke: var(--text-primary);
+      fill: var(--text-primary);
+    }
+  }
 
   svg {
     flex-shrink: 0;
+    transition: 0.3s;
+    stroke: var(--bg-default);
+  }
+
+  svg:focus {
+    outline: none;
   }
 
   span {
@@ -20,6 +39,7 @@
   }
 
   .conversationIcon {
+    margin-right: 10px;
     transition: 0.3s;
     stroke: var(--bg-default);
   }
@@ -48,6 +68,7 @@
   }
 
   &:hover {
+    background-color: var(--bg-primary);
     color: var(--text-primary);
 
     .conversationIcon {
@@ -57,32 +78,52 @@
     .deleteIcon {
       display: block;
       opacity: 1;
-      margin-right: 5px;
+    }
+
+    .confirmation {
+      display: flex;
+      opacity: 1;
     }
   }
 
-  &.selected {
-    color: var(--text-primary);
-
-    .conversationIcon {
-      stroke: var(--text-primary);
-      fill: var(--text-primary);
-    }
-  }
-
-  .confirmationDelete {
+  .confirmation {
     flex-shrink: 0;
-    display: flex;
+    display: none;
     column-gap: 8px;
+    padding-left: 5px;
     align-items: center;
     margin-left: auto;
+    transition: 0.3s;
 
     svg {
+      width: 16px;
+      height: 16px;
+      transition: 0.3s;
+      cursor: pointer;
       stroke: var(--bg-default);
+    }
+  }
 
-      &:hover {
-        stroke: var(--text-primary);
-      }
+  .confirmation svg:hover {
+    stroke: var(--text-primary);
+  }
+  input {
+    border-color: var(--text-primary);
+  }
+
+  .editInput {
+    input {
+      width: 100px;
+      height: 20px;
+      padding: 0;
+      padding-left: 5px;
+    }
+    input:focus + fieldset {
+      border-color: var(--primary-color);
+    }
+
+    fieldset {
+      border-radius: 4px;
     }
   }
 }
