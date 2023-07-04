@@ -55,6 +55,7 @@ export const Conversations = memo(() => {
   return (
     <>
       <TextFieldComponent
+        autoComplete="off"
         placeholder="Search conversation"
         fullWidth
         onChange={onSearchChange}
@@ -82,12 +83,23 @@ export const Conversations = memo(() => {
           )}
         </OutsideClickHandler>
       </div>
-      <div className={styles.newFolder} onClick={onClickNewFolder}>
-        <button>
-          <IconComponent type="newFolder" />
-        </button>
-        <span>Add new folder</span>
-      </div>
+
+      {debouncedSearch ? (
+        <div className={`${styles.newFolder} ${styles.disabled}`}>
+          <button disabled>
+            <IconComponent type="newFolder" />
+          </button>
+          <span>Add new folder</span>
+        </div>
+      ) : (
+        <div className={styles.newFolder} onClick={onClickNewFolder}>
+          <button>
+            <IconComponent type="newFolder" />
+          </button>
+          <span>Add new folder</span>
+        </div>
+      )}
+
       {debouncedSearch ? (
         <ChatsTreeSearch searchName={debouncedSearch} />
       ) : (
