@@ -1,14 +1,18 @@
-import { memo, useState } from 'react';
+import { ChangeEvent, memo, useState } from 'react';
 
 import classNames from 'classnames';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { NavLink, useParams } from 'react-router-dom';
 
 import { ROUTES } from '@/app/router/constants/routes';
-import { deleteChatTreeItem } from '@/redux/conversations/conversationsSlice';
+import {
+  deleteChatTreeItem,
+  renameChatTreeItem,
+} from '@/redux/conversations/conversationsSlice';
 import { useAppDispatch } from '@/redux/hooks';
 import { TreeItem } from '@/typings/common';
 import { IconComponent } from '@/ui/IconComponent';
+import { TextFieldComponent } from '@/ui/TextFieldComponent';
 
 import styles from './SearchItem.module.scss';
 
@@ -18,6 +22,8 @@ interface SearchItemProps {
 
 export const SearchItem = memo(({ conversationItem }: SearchItemProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedItemName, setEditedItemName] = useState(conversationItem.name);
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
@@ -26,19 +32,44 @@ export const SearchItem = memo(({ conversationItem }: SearchItemProps) => {
     setIsDeleting(true);
   };
 
-  const onClickCancel = () => {
+  const onCancel = () => {
     setIsDeleting(false);
+    setIsEditing(false);
+    if (conversationItem.name !== editedItemName) {
+      setEditedItemName(conversationItem.name);
+    }
   };
 
-  const onDeleteConfirm = () => {
-    dispatch(deleteChatTreeItem({ chatTreeId: conversationItem.id }));
+  const onConfirm = () => {
+    if (isDeleting) {
+      dispatch(deleteChatTreeItem({ chatTreeId: conversationItem.id }));
+      setIsDeleting(false);
+    }
+    if (isEditing) {
+      if (editedItemName) {
+        dispatch(
+          renameChatTreeItem({
+            chatTreeId: conversationItem.id,
+            chatTreeName: editedItemName,
+          }),
+        );
+      }
+      setIsEditing(false);
+    }
+  };
 
-    setIsDeleting(false);
+  const onClickEdit = () => {
+    setEditedItemName(conversationItem.name);
+    setIsEditing(true);
+  };
+
+  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
+    setEditedItemName(event.target.value);
   };
 
   const onOutsideClick = () => {
     if (isDeleting) {
-      onClickCancel();
+      onCancel();
     }
   };
 
@@ -47,6 +78,7 @@ export const SearchItem = memo(({ conversationItem }: SearchItemProps) => {
       <NavLink
         to={`${ROUTES.Chat}/${conversationItem.id}`}
         className={classNames(styles.wrapper, {
+          [styles.editing]: isEditing,
           [styles.selected]: conversationItem.id === id,
         })}
       >
@@ -54,18 +86,45 @@ export const SearchItem = memo(({ conversationItem }: SearchItemProps) => {
           type="conversation"
           className={styles.conversationIcon}
         />
-        <span>{conversationItem.name}</span>
-        {isDeleting ? (
-          <div className={styles.confirmationDelete}>
-            <IconComponent type="confirm" onClick={onDeleteConfirm} />
-            <IconComponent type="cancel" onClick={onClickCancel} />
+        {isEditing ? (
+          <TextFieldComponent
+            autoComplete="off"
+            value={editedItemName}
+            onChange={onChangeName}
+            className={styles.editInput}
+            autoFocus
+            fullWidth
+          />
+        ) : (
+          <span>{conversationItem.name}</span>
+        )}
+
+        {isEditing || isDeleting ? (
+          <div className={styles.confirmation}>
+            <IconComponent
+              data-nodrag="true"
+              type="confirm"
+              onMouseDown={onConfirm}
+            />
+            <IconComponent
+              data-nodrag="true"
+              type="cancel"
+              onMouseDown={onCancel}
+            />
           </div>
         ) : (
-          <IconComponent
-            type="deleteIcon"
-            className={styles.deleteIcon}
-            onClick={onClickDelete}
-          />
+          <div className={styles.confirmation}>
+            <IconComponent
+              data-nodrag="true"
+              type="edit"
+              onMouseDown={onClickEdit}
+            />
+            <IconComponent
+              data-nodrag="true"
+              type="deleteIcon"
+              onMouseDown={onClickDelete}
+            />
+          </div>
         )}
       </NavLink>
     </OutsideClickHandler>

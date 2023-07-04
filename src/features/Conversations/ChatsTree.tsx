@@ -38,7 +38,12 @@ import {
   selectConversationFlattenList,
 } from '@/redux/conversations/conversations.selectors';
 import { updateChatTree } from '@/redux/conversations/conversationsSlice';
-import { TreeItems, FlattenedItem, SensorContext } from '@/typings/common';
+import {
+  TreeItems,
+  FlattenedItem,
+  SensorContext,
+  TreeItem,
+} from '@/typings/common';
 
 import { SortableTreeItem } from './components/TreeItem/SortableTreeItem';
 
@@ -70,6 +75,7 @@ export const ChatsTree = memo(
     const [activeId, setActiveId] = useState<string | null>(null);
     const [overId, setOverId] = useState<string | null>(null);
     const [offsetLeft, setOffsetLeft] = useState(0);
+    const [initDrag, setInitDrag] = useState(false);
     const dispatch = useDispatch();
     const treeItems = useSelector(selectConversationsList);
     const flattenedTree = useSelector(selectConversationFlattenList);
@@ -114,15 +120,27 @@ export const ChatsTree = memo(
       ? flattenedItems.find(({ id }) => id === activeId)
       : null;
 
+    const handleCollapse = (
+      id: string,
+      collapsibleItem: boolean | undefined,
+      children: TreeItem[],
+    ) =>
+      collapsibleItem && children?.length
+        ? () => collapseItem(id, dispatch)
+        : undefined;
+
     const handleDragStart = ({ active: { id: currentId } }: DragStartEvent) => {
       setActiveId(String(currentId));
       setOverId(String(currentId));
-      flattenedItems.find(({ id }) => id === activeId);
       document.body.style.setProperty('cursor', 'grabbing');
     };
 
     const handleDragMove = ({ delta }: DragMoveEvent) => {
-      setOffsetLeft(delta.x);
+      setInitDrag(true);
+      const currentItem = flattenedItems.find(({ id }) => id === activeId);
+      if (!currentItem?.collapsed) {
+        collapseItem(String(activeId), dispatch);
+      }
     };
 
     const handleDragOver = ({ over }: DragOverEvent) => {
@@ -133,22 +151,25 @@ export const ChatsTree = memo(
       setOverId(null);
       setActiveId(null);
       setOffsetLeft(0);
-
+      setInitDrag(false);
       document.body.style.setProperty('cursor', '');
     };
 
     const handleDragEnd = ({ active, over }: DragEndEvent) => {
+      const currentItem = flattenedItems.find(({ id }) => id === active.id);
+      if (currentItem?.collapsed) {
+        collapseItem(String(active.id), dispatch);
+      }
       resetState();
       if (projected && over) {
         const { depth, parentId, parentType, currentType } = projected;
-        if (parentType === 'chat' && currentType === 'chat') {
+        if (currentType === 'chat' && parentType === 'chat') {
           const chatInFolder = findChatParent(flattenedTree, parentId || '');
           if (chatInFolder) {
             const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
             const overIndex = clonedItems.findIndex(
               ({ id }) => id === parentId,
             );
-
             const activeIndex = clonedItems.findIndex(
               ({ id }) => id === active.id,
             );
@@ -158,7 +179,11 @@ export const ChatsTree = memo(
               depth,
               parentId: chatInFolder?.id || '',
             };
-            const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
+            const sortedItems = arrayMove(
+              clonedItems,
+              activeIndex,
+              overIndex + 1,
+            );
             const newItems = buildTree(sortedItems);
             dispatch(updateChatTree({ chatTree: newItems }));
           }
@@ -184,15 +209,6 @@ export const ChatsTree = memo(
     const handleDragCancel = () => {
       resetState();
     };
-
-    const handleCollapse = (
-      id: string,
-      collapsibleItem: boolean | undefined,
-      children: string | any[],
-    ) =>
-      collapsibleItem && children?.length
-        ? () => collapseItem(id, dispatch)
-        : undefined;
 
     const handleRemove = (id: string, removableItem: boolean | undefined) =>
       removableItem ? () => removeItem(id, dispatch) : undefined;
@@ -227,6 +243,7 @@ export const ChatsTree = memo(
                 value={id}
                 name={name}
                 type={type}
+                initDrag={initDrag}
                 depth={id === activeId && projected ? projected.depth : depth}
                 indentationWidth={indentationWidth}
                 indicator={indicator}
@@ -251,6 +268,7 @@ export const ChatsTree = memo(
                   indentationWidth={indentationWidth}
                   name=""
                   type=""
+                  initDrag={initDrag}
                 />
               ) : null}
             </DragOverlay>,

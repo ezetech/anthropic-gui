@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   column-gap: 10px;
-  padding: 10px 13px;
+  padding: 5px 13px;
   cursor: pointer;
   transition: 0.3s;
   border-radius: 8px;
@@ -11,6 +11,10 @@
 
   svg {
     flex-shrink: 0;
+  }
+  
+  svg:focus {
+    outline: none;
   }
 
   span {
@@ -70,7 +74,7 @@
     }
   }
 
-  .confirmationDelete {
+  .confirmation {
     flex-shrink: 0;
     display: flex;
     column-gap: 8px;
@@ -78,11 +82,27 @@
     margin-left: auto;
 
     svg {
+      width: 16px;
+      height: 16px;
       stroke: var(--bg-default);
+      transition: 0.3s;
+      cursor: pointer;
 
       &:hover {
         stroke: var(--text-primary);
       }
+    }
+  }
+  
+  .editInput {
+    input {
+      height: 20px;
+      padding: 0;
+      padding-left: 5px;
+    }
+
+    fieldset {
+      border-radius: 4px;
     }
   }
 }

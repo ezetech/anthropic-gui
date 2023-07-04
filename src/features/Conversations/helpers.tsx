@@ -229,19 +229,6 @@ export const collapseItem = (
   dispatch(collapseChatTreeItem({ chatTreeId: id }));
 };
 
-export const handleCollapse = (
-  id: string,
-  collapsibleItem: boolean | undefined,
-  children: TreeItem[],
-  dispatch: (arg0: {
-    payload: { chatTreeId: string };
-    type: 'conversations/collapseChatTreeItem';
-  }) => void,
-) =>
-  collapsibleItem && children?.length
-    ? () => collapseItem(id, dispatch)
-    : undefined;
-
 export const handleRemove = (
   id: string,
   removableItem: boolean | undefined,

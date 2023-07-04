@@ -10,7 +10,7 @@ import React, {
 
 import classNames from 'classnames';
 import OutsideClickHandler from 'react-outside-click-handler';
-import { NavLink, To, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '@/app/router/constants/routes';
 import { renameChatTreeItem } from '@/redux/conversations/conversationsSlice';
@@ -34,6 +34,7 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   value: string;
   name: string;
   type: string;
+  initDrag?: boolean;
   onCollapse?(): void;
   onRemove?(): void;
   wrapperRef?(node: HTMLLIElement): void;
@@ -58,6 +59,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
       value,
       name,
       type,
+      initDrag,
       wrapperRef,
       ...props
     },
@@ -125,19 +127,17 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
       }
     };
 
-    const onChatClick = (event: MouseEvent, route: To) => {
+    const onItemMouseDown = (event: MouseEvent) => {
       event.stopPropagation();
-      navigation(route);
-    };
-
-    const onCollapsePlaceholder = (event: MouseEvent) => {
-      event.stopPropagation();
-      setItemPlaceholder(!itemPlaceholder);
-      if (onCollapse) {
-        onCollapse();
+      if (type === 'folder' && !isEditing) {
+        setItemPlaceholder(!itemPlaceholder);
+        if (onCollapse) {
+          onCollapse();
+        }
       }
+
       if (type === 'chat') {
-        onChatClick(event, `${ROUTES.Chat}/${value}`);
+        navigation(`${ROUTES.Chat}/${value}`);
       }
     };
 
@@ -153,8 +153,10 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     };
 
     useEffect(() => {
-      setItemPlaceholder(false);
-    }, [collapsed]);
+      if (initDrag && itemPlaceholder) {
+        setItemPlaceholder(false);
+      }
+    }, [initDrag, itemPlaceholder]);
 
     return (
       <OutsideClickHandler onOutsideClick={onOutsideClick}>
@@ -189,7 +191,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
                 depth && !clone ? '1px solid var(--bg-default)' : 'none',
               borderRadius: depth && !clone ? '0' : '8px',
             }}
-            onMouseDown={onCollapsePlaceholder}
+            onMouseDown={onItemMouseDown}
           >
             <div className={styles.itemName}>
               {type === 'chat' && (
@@ -214,6 +216,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
 
               {isEditing ? (
                 <TextFieldComponent
+                  autoComplete="off"
                   inputProps={{ 'data-nodrag': true }}
                   value={editedItemName}
                   onChange={onChangeName}
@@ -277,7 +280,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
             {type === 'folder' && !onCollapse && (
               <div
                 className={classNames(styles.nestedContent)}
-                hidden={itemPlaceholder}
+                hidden={!itemPlaceholder || isEditing}
               >
                 <div>
                   <p>Empty folder</p>
