@@ -29,9 +29,9 @@ import {
 import { selectChatById } from '@/redux/conversations/conversations.selectors';
 import {
   addPromptToChat,
+  renameChatTreeItem,
   updateChatContents,
   updateContentById,
-  renameChatTreeItem,
 } from '@/redux/conversations/conversationsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Chat, ChatContent } from '@/typings/common';
@@ -64,8 +64,7 @@ export const ChatSelected: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const [abortController, setAbortController] =
-    useState<AbortController | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const { didNewChatNavigate, setDidNewChatNavigate } =
     useContext(NavigationContext);
@@ -136,13 +135,9 @@ export const ChatSelected: React.FC = () => {
       if (chat?.content) {
         const index = chat?.content?.findIndex(prompt => prompt.id === id);
 
-        console.log(index);
-
         if (index !== -1) {
           const newPrompts = [...chat.content];
           newPrompts.splice(index, 1);
-
-          console.log(newPrompts, 'newPrompts');
 
           dispatch(
             updateChatContents({
@@ -161,7 +156,7 @@ export const ChatSelected: React.FC = () => {
       setIsLoading(true);
       const newAbortController = new AbortController();
       const signal = newAbortController.signal;
-      setAbortController(newAbortController);
+      abortControllerRef.current = newAbortController;
 
       const chatContent =
         isRegenerate &&
@@ -241,13 +236,21 @@ export const ChatSelected: React.FC = () => {
 
             const lastLineArray = lastLineData.split('data: ');
 
-            lastLine = lastLineArray[lastLineArray.length - 1].includes(
-              '"exception": null}',
-            )
-              ? lastLineArray[lastLineArray.length - 1]
-              : lastLineArray[lastLineArray.length - 2];
+            console.log(lastLineArray, 'lastLineArray');
 
-            if (lastLine?.startsWith('{"completion":')) {
+            for (let i = lastLineArray.length - 1; i >= 0; i--) {
+              if (
+                lastLineArray[i].startsWith('{"completion":') &&
+                lastLineArray[i].includes('"exception": null}')
+              ) {
+                lastLine = lastLineArray[i];
+                break;
+              }
+            }
+
+            console.log(lastLine, 'lastLine');
+
+            if (lastLine) {
               const eventData = JSON.parse(lastLine);
 
               if (eventData.completion) {
@@ -267,6 +270,7 @@ export const ChatSelected: React.FC = () => {
                   }),
                 );
               } else if (eventData.error) {
+                setIsLoading(false);
                 alert('Error: ' + eventData.error.message);
               }
             }
@@ -276,6 +280,7 @@ export const ChatSelected: React.FC = () => {
           }
         } else {
           console.error('Error: ' + response?.statusText);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('error', error);
@@ -333,16 +338,22 @@ export const ChatSelected: React.FC = () => {
 
   const stopStream = useCallback(() => {
     setIsStreaming(false);
-    if (abortController) {
-      abortController.abort();
-      setAbortController(null);
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
     }
-  }, [abortController]);
+  }, []);
 
-  useEffect(() => {
-    stopStream();
+  useEffect(
+    () => () => {
+      stopStream();
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatId]);
+    [],
+  );
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => stopStream, [chatId]);
 
   const onSuccessGhangeChatName = useCallback(() => {
     if (conversationName) {
@@ -451,19 +462,23 @@ export const ChatSelected: React.FC = () => {
           }}
         />
       </Box>
-      {chat?.content?.map(({ text, type, id }) => (
-        <div className={styles.chatPromptContainer} key={id}>
-          <EditablePrompt
-            id={id}
-            text={text}
-            deletePromptRow={deletePromptRow}
-            type={type}
-            handlePromptBlur={handlePromptBlur}
-            readOnly={updatingAiPromptId === id && isStreaming}
-            deleteDisabled={deleteDisabled}
-          />
-        </div>
-      ))}
+      {chat?.content?.map(({ text, type, id }) => {
+        console.log(text, 'text');
+
+        return (
+          <div className={styles.chatPromptContainer} key={id}>
+            <EditablePrompt
+              id={id}
+              text={text}
+              deletePromptRow={deletePromptRow}
+              type={type}
+              handlePromptBlur={handlePromptBlur}
+              readOnly={updatingAiPromptId === id && isStreaming}
+              deleteDisabled={deleteDisabled}
+            />
+          </div>
+        );
+      })}
       <div className={styles.chatButtonsContainer}>
         <div>
           <div className={styles.buttonsColumn}>
