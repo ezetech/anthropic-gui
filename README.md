@@ -28,12 +28,14 @@ For example:
 
 ```javascript
 ```
+and then press 'Enter'
 
 To highlight text write
 
 ```
 `your text`
 ```
+and then press 'Enter'
 
 ## Hot keys
 
