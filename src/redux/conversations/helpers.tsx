@@ -10,7 +10,9 @@ export const flatten = (
     (acc, item, index) => [
       ...acc,
       { ...item, parentType, parentId, depth, index },
-      ...flatten(item.children, item.type, item.id, depth + 1),
+      ...(Array.isArray(item.children)
+        ? flatten(item.children, item.type, item.id, depth + 1)
+        : []),
     ],
     [],
   );
