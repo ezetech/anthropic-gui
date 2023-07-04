@@ -8,7 +8,7 @@
     "build": "react-app-rewired build",
     "start": "react-app-rewired start",
     "start:dev": "concurrently -k \"BROWSER=none npm start\" \"npm:electron:dev\"",
-    "electron:dev": "wait-on tcp:3000 && cross-env NODE_ENV=DEV electron .",
+    "electron:dev": "wait-on http://127.0.0.1:3000 && cross-env NODE_ENV=DEV electron .",
     "start:prod": "npm run build && npm run electron:prod",
     "electron:prod": "cross-env NODE_ENV=PROD electron .",
     "package": "npm run build && electron-builder",
