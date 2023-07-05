@@ -6,10 +6,13 @@ import {
 } from '@/redux/conversations/conversationsSlice';
 import { FlattenedItem, TreeItem, TreeItems } from '@/typings/common';
 
-export const removeChildrenOf = (items: FlattenedItem[], ids: string[]) => {
-  const excludeParentIds = [...ids];
+export const removeChildrenOf = (
+  items: FlattenedItem[],
+  ids: string[] | string,
+) => {
+  const excludeParentIds = Array.isArray(ids) ? [...ids] : [ids];
 
-  return items.filter(item => {
+  return items?.filter(item => {
     if (item.parentId && excludeParentIds.includes(item.parentId)) {
       if (item.children.length) {
         excludeParentIds.push(item.id);
