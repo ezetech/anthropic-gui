@@ -77,7 +77,7 @@ export const conversationsSlice = createSlice({
       state,
       action: PayloadAction<Omit<TreeItem, 'type' | 'createdAt' | 'children'>>,
     ) => {
-      state.conversations.unshift({
+      state.conversations?.unshift({
         type: 'chat',
         children: [],
         createdAt: new Date(),
@@ -90,7 +90,7 @@ export const conversationsSlice = createSlice({
         Omit<TreeItem, 'type' | 'id' | 'createdAt' | 'children'>
       >,
     ) => {
-      state.conversations.unshift({
+      state.conversations?.unshift({
         type: 'folder',
         id: uuidv4(),
         createdAt: new Date(),
