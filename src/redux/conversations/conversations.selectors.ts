@@ -66,7 +66,9 @@ export const findChatById = (
   id: string,
 ): Chat | undefined => {
   let result: Chat | undefined;
-
+  if (!conversations?.length) {
+    return;
+  }
   for (const item of conversations) {
     if (item.type === 'chat' && item.id === id) {
       result = item as Chat;
