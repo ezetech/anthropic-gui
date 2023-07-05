@@ -25,14 +25,6 @@ export interface ConversationCommon {
   type: 'folder' | 'chat';
 }
 
-export interface Chat extends ConversationCommon {
-  content?: ChatContent[];
-}
-
-export interface Folder extends ConversationCommon {
-  chats?: Chat[];
-}
-
 export interface ChatContent {
   id: string;
   type: PromptType;

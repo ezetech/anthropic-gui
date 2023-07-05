@@ -33,7 +33,7 @@ import {
   updateContentById,
 } from '@/redux/conversations/conversationsSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Chat, ChatContent } from '@/typings/common';
+import { TreeItem, ChatContent } from '@/typings/common';
 import { ButtonComponent } from '@/ui/ButtonComponent';
 import { IconComponent } from '@/ui/IconComponent';
 import { TextFieldComponent } from '@/ui/TextFieldComponent';
@@ -42,7 +42,7 @@ import { EditablePrompt } from './components/EditablePrompt';
 
 import styles from './Chat.module.scss';
 
-const findLastAssistantContent = (chat?: Chat): ChatContent | null => {
+const findLastAssistantContent = (chat?: TreeItem): ChatContent | null => {
   if (!chat || !chat?.content) {
     return null;
   }
