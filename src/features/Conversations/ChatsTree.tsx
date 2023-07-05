@@ -75,7 +75,7 @@ export const ChatsTree = memo(
     const flattenedTree = useSelector(selectConversationFlattenList);
 
     const flattenedItems = useMemo(() => {
-      const collapsedItems = flattenedTree.reduce<string[]>(
+      const collapsedItems = flattenedTree?.reduce<string[]>(
         (acc, { children, collapsed, id }) =>
           collapsed && children.length ? [...acc, id] : acc,
         [],
@@ -106,7 +106,10 @@ export const ChatsTree = memo(
     const sensors = useSensors(useSensor(PointerSensor));
 
     const sortedIds = useMemo(
-      () => flattenedItems.map(({ id }) => id),
+      () =>
+        flattenedItems && flattenedItems?.length
+          ? flattenedItems?.map(({ id }) => id)
+          : [],
       [flattenedItems],
     );
 
@@ -219,7 +222,7 @@ export const ChatsTree = memo(
           items={sortedIds}
           strategy={verticalListSortingStrategy}
         >
-          {flattenedItems.map(
+          {flattenedItems?.map(
             ({ id, name, type, children, collapsed, depth }) => (
               <SortableTreeItem
                 key={id}
