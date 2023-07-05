@@ -1,8 +1,64 @@
-.wrapper {
-  display: flex;
-  align-items: center;
-  padding: 10px 13px;
+.Wrapper {
+  list-style: none;
+  box-sizing: border-box;
+  padding-left: var(--spacing);
   margin-bottom: -1px;
+
+  &.clone {
+    display: inline-block;
+    pointer-events: none;
+    padding: 0;
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+
+  &.ghost {
+    &.indicator {
+      opacity: 1;
+      position: relative;
+      z-index: 1;
+      margin-bottom: -1px;
+    }
+
+    &:not(.indicator) {
+      opacity: 0.5;
+    }
+  }
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.TextFolder {
+  text-align: start;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.TextChat {
+  text-align: start;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.disableInteraction {
+  pointer-events: none;
+}
+
+.disableSelection,
+.clone {
+  .TextFolder,
+  .TextChat {
+    user-select: none;
+  }
+}
+
+.wrapperItem {
+  min-width: 100px;
+  padding: 10px 13px;
   cursor: pointer;
   transition: 0.3s;
   border-radius: 8px;
@@ -10,22 +66,15 @@
   text-decoration: none;
   transition-property: color, background, border;
   transition-duration: 0.3s;
-  row-gap: 0px;
 
-  &.editing,
-  &.selected {
-    color: var(--text-primary);
-    
-    .conversationIcon {
-      stroke: var(--text-primary);
-      fill: var(--text-primary);
-    }
+  .itemName {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
   }
 
   svg {
     flex-shrink: 0;
-    transition: 0.3s;
-    stroke: var(--bg-default);
   }
 
   svg:focus {
@@ -38,10 +87,133 @@
     text-overflow: ellipsis;
   }
 
+  a {
+    text-decoration: none;
+    color: var(--bg-default);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  a:hover {
+    color: var(--text-primary);
+  }
+
+  .editInput {
+    input {
+      height: 20px;
+      padding: 0;
+      padding-left: 5px;
+    }
+
+    fieldset {
+      border-radius: 4px;
+    }
+  }
+
   .conversationIcon {
-    margin-right: 10px;
     transition: 0.3s;
     stroke: var(--bg-default);
+  }
+
+  .folderIcon {
+    transition: 0.3s;
+    stroke: var(--bg-default);
+  }
+
+  &:active {
+    background-color: var(--bg-primary);
+    border: 1px dashed var(--text-primary) !important;
+    color: var(--text-primary);
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+    }
+  }
+
+  &:hover {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+
+    .folderIcon {
+      stroke: var(--text-primary);
+    }
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+    }
+
+    .TextChat {
+      color: var(--text-primary);
+    }
+
+    .TextFolder {
+      color: var(--text-primary);
+    }
+
+    .deleteIcon {
+      display: block;
+      opacity: 1;
+    }
+
+    .settings {
+      display: flex;
+      opacity: 1;
+    }
+  }
+
+  &.selected {
+    color: var(--text-primary);
+
+    .conversationIcon {
+      stroke: var(--text-primary);
+      fill: var(--text-primary);
+    }
+
+    .TextChat {
+      color: var(--text-primary);
+    }
+  }
+
+  .settings {
+    margin-left: auto;
+    opacity: 0;
+    display: none;
+    column-gap: 8px;
+    align-items: center;
+    transition: 0.3s;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      transition: 0.3s;
+      cursor: pointer;
+      stroke: var(--bg-default);
+    }
+  }
+
+  .settings svg:hover {
+    stroke: var(--text-primary);
+  }
+
+  .confirmation {
+    flex-shrink: 0;
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    margin-left: auto;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--bg-default);
+      transition: 0.3s;
+      cursor: pointer;
+
+      &:hover {
+        stroke: var(--text-primary);
+      }
+    }
   }
 
   .deleteIcon {
@@ -57,73 +229,35 @@
     }
   }
 
-  &:active {
-    background-color: var(--bg-primary);
-    border: 1px dashed var(--text-primary);
-    color: var(--text-primary);
-
-    .conversationIcon {
-      stroke: var(--text-primary);
-    }
-  }
-
-  &:hover {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-
-    .conversationIcon {
-      stroke: var(--text-primary);
-    }
-
-    .deleteIcon {
-      display: block;
-      opacity: 1;
-    }
-
-    .confirmation {
-      display: flex;
-      opacity: 1;
-    }
-  }
-
-  .confirmation {
+  .confirmationDelete {
     flex-shrink: 0;
-    display: none;
+    display: flex;
     column-gap: 8px;
-    padding-left: 5px;
     align-items: center;
     margin-left: auto;
-    transition: 0.3s;
 
     svg {
-      width: 16px;
-      height: 16px;
-      transition: 0.3s;
-      cursor: pointer;
       stroke: var(--bg-default);
+
+      &:hover {
+        stroke: var(--text-primary);
+      }
     }
   }
+}
 
-  .confirmation svg:hover {
-    stroke: var(--text-primary);
-  }
-  input {
-    border-color: var(--text-primary);
-  }
+.nestedContent {
+  display: block;
+  position: relative;
+  color: var(--bg-default);
+  margin: 5px 0 0 7px;
+  border-left: 1px solid var(--bg-default);
 
-  .editInput {
-    input {
-      width: 100px;
-      height: 20px;
-      padding: 0;
-      padding-left: 5px;
-    }
-    input:focus + fieldset {
-      border-color: var(--primary-color);
-    }
-
-    fieldset {
-      border-radius: 4px;
-    }
+  p {
+    padding-left: 18px;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }

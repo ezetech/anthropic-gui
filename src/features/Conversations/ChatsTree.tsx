@@ -141,8 +141,7 @@ export const ChatsTree = memo(
     const handleDragMove = ({ delta }: DragMoveEvent) => {
       setInitDrag(true);
       setOffsetLeft(delta.x);
-      const currentItem = flattenedItems.find(({ id }) => id === activeId);
-      if (!currentItem?.collapsed) {
+      if (!projected?.collapsed) {
         collapseItem(String(activeId), dispatch);
       }
     };
@@ -160,13 +159,19 @@ export const ChatsTree = memo(
     };
 
     const handleDragEnd = ({ active, over }: DragEndEvent) => {
-      const currentItem = flattenedItems.find(({ id }) => id === active.id);
-      if (currentItem?.collapsed) {
-        collapseItem(String(active.id), dispatch);
-      }
       resetState();
       if (projected && over) {
-        const { depth, parentId, parentType, currentType } = projected;
+        const { depth, parentId, collapsed, parentType, currentType } =
+          projected;
+        if (collapsed) {
+          collapseItem(String(active.id), dispatch);
+        }
+        if (
+          currentType === 'folder' &&
+          (parentType === 'folder' || parentType === 'chat')
+        ) {
+          return;
+        }
         if (currentType === 'chat' && parentType === 'chat') {
           const chatInFolder = findChatParent(flattenedTree, parentId || '');
           if (chatInFolder) {
@@ -181,7 +186,7 @@ export const ChatsTree = memo(
             clonedItems[activeIndex] = {
               ...activeTreeItem,
               depth,
-              parentId: chatInFolder?.id || '',
+              parentId: chatInFolder?.id || null,
             };
             const sortedItems = arrayMove(
               clonedItems,
@@ -191,12 +196,24 @@ export const ChatsTree = memo(
             const newItems = buildTree(sortedItems);
             dispatch(updateChatTree({ chatTree: newItems }));
           }
-          return;
-        }
-        if (parentType === 'chat') {
-          return;
-        }
-        if (currentType === 'folder' && parentType === 'folder') {
+          if (!chatInFolder) {
+            const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
+            const overIndex = clonedItems.findIndex(
+              ({ id }) => id === parentId,
+            );
+            const activeIndex = clonedItems.findIndex(
+              ({ id }) => id === active.id,
+            );
+            const activeTreeItem = clonedItems[activeIndex];
+            clonedItems[activeIndex] = {
+              ...activeTreeItem,
+              depth: 0,
+              parentId: null,
+            };
+            const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
+            const newItems = buildTree(sortedItems);
+            dispatch(updateChatTree({ chatTree: newItems }));
+          }
           return;
         }
         const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);

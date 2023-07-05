@@ -2,7 +2,7 @@ import { ChangeEvent, memo, useState } from 'react';
 
 import classNames from 'classnames';
 import OutsideClickHandler from 'react-outside-click-handler';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '@/app/router/constants/routes';
 import {
@@ -25,6 +25,7 @@ export const SearchItem = memo(({ conversationItem }: SearchItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedItemName, setEditedItemName] = useState(conversationItem.name);
   const { id } = useParams();
+  const navigation = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -73,60 +74,66 @@ export const SearchItem = memo(({ conversationItem }: SearchItemProps) => {
     }
   };
 
+  const onItemMouseDown = () => {
+    navigation(`${ROUTES.Chat}/${conversationItem.id}`);
+  };
+
   return (
     <OutsideClickHandler onOutsideClick={onOutsideClick}>
-      <NavLink
-        to={`${ROUTES.Chat}/${conversationItem.id}`}
-        className={classNames(styles.wrapper, {
-          [styles.editing]: isEditing,
-          [styles.selected]: conversationItem.id === id,
-        })}
-      >
-        <IconComponent
-          type="conversation"
-          className={styles.conversationIcon}
-        />
-        {isEditing ? (
-          <TextFieldComponent
-            autoComplete="off"
-            value={editedItemName}
-            onChange={onChangeName}
-            className={styles.editInput}
-            autoFocus
-            fullWidth
-          />
-        ) : (
-          <span>{conversationItem.name}</span>
-        )}
+      <li className={classNames(styles.Wrapper)}>
+        <div
+          className={classNames(styles.wrapperItem, {
+            [styles.editing]: isEditing,
+            [styles.selected]: conversationItem.id === id,
+          })}
+          onMouseDown={onItemMouseDown}
+        >
+          <div className={styles.itemName}>
+            <IconComponent
+              className={styles.conversationIcon}
+              type="conversation"
+            />
 
-        {isEditing || isDeleting ? (
-          <div className={styles.confirmation}>
-            <IconComponent
-              data-nodrag="true"
-              type="confirm"
-              onMouseDown={onConfirm}
-            />
-            <IconComponent
-              data-nodrag="true"
-              type="cancel"
-              onMouseDown={onCancel}
-            />
+            {isEditing ? (
+              <TextFieldComponent
+                autoComplete="off"
+                value={editedItemName}
+                onChange={onChangeName}
+                className={styles.editInput}
+                autoFocus
+                fullWidth
+              />
+            ) : (
+              <NavLink
+                to={`${ROUTES.Chat}/${conversationItem.id}`}
+                className={classNames({
+                  [styles.selected]: conversationItem.id === id,
+                })}
+              >
+                <span
+                  className={classNames(styles.TextChat, {
+                    [styles.selected]: conversationItem.id === id,
+                  })}
+                >
+                  {conversationItem.name}
+                </span>
+              </NavLink>
+            )}
+
+            {isEditing || isDeleting ? (
+              <div className={styles.confirmation}>
+                <IconComponent type="confirm" onClick={onConfirm} />
+                <IconComponent type="cancel" onClick={onCancel} />
+              </div>
+            ) : (
+              <div className={styles.settings}>
+                <IconComponent type="edit" onClick={onClickEdit} />
+                <IconComponent type="deleteIcon" onClick={onClickDelete} />
+              </div>
+            )}
           </div>
-        ) : (
-          <div className={styles.confirmation}>
-            <IconComponent
-              data-nodrag="true"
-              type="edit"
-              onMouseDown={onClickEdit}
-            />
-            <IconComponent
-              data-nodrag="true"
-              type="deleteIcon"
-              onMouseDown={onClickDelete}
-            />
-          </div>
-        )}
-      </NavLink>
+        </div>
+      </li>
     </OutsideClickHandler>
   );
 });
