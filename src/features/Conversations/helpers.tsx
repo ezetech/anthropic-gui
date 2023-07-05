@@ -24,8 +24,10 @@ export const removeChildrenOf = (
   });
 };
 
-export const getDragDepth = (offset: number, width: number) =>
-  Math.round(offset / width);
+export const getDragDepth = (offset: number, width: number) => {
+  const dragDepth = Math.round(offset / width);
+  return dragDepth >= 1 ? 1 : dragDepth;
+};
 
 const getMaxDepth = ({ previousItem }: { previousItem: FlattenedItem }) => {
   if (previousItem) {
@@ -73,6 +75,10 @@ export const getProjection = (
       return null;
     }
 
+    if (depth > 1) {
+      return previousItem.parentId;
+    }
+
     if (depth === previousItem.depth) {
       return previousItem.parentId;
     }
@@ -111,7 +117,11 @@ export const getProjection = (
   };
 
   if (projectedDepth >= maxDepth) {
-    depth = maxDepth;
+    if (maxDepth > 1) {
+      depth = 1;
+    } else {
+      depth = maxDepth;
+    }
   } else if (projectedDepth < minDepth) {
     depth = minDepth;
   }
@@ -120,6 +130,7 @@ export const getProjection = (
     depth,
     maxDepth,
     minDepth,
+    collapsed: activeCurrentItem.collapsed,
     currentType: activeCurrentItem.type,
     parentType: getParentType(),
     parentId: getParentId(),

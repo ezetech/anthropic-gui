@@ -153,10 +153,10 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     };
 
     useEffect(() => {
-      if (initDrag && itemPlaceholder) {
+      if (initDrag && ghost && itemPlaceholder) {
         setItemPlaceholder(false);
       }
-    }, [initDrag, itemPlaceholder]);
+    }, [ghost, initDrag, itemPlaceholder]);
 
     return (
       <OutsideClickHandler onOutsideClick={onOutsideClick}>

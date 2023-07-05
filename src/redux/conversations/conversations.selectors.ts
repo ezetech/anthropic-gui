@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { Chat, Folder, TreeItem } from '@/typings/common';
+import { TreeItem } from '@/typings/common';
 
 import { RootState } from '../store';
 
@@ -64,25 +64,22 @@ export const selectConversationsSearchedList = (searchedName: string) =>
 export const findChatById = (
   conversations: TreeItem[],
   id: string,
-): Chat | undefined => {
-  let result: Chat | undefined;
+): TreeItem | undefined => {
+  let result: TreeItem | undefined;
   if (!conversations?.length) {
     return;
   }
   for (const item of conversations) {
     if (item.type === 'chat' && item.id === id) {
-      result = item as Chat;
+      result = item as TreeItem;
 
       break;
     }
 
-    if (item.type === 'folder') {
-      const folder = item as Folder;
-      if (folder.children) {
-        result = findChatById(folder.children, id);
-        if (result) {
-          break;
-        }
+    if (item.children?.length) {
+      result = findChatById(item.children, id);
+      if (result) {
+        break;
       }
     }
   }
