@@ -16,9 +16,12 @@ export const selectConversationFlattenList = createSelector(
 
 export const selectCountConversations = createSelector(
   selectConversationsList,
-  conversation => {
+  conversations => {
     let countItems = 0;
-    for (const item of conversation) {
+    if (!conversations?.length) {
+      return 0;
+    }
+    for (const item of conversations) {
       if (item.type === 'chat') {
         countItems += 1;
       }
