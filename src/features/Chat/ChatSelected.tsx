@@ -236,8 +236,6 @@ export const ChatSelected: React.FC = () => {
 
             const lastLineArray = lastLineData.split('data: ');
 
-            console.log(lastLineArray, 'lastLineArray');
-
             for (let i = lastLineArray.length - 1; i >= 0; i--) {
               if (
                 lastLineArray[i].startsWith('{"completion":') &&
@@ -247,8 +245,6 @@ export const ChatSelected: React.FC = () => {
                 break;
               }
             }
-
-            console.log(lastLine, 'lastLine');
 
             if (lastLine) {
               const eventData = JSON.parse(lastLine);
@@ -462,23 +458,19 @@ export const ChatSelected: React.FC = () => {
           }}
         />
       </Box>
-      {chat?.content?.map(({ text, type, id }) => {
-        console.log(text, 'text');
-
-        return (
-          <div className={styles.chatPromptContainer} key={id}>
-            <EditablePrompt
-              id={id}
-              text={text}
-              deletePromptRow={deletePromptRow}
-              type={type}
-              handlePromptBlur={handlePromptBlur}
-              readOnly={updatingAiPromptId === id && isStreaming}
-              deleteDisabled={deleteDisabled}
-            />
-          </div>
-        );
-      })}
+      {chat?.content?.map(({ text, type, id }) => (
+        <div className={styles.chatPromptContainer} key={id}>
+          <EditablePrompt
+            id={id}
+            text={text}
+            deletePromptRow={deletePromptRow}
+            type={type}
+            handlePromptBlur={handlePromptBlur}
+            readOnly={updatingAiPromptId === id && isStreaming}
+            deleteDisabled={deleteDisabled}
+          />
+        </div>
+      ))}
       <div className={styles.chatButtonsContainer}>
         <div>
           <div className={styles.buttonsColumn}>
