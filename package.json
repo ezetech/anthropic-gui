@@ -110,6 +110,9 @@
     "dmg": {
       "sign": false
     },
+    "mac": {
+      "icon": "build/icons/icon.icns"
+    },
     "appId": "anthropic.app",
     "productName": "Claude ft. Aleph1",
     "artifactName": "claude-aleph1.${ext}",
@@ -119,14 +122,16 @@
         "snap",
         "rpm"
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "icon": "build/icons/icon.png"
     },
     "win": {
       "target": [
         "nsis",
         "zip"
       ],
-      "artifactName": "${productName}-${os}.${ext}"
+      "artifactName": "${productName}-${os}.${ext}",
+      "icon": "build/icons/icon.ico"
     }
   },
   "browserslist": {
