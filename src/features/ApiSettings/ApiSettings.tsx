@@ -16,8 +16,10 @@ import {
   setTemperature,
   setTopK,
   setTopP,
+  resetApiSettings,
 } from '@/redux/apiSettings/apiSettings.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { ButtonComponent } from '@/ui/ButtonComponent';
 import { SelectComponent } from '@/ui/SelectComponent';
 import { SliderComponent } from '@/ui/SliderComponent';
 
@@ -85,6 +87,10 @@ export const ApiSettings = memo(({ className }: ApiSettingsProps) => {
 
   const isModelWithMaxToken = useMemo(() => model.includes('100k'), [model]);
 
+  const resetSettings = useCallback(() => {
+    dispatch(resetApiSettings());
+  }, [dispatch]);
+
   return (
     <Stack
       gap="10px"
@@ -130,6 +136,14 @@ export const ApiSettings = memo(({ className }: ApiSettingsProps) => {
         min={0}
         step={0.1}
       />
+      <ButtonComponent
+        type="submit"
+        variant="outlined"
+        onClick={resetSettings}
+        className={styles.resetBtn}
+      >
+        <span>Reset Settings</span>
+      </ButtonComponent>
     </Stack>
   );
 });
