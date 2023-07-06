@@ -5,7 +5,7 @@ import { languages } from 'prismjs/components';
 import { BaseEditor, Text } from 'slate';
 import { RenderLeafProps } from 'slate-react';
 
-import { CustomRange, PrismToken, CustomText } from '../typings';
+import { CustomRange, CustomText, PrismToken } from '../typings';
 
 import styles from '../Prompts.module.scss';
 
@@ -54,25 +54,34 @@ export const decorateCodeFunc = (
     return ranges;
   }
 
-  let language = lang ?? 'clike';
-
   const lang_aliases: Record<string, string> = {
     html: 'markup',
     js: 'javascript',
     ts: 'typescript',
     py: 'python',
+    xml: 'markup',
   };
 
-  if (language in lang_aliases) {
-    language = lang_aliases[language];
+  let language = '';
+
+  if (lang in lang_aliases) {
+    language = lang_aliases[lang];
   }
 
-  if (!(language in languages)) {
-    return ranges;
+  if (!language) {
+    language = lang in languages ? lang : 'clike';
   }
 
-  if (language === 'cpp') {
-    require('prismjs/components/prism-c');
+  switch (language) {
+    case 'cpp':
+      require('prismjs/components/prism-c');
+      break;
+    case 'tsx':
+      require('prismjs/components/prism-jsx');
+      require('prismjs/components/prism-typescript');
+      break;
+    default:
+      break;
   }
 
   require(`prismjs/components/prism-${language}`);

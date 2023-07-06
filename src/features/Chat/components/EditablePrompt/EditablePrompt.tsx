@@ -28,7 +28,7 @@ import { unified } from 'unified';
 import { IconComponent } from '@/ui/IconComponent';
 
 import { CodeLeaf, decorateCodeFunc } from './parsers/code';
-import { transformHtmlToText } from './parsers/html';
+import { transformResultParse } from './parsers/html';
 import { serialize } from './parsers/slate2md';
 import { CustomElement, CustomRange, IEditablePrompt } from './typings';
 
@@ -161,7 +161,7 @@ export const EditablePrompt = memo(
 
       const result = processor.processSync(text).result;
 
-      const transformedResult = transformHtmlToText(result).flat();
+      const transformedResult = transformResultParse(result).flat();
 
       if (transformedResult.length) {
         Transforms.delete(editor, {

@@ -12,16 +12,29 @@ const isSiblingText = (children: NodeType[]): boolean =>
     child => typeof child === 'object' && child !== null && 'text' in child,
   );
 
-export const transformHtmlToText = (
+function isTextObject(node: NodeType): node is { text?: string } {
+  return typeof node === 'object' && node !== null && 'text' in node;
+}
+
+export const transformResultParse = (
   node: NodeType | NodeType[],
 ): NodeType[] => {
   if (Array.isArray(node)) {
-    return node.flatMap(transformHtmlToText);
+    return node.flatMap(transformResultParse);
   } else if (typeof node === 'object' && node !== null) {
     if ('children' in node && node.children) {
       const newChildren: NodeType[] = [];
+
+      if (
+        'children' in node &&
+        Array.isArray(node.children) &&
+        node.children.length === 0
+      ) {
+        return [];
+      }
       for (let i = 0; i < node.children.length; i++) {
         const child = node.children[i];
+
         if (
           typeof child === 'object' &&
           child &&
@@ -35,8 +48,22 @@ export const transformHtmlToText = (
           ) {
             newChildren.push({ text: child.children?.[0].text });
           }
+        } else if (
+          typeof child === 'object' &&
+          child &&
+          child.type === 'break'
+        ) {
+          const prevIndex = newChildren.length - 1;
+          if (
+            prevIndex >= 0 &&
+            newChildren[prevIndex] &&
+            isTextObject(newChildren[prevIndex])
+          ) {
+            const elem = newChildren[prevIndex] as { text: string };
+            elem.text = (elem.text || '') + '\n';
+          }
         } else {
-          newChildren.push(...transformHtmlToText(child));
+          newChildren.push(...transformResultParse(child));
         }
       }
       return [
