@@ -57,7 +57,7 @@ export const SelectComponent = (props: SelectComponentProps) => {
           sx: {
             '& .MuiMenuItem-root.Mui-selected, .MuiMenuItem-root.Mui-selected:hover':
               {
-                backgroundColor: 'var(--primary-color)',
+                backgroundColor: 'var(--primary-color) !important',
                 color: '#ffffff',
               },
           },
