@@ -27,11 +27,22 @@ export const AuthPage = () => {
   const dispatch = useAppDispatch();
 
   const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    const input = event.target;
+    const cursorPosition = input.selectionStart;
+    const value = input.value;
+
     if (value.includes(' ')) {
-      event.target.value = value.replace(/ /g, '');
+      const newValue = value.replace(/ /g, '');
+      input.value = newValue;
+      setApiKey(newValue);
+
+      if (cursorPosition) {
+        input.setSelectionRange(cursorPosition - 1, cursorPosition - 1);
+      }
+    } else {
+      setApiKey(value);
     }
-    setApiKey(event.target.value);
+
     setInvalidKey(false);
   }, []);
 
