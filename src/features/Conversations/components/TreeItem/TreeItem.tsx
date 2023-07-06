@@ -4,7 +4,6 @@ import React, {
   MouseEvent,
   forwardRef,
   memo,
-  useEffect,
   useState,
 } from 'react';
 
@@ -34,7 +33,6 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   value: string;
   name: string;
   type: string;
-  initDrag?: boolean;
   onCollapse?(): void;
   onRemove?(): void;
   wrapperRef?(node: HTMLLIElement): void;
@@ -59,7 +57,6 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
       value,
       name,
       type,
-      initDrag,
       wrapperRef,
       ...props
     },
@@ -68,7 +65,6 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
     const [isDeleting, setIsDeleting] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedItemName, setEditedItemName] = useState(name);
-    const [itemPlaceholder, setItemPlaceholder] = useState(false);
     const dispatch = useAppDispatch();
     const { id } = useParams();
     const navigation = useNavigate();
@@ -129,11 +125,8 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
 
     const onItemMouseDown = (event: MouseEvent) => {
       event.stopPropagation();
-      if (type === 'folder' && !isEditing) {
-        setItemPlaceholder(!itemPlaceholder);
-        if (onCollapse) {
-          onCollapse();
-        }
+      if (onCollapse && type === 'folder' && !isEditing) {
+        onCollapse();
       }
 
       if (type === 'chat') {
@@ -151,12 +144,6 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
         );
       }
     };
-
-    useEffect(() => {
-      if (initDrag && ghost && itemPlaceholder) {
-        setItemPlaceholder(false);
-      }
-    }, [ghost, initDrag, itemPlaceholder]);
 
     return (
       <OutsideClickHandler onOutsideClick={onOutsideClick}>
@@ -202,7 +189,7 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
               )}
 
               {type === 'folder' &&
-                (onCollapse ? (
+                (onCollapse && !!childCount ? (
                   <IconComponent
                     className={styles.folderIcon}
                     type="openedFolder"
@@ -277,10 +264,10 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
               )}
             </div>
 
-            {type === 'folder' && !onCollapse && (
+            {type === 'folder' && childCount === 0 && !ghost && (
               <div
                 className={classNames(styles.nestedContent)}
-                hidden={!itemPlaceholder || isEditing}
+                hidden={collapsed || isEditing}
               >
                 <div>
                   <p>Empty folder</p>
