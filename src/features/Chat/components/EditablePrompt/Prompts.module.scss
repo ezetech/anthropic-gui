@@ -111,6 +111,17 @@
       color: var(--text-secondary);
       margin: 0;
 
+      & > span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      & > svg {
+        flex-shrink: 0;
+        margin-left: 20px;
+      }
+
       * {
         margin: 0;
       }
