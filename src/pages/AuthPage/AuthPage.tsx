@@ -27,6 +27,10 @@ export const AuthPage = () => {
   const dispatch = useAppDispatch();
 
   const onChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (value.includes(' ')) {
+      event.target.value = value.replace(/ /g, '');
+    }
     setApiKey(event.target.value);
     setInvalidKey(false);
   }, []);
@@ -93,7 +97,7 @@ export const AuthPage = () => {
           <Stack spacing={1}>
             <div className={styles.errorContainer}>
               <p className={styles.textApiKey}>API Key</p>
-              {invalidKey && (
+              {apiKey.length > 0 && invalidKey && (
                 <div>
                   <IconComponent type="warning" />
                   <span className={styles.textInvalidKey}>Invalid key</span>
@@ -101,18 +105,21 @@ export const AuthPage = () => {
               )}
             </div>
             <TextFieldAuthComponent
-              className={invalidKey ? styles.invalid : ''}
+              className={`${styles.textField} ${
+                invalidKey ? styles.invalid : ''
+              }`}
               placeholder="Enter key"
               value={apiKey}
               onChange={onChange}
               onKeyDown={onEnter}
-              error={invalidKey}
+              autoComplete="off"
+              error={invalidKey && apiKey !== ''}
             />
 
             <ButtonAuthComponent
               type="submit"
               variant="contained"
-              disabled={invalidKey}
+              disabled={invalidKey || apiKey === ''}
             >
               Enter
             </ButtonAuthComponent>

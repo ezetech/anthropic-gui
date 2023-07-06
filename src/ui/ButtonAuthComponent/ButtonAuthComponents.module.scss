@@ -2,12 +2,13 @@
   padding-top: 13px;
   padding-bottom: 13px;
   transition: 0.3s;
-  font-family: var(--font-family-bold);
+  font-family: "InterBold", serif;
   font-weight: 700;
   font-size: 16px;
   text-transform: none;
   border-radius: 8px;
   min-width: 264px;
+  height: 45px;
 
   &.contained {
     background-color: #6129ff;
@@ -25,10 +26,9 @@
   }
 
   &.text {
-    color: #000000;
     padding: 3px;
-    font-family: var(--font-family-main);
-    font-weight: 500;
+    font-family: "InterMedium", serif;
+    font-weight: 700;
     border-radius: 8px;
 
     &:disabled {
