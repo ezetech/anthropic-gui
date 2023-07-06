@@ -80,6 +80,9 @@ export const decorateCodeFunc = (
       require('prismjs/components/prism-jsx');
       require('prismjs/components/prism-typescript');
       break;
+    case 'scala':
+      require('prismjs/components/prism-java');
+      break;
     default:
       break;
   }
