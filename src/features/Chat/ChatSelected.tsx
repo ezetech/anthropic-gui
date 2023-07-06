@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 
-import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
@@ -231,7 +230,7 @@ export const ChatSelected: React.FC = () => {
               setIsStreaming(false);
               break;
             }
-            let lastLine: any = '';
+            let lastLine = null;
             const lastLineData = decoder.decode(res?.value);
 
             const lastLineArray = lastLineData.split('data: ');
@@ -267,6 +266,7 @@ export const ChatSelected: React.FC = () => {
                 );
               } else if (eventData.error) {
                 setIsLoading(false);
+                setIsStreaming(false);
                 alert('Error: ' + eventData.error.message);
               }
             }
@@ -276,12 +276,14 @@ export const ChatSelected: React.FC = () => {
           }
         } else {
           console.error('Error: ' + response?.statusText);
+          setIsStreaming(false);
           setIsLoading(false);
         }
       } catch (error) {
         console.error('error', error);
       } finally {
         setIsLoading(false);
+        setIsStreaming(false);
       }
     },
     [
@@ -432,7 +434,7 @@ export const ChatSelected: React.FC = () => {
 
   return (
     <div className={styles.chatGeneralContainer} ref={containerRef}>
-      <Box paddingLeft="60px" display="block" width="100%" mb={4}>
+      <div className={styles.conversationName}>
         <TextFieldComponent
           value={conversationName}
           onChange={onGhangeConversationName}
@@ -457,7 +459,7 @@ export const ChatSelected: React.FC = () => {
             ),
           }}
         />
-      </Box>
+      </div>
       {chat?.content?.map(({ text, type, id }) => (
         <div className={styles.chatPromptContainer} key={id}>
           <EditablePrompt

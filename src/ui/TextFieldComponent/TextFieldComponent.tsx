@@ -9,6 +9,14 @@ export const TextFieldComponent = memo((props: TextFieldProps) => (
   <TextField
     {...props}
     className={classNames(styles.textField, styles.wrapper, props.className)}
+    sx={{
+      '& .MuiOutlinedInput-root': {
+        '&.Mui-focused fieldset': {
+          borderWidth: '1px',
+          borderColor: 'var(--primary-color)',
+        },
+      },
+    }}
   />
 ));
 TextFieldComponent.displayName = 'TexFieldComponent';
