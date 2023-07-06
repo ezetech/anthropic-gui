@@ -2,7 +2,7 @@
   padding-top: 13px;
   padding-bottom: 13px;
   transition: 0.3s;
-  font-family: "InterBold", serif;
+  font-family: var(--font-family-bold);
   font-weight: 700;
   font-size: 16px;
   text-transform: none;
@@ -27,7 +27,7 @@
 
   &.text {
     padding: 3px;
-    font-family: "InterMedium", serif;
+    font-family: var(--font-family-main);
     font-weight: 700;
     border-radius: 8px;
 
