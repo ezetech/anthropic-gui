@@ -1,60 +1,19 @@
 .wrapper.textField {
   min-width: 264px;
+  height: 45px;
   margin-bottom: 5px;
-
-  fieldset {
-    border: 1px solid #aeaeae;
-    border-radius: 8px;
-    transition: 0.3s;
-  }
 
   input {
     border: 0;
     color: #000000;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 11px;
+    padding-bottom: 11px;
 
     &::placeholder {
-      color: #aeaeae;
-      font-family: var(--font-family-bold), serif;
-      font-weight: 700;
-      font-size: 16px;
-    }
-  }
-
-  input:focus + fieldset {
-    border-color: #6129ff;
-  }
-
-  input:not(:focus):hover + fieldset {
-    border-color: #000000;
-  }
-
-  &.invalid {
-    input {
-      color: #eb4040;
-      border: 1px solid #eb4040;
-      border-radius: 8px;
-      font-style: normal;
+      color: #AEAEAE;
+      font-family: "InterMedium", serif;
       font-weight: 500;
       font-size: 16px;
     }
-
-    fieldset {
-      border-color: #eb4040;
-      color: #eb4040;
-      border: 1px solid #eb4040;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-    }
-  }
-
-  &.invalid input:focus + fieldset {
-    border-color: #eb4040;
-  }
-
-  &:hover.invalid input {
-    border-color: #eb4040;
   }
 }
