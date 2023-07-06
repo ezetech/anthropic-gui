@@ -75,7 +75,6 @@ export const ChatsTree = memo(
     const [activeId, setActiveId] = useState<string | null>(null);
     const [overId, setOverId] = useState<string | null>(null);
     const [offsetLeft, setOffsetLeft] = useState(0);
-    const [initDrag, setInitDrag] = useState(false);
     const dispatch = useDispatch();
     const treeItems = useSelector(selectConversationsList);
     const flattenedTree = useSelector(selectConversationFlattenList);
@@ -125,10 +124,12 @@ export const ChatsTree = memo(
 
     const handleCollapse = (
       id: string,
+      type: string,
       collapsibleItem: boolean | undefined,
       children: TreeItem[],
     ) =>
-      collapsibleItem && children?.length
+      (collapsibleItem && children?.length) ||
+      (collapsibleItem && type === 'folder')
         ? () => collapseItem(id, dispatch)
         : undefined;
 
@@ -139,8 +140,11 @@ export const ChatsTree = memo(
     };
 
     const handleDragMove = ({ delta }: DragMoveEvent) => {
-      setInitDrag(true);
-      setOffsetLeft(delta.x);
+      if (projected?.currentType === 'folder') {
+        setOffsetLeft(0);
+      } else {
+        setOffsetLeft(delta.x);
+      }
       if (!projected?.collapsed) {
         collapseItem(String(activeId), dispatch);
       }
@@ -154,66 +158,45 @@ export const ChatsTree = memo(
       setOverId(null);
       setActiveId(null);
       setOffsetLeft(0);
-      setInitDrag(false);
       document.body.style.setProperty('cursor', '');
     };
 
     const handleDragEnd = ({ active, over }: DragEndEvent) => {
       resetState();
       if (projected && over) {
-        const { depth, parentId, collapsed, parentType, currentType } =
+        const { depth, parentId, parentType, currentType, collapsed } =
           projected;
+
         if (collapsed) {
           collapseItem(String(active.id), dispatch);
         }
+
         if (
-          currentType === 'folder' &&
-          (parentType === 'folder' || parentType === 'chat')
+          (currentType === 'chat' && parentType === 'chat') ||
+          (currentType === 'folder' &&
+            (parentType === 'folder' || parentType === 'chat'))
         ) {
-          return;
-        }
-        if (currentType === 'chat' && parentType === 'chat') {
-          const chatInFolder = findChatParent(flattenedTree, parentId || '');
-          if (chatInFolder) {
-            const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
-            const overIndex = clonedItems.findIndex(
-              ({ id }) => id === parentId,
-            );
-            const activeIndex = clonedItems.findIndex(
-              ({ id }) => id === active.id,
-            );
-            const activeTreeItem = clonedItems[activeIndex];
-            clonedItems[activeIndex] = {
-              ...activeTreeItem,
-              depth,
-              parentId: chatInFolder?.id || null,
-            };
-            const sortedItems = arrayMove(
-              clonedItems,
-              activeIndex,
-              overIndex + 1,
-            );
-            const newItems = buildTree(sortedItems);
-            dispatch(updateChatTree({ chatTree: newItems }));
-          }
-          if (!chatInFolder) {
-            const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
-            const overIndex = clonedItems.findIndex(
-              ({ id }) => id === parentId,
-            );
-            const activeIndex = clonedItems.findIndex(
-              ({ id }) => id === active.id,
-            );
-            const activeTreeItem = clonedItems[activeIndex];
-            clonedItems[activeIndex] = {
-              ...activeTreeItem,
-              depth: 0,
-              parentId: null,
-            };
-            const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
-            const newItems = buildTree(sortedItems);
-            dispatch(updateChatTree({ chatTree: newItems }));
-          }
+          const parentItem = findChatParent(flattenedTree, parentId || '');
+
+          const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
+          const overIndex = clonedItems.findIndex(({ id }) => id === parentId);
+          const activeIndex = clonedItems.findIndex(
+            ({ id }) => id === active.id,
+          );
+          const activeTreeItem = clonedItems[activeIndex];
+          clonedItems[activeIndex] = {
+            ...activeTreeItem,
+            depth: parentItem ? depth : 0,
+            parentId: parentItem ? parentItem?.id || null : null,
+          };
+          const sortedItems = arrayMove(
+            clonedItems,
+            activeIndex,
+            overIndex + 1,
+          );
+          const newItems = buildTree(sortedItems);
+          dispatch(updateChatTree({ chatTree: newItems }));
+
           return;
         }
         const clonedItems: FlattenedItem[] = structuredClone(flattenedTree);
@@ -264,12 +247,14 @@ export const ChatsTree = memo(
                 value={id}
                 name={name}
                 type={type}
-                initDrag={initDrag}
                 depth={id === activeId && projected ? projected.depth : depth}
                 indentationWidth={indentationWidth}
                 indicator={indicator}
-                collapsed={Boolean(collapsed && children.length)}
-                onCollapse={handleCollapse(id, collapsible, children)}
+                childCount={children?.length}
+                collapsed={Boolean(
+                  collapsed && (children?.length || type === 'folder'),
+                )}
+                onCollapse={handleCollapse(id, type, collapsible, children)}
                 onRemove={handleRemove(id, removable)}
               />
             ),
@@ -281,15 +266,14 @@ export const ChatsTree = memo(
             >
               {activeId && activeItem ? (
                 <SortableTreeItem
+                  clone
                   id={activeId}
                   depth={activeItem?.depth}
-                  clone
                   childCount={getChildCount(treeItems, activeId) + 1}
                   value={activeId}
                   indentationWidth={indentationWidth}
                   name=""
                   type=""
-                  initDrag={initDrag}
                 />
               ) : null}
             </DragOverlay>,
