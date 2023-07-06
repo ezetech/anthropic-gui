@@ -95,6 +95,7 @@ export const conversationsSlice = createSlice({
         id: uuidv4(),
         createdAt: new Date(),
         children: [],
+        collapsed: true,
         ...action.payload,
       });
     },
