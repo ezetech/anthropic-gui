@@ -73,7 +73,13 @@
   scrollbar-width: thin;
 }
 
-.disabled {
+.disabledButton {
   opacity: 0.5;
   pointer-events: none;
+  color: var(--btn-disabled-text);
+}
+
+.disabledButtonBg {
+  background-color: var(--bg-btn-disabled);
+  border-color: var(--btn-disabled-border);
 }
