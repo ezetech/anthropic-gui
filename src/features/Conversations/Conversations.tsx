@@ -85,8 +85,8 @@ export const Conversations = memo(() => {
       </div>
 
       {debouncedSearch ? (
-        <div className={`${styles.newFolder} ${styles.disabled}`}>
-          <button disabled>
+        <div className={`${styles.newFolder} ${styles.disabledButton}`}>
+          <button className={styles.disabledButtonBg}>
             <IconComponent type="newFolder" />
           </button>
           <span>Add new folder</span>
