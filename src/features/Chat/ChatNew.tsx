@@ -1,5 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react';
 
+import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { injectStyle } from 'react-toastify/dist/inject-style';
@@ -120,7 +121,12 @@ export const ChatNew: React.FC = () => {
 
   return (
     <div className={styles.chatMainContainer}>
-      <div className={styles.chatGeneralContainer}>
+      <div
+        className={classNames(
+          styles.chatGeneralContainer,
+          styles.chatGeneralContainerNew,
+        )}
+      >
         {prompts.map(({ text, type, id }) => (
           <div className={styles.chatPromptContainer} key={id}>
             <EditablePrompt

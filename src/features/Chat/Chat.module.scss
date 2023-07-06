@@ -8,7 +8,7 @@
 .chatGeneralContainer {
   display: flex;
   flex-direction: column;
-  padding: 40px 30px 25px;
+  padding: 0 30px 25px;
   margin: 0 auto;
   align-items: center;
   width: 100%;
@@ -19,8 +19,22 @@
   position: relative;
 
   @media (width >= 1900px) {
-    padding: 40px 100px 25px;
+    padding: 0 100px 25px;
   }
+}
+
+.chatGeneralContainerNew {
+  padding: 30px 30px 25px;
+}
+
+.conversationName {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  padding: 20px 0 10px 60px;
+  background-color: var(--bg-color-main);
+  margin: 0 0 18px;
 }
 
 .chatPromptContainer {

@@ -4,7 +4,7 @@
     border-radius: 8px;
   }
 
-  div:hover fieldset {
+  div:hover input:not(:focus) + fieldset {
     border-color: var(--btn-outlined-hover);
   }
 
@@ -18,9 +18,5 @@
       color: var(--text-secondary);
       font-weight: 500;
     }
-  }
-
-  input:focus + fieldset {
-    border-color: var(--primary-color);
   }
 }
