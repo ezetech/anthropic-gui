@@ -18,31 +18,6 @@ export const SliderComponent = memo((props: SliderComponentProps) => {
   const [input, setInput] = useState(props.value as number | string);
   const [isFocused, setIsFocused] = useState(false);
 
-  useEffect(() => {
-    if (isFocused) {
-      return;
-    }
-    setInput(props.value as number);
-  }, [props.value, isFocused]);
-
-  useEffect(() => {
-    const value = Number(input);
-
-    if (Number.isNaN(value)) {
-      return;
-    }
-
-    if (value >= props.max) {
-      return handleChange(props.max);
-    }
-
-    if (value <= props.min) {
-      return handleChange(props.min);
-    }
-
-    handleChange(value);
-  }, [input, handleChange, props.max, props.min]);
-
   const onSliderChange = useCallback(
     (_: Event, value: number | number[]) => {
       handleChange(value as number);
@@ -55,13 +30,25 @@ export const SliderComponent = memo((props: SliderComponentProps) => {
   }, []);
 
   const onBlur = useCallback(() => {
-    setInput(props.value as number);
     setIsFocused(false);
-  }, [props.value]);
+    const value = Number(input);
+
+    if (!Number.isNaN(value)) {
+      handleChange(Math.min(Math.max(value, props.min), props.max));
+    } else {
+      setInput(props.value as number);
+    }
+  }, [input, handleChange, props.min, props.max, props.value]);
 
   const onFocus = useCallback(() => {
     setIsFocused(true);
   }, []);
+
+  useEffect(() => {
+    if (!isFocused) {
+      setInput(props.value as number);
+    }
+  }, [props.value, isFocused]);
 
   return (
     <div className={styles.wrapper}>
