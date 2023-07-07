@@ -96,13 +96,34 @@
   scrollbar-width: thin;
 }
 
-.disabledButton {
-  opacity: 0.5;
+.newFolderDisabled {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 10px;
+  cursor: pointer;
+  padding: 10px 0;
+  transition: 0.3s;
+  font-weight: 700;
+  font-family: var(--font-family-bold);
   pointer-events: none;
-  color: var(--btn-disabled-text);
-}
+  color: var(--bg-btn-disabled);
 
-.disabledButtonBg {
-  background-color: var(--bg-btn-disabled);
-  border-color: var(--btn-disabled-border);
+  button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--bg-btn-disabled);
+    border-color: var(--btn-disabled-border);
+    transition: 0.3s;
+    
+    svg {
+      stroke: var(--btn-disabled-stroke);
+    }
+  }
+
 }
