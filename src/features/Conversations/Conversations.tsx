@@ -43,6 +43,10 @@ export const Conversations = memo(() => {
     setIsClearing(false);
   };
 
+  const onClickResetSearch = () => {
+    setSearchedName('');
+  };
+
   const onClearConfirm = () => {
     dispatch(dispatch(clearConversations()));
     setIsClearing(false);
@@ -60,12 +64,25 @@ export const Conversations = memo(() => {
         fullWidth
         onChange={onSearchChange}
         value={searchedName}
+        className={styles.textField}
+        inputProps={{
+          style: { marginTop: '3px' },
+        }}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
-              <IconComponent type="search" className={styles.searchIcon} />
-            </InputAdornment>
+            <div className={styles.searchContainer}>
+              <InputAdornment position="start">
+                <IconComponent type="search" className={styles.searchIcon} />
+              </InputAdornment>
+            </div>
           ),
+          endAdornment: searchedName ? (
+            <div className={styles.cancelContainer}>
+              <InputAdornment position="end" className={styles.cancelIcon}>
+                <IconComponent type="cancel" onClick={onClickResetSearch} />
+              </InputAdornment>
+            </div>
+          ) : null,
         }}
       />
       <div className={styles.header}>

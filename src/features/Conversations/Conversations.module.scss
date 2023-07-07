@@ -1,5 +1,28 @@
+.searchContainer, .cancelContainer {
+  svg {
+    stroke: var(--bg-default);
+    transition: 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      stroke: var(--text-primary);
+    }
+  }
+}
+
+.cancelContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .searchIcon {
   stroke: var(--text-secondary);
+}
+
+.cancelIcon {
+  stroke: var(--text-secondary);
+  cursor: pointer;
 }
 
 .confirmationClear {
