@@ -48,10 +48,12 @@ export const SearchItem = memo(({ conversationItem }: SearchItemProps) => {
     }
     if (isEditing) {
       if (editedItemName) {
+        const trimmedName = editedItemName.trim();
+        setEditedItemName(trimmedName);
         dispatch(
           renameChatTreeItem({
             chatTreeId: conversationItem.id,
-            chatTreeName: editedItemName,
+            chatTreeName: trimmedName,
           }),
         );
       }
