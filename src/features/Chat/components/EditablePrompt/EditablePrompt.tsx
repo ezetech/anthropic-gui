@@ -66,7 +66,11 @@ export const EditablePrompt = memo(
     const decorate = useCallback(
       ([node, path]: [Node, number[]]) => {
         const customNode = node as CustomElement;
-        if (customNode.type === 'code' && customNode.lang) {
+        if (
+          customNode.type === 'code' &&
+          customNode.lang &&
+          customNode.lang !== 'null'
+        ) {
           let allRanges: CustomRange[] = [];
           for (const [child, childPath] of Node.children(editor, path)) {
             if (Text.isText(child)) {
@@ -369,33 +373,29 @@ export const EditablePrompt = memo(
           const [, path] = match;
 
           const prevText = Node.string(match[0]);
-          const codeRegex = /^```(\w+)?$/;
+          const codeRegex = /^```(.+)?$/;
 
           const codeMatch = prevText.match(codeRegex);
 
           if (codeMatch) {
-            Transforms.insertNodes(
-              editor,
-              {
-                type: 'code',
-                lang: codeMatch[1] || 'clike',
-                children: [{ text: '' }],
-              } as CustomElement,
-              { at: path },
-            );
+            const codeBlock = {
+              type: 'code',
+              lang: codeMatch[1] || 'clike',
+              children: [{ text: '' }],
+            } as CustomElement;
 
-            const codeBlockPath = path
-              .slice(0, path.length - 1)
-              .concat(path[path.length - 1] + 1);
-            Transforms.select(editor, Editor.end(editor, codeBlockPath));
-
-            event.preventDefault();
+            Transforms.insertNodes(editor, codeBlock, { at: path });
 
             const nextPath = Path.next(path);
-
             if (Editor.hasPath(editor, nextPath)) {
               Transforms.delete(editor, { at: nextPath });
             }
+
+            const codeBlockPath = path;
+
+            Transforms.select(editor, Editor.start(editor, codeBlockPath));
+
+            event.preventDefault();
             return;
           }
         }
