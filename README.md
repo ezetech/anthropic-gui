@@ -1,5 +1,5 @@
 
-# Anthropic API GUI
+# Claude ft. Aleph1
 
 This app allows you to communicate with Anthropic's Claude through an intuitive UI. You can save conversations, configure models and parameters, and get generated responses from the models.
 
@@ -7,7 +7,7 @@ This app allows you to communicate with Anthropic's Claude through an intuitive 
 
 - API key input to authenticate with the Anthropic API
 
-- Saved chats and ability to move them in folders to organize your conversations
+- Saved chats and drag&drop - the ability to move conversations in and out of folders
 
 - Prompt interface to enter your message and view the Claude's response
 
