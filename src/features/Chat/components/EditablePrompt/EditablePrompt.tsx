@@ -86,79 +86,84 @@ export const EditablePrompt = memo(
       [editor],
     );
 
-    const renderElement = useCallback((props: RenderElementProps) => {
-      const { element, children, attributes } = props;
+    const renderElement = useCallback(
+      (props: RenderElementProps) => {
+        const { element, children, attributes } = props;
 
-      const customElement = element as CustomElement;
+        const customElement = element as CustomElement;
 
-      switch (customElement.type) {
-        case 'code':
-          const language = customElement.lang;
+        switch (customElement.type) {
+          case 'code':
+            const language = customElement.lang;
 
-          if (!language || language === 'null') {
-            return <p {...attributes}>{children}</p>;
-          }
+            if (!language || language === 'null') {
+              return <p {...attributes}>{children}</p>;
+            }
 
-          return (
-            <div className={styles.codeWrapper}>
-              <div className={styles.codeHeader} contentEditable={false}>
-                <span>{language}</span>
-                <IconComponent
-                  type="copy"
-                  onClick={onCopyClick(
-                    element.children
-                      .map(child => (child as { text: string }).text)
-                      .join('\n'),
-                  )}
-                  className={styles.copyIcon}
-                />
+            return (
+              <div className={styles.codeWrapper}>
+                <div className={styles.codeHeader} contentEditable={false}>
+                  <span>{language}</span>
+                  <IconComponent
+                    type="copy"
+                    onClick={onCopyClick(
+                      element.children
+                        .map(child => (child as { text: string }).text)
+                        .join('\n'),
+                    )}
+                    className={classNames(styles.copyIcon, {
+                      [styles.copyActive]: !readOnly,
+                    })}
+                  />
+                </div>
+                <pre {...attributes}>
+                  <code>{children}</code>
+                </pre>
               </div>
-              <pre {...attributes}>
-                <code>{children}</code>
-              </pre>
-            </div>
-          );
-        case 'blockQuote':
-          return <blockquote {...attributes}>{children}</blockquote>;
-        case 'headingOne':
-          return <h1 {...attributes}>{children}</h1>;
-        case 'headingTwo':
-          return <h2 {...attributes}>{children}</h2>;
-        case 'headingThree':
-          return <h3 {...attributes}>{children}</h3>;
-        case 'headingFour':
-          return <h4 {...attributes}>{children}</h4>;
-        case 'headingFive':
-          return <h5 {...attributes}>{children}</h5>;
-        case 'headingSix':
-          return <h6 {...attributes}>{children}</h6>;
-        case 'listItem':
-          return <li {...attributes}>{children}</li>;
-        case 'list':
-          return customElement.ordered ? (
-            <ol start={customElement.start} {...attributes}>
-              {children}
-            </ol>
-          ) : (
-            <ul {...attributes}>{children}</ul>
-          );
-        case 'html':
-          return <div {...attributes}>{children}</div>;
-        case 'link':
-          return (
-            <a
-              {...attributes}
-              href={customElement.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {children}
-            </a>
-          );
-        default:
-          return <p {...attributes}>{children}</p>;
-      }
-    }, []);
+            );
+          case 'blockQuote':
+            return <blockquote {...attributes}>{children}</blockquote>;
+          case 'headingOne':
+            return <h1 {...attributes}>{children}</h1>;
+          case 'headingTwo':
+            return <h2 {...attributes}>{children}</h2>;
+          case 'headingThree':
+            return <h3 {...attributes}>{children}</h3>;
+          case 'headingFour':
+            return <h4 {...attributes}>{children}</h4>;
+          case 'headingFive':
+            return <h5 {...attributes}>{children}</h5>;
+          case 'headingSix':
+            return <h6 {...attributes}>{children}</h6>;
+          case 'listItem':
+            return <li {...attributes}>{children}</li>;
+          case 'list':
+            return customElement.ordered ? (
+              <ol start={customElement.start} {...attributes}>
+                {children}
+              </ol>
+            ) : (
+              <ul {...attributes}>{children}</ul>
+            );
+          case 'html':
+            return <div {...attributes}>{children}</div>;
+          case 'link':
+            return (
+              <a
+                {...attributes}
+                href={customElement.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {children}
+              </a>
+            );
+          default:
+            return <p {...attributes}>{children}</p>;
+        }
+      },
+      [readOnly],
+    );
 
     useEffect(() => {
       const processor = unified().use(markdown).use(remarkToSlate);
