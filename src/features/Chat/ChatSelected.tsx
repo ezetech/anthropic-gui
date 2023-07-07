@@ -99,7 +99,7 @@ export const ChatSelected: React.FC = () => {
 
   useEffect(() => {
     if (chat?.name) {
-      setConversationName(chat.name);
+      setConversationName(chat?.name.trim() || '');
     }
   }, [chatId, chat?.name]);
 
@@ -358,7 +358,7 @@ export const ChatSelected: React.FC = () => {
       dispatch(
         renameChatTreeItem({
           chatTreeId: chat?.id || '',
-          chatTreeName: conversationName,
+          chatTreeName: conversationName.trim(),
         }),
       );
     }
