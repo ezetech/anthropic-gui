@@ -128,9 +128,18 @@
     }
 
     .copyIcon {
-      cursor: pointer;
+      cursor: default;
       stroke: var(--text-secondary);
       margin: 0;
+      transition: 0.3s stroke;
+    }
+
+    .copyActive {
+      cursor: pointer;
+
+      &:hover {
+        stroke: var(--text-primary);
+      }
     }
   }
 
