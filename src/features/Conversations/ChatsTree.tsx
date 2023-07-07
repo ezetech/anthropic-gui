@@ -192,7 +192,7 @@ export const ChatsTree = memo(
           const sortedItems = arrayMove(
             clonedItems,
             activeIndex,
-            overIndex + 1,
+            activeIndex < overIndex ? overIndex : overIndex + 1,
           );
           const newItems = buildTree(sortedItems);
           dispatch(updateChatTree({ chatTree: newItems }));
