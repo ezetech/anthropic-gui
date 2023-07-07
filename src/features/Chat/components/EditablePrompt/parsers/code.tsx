@@ -60,6 +60,8 @@ export const decorateCodeFunc = (
     ts: 'typescript',
     py: 'python',
     xml: 'markup',
+    'c++': 'cpp',
+    'c#': 'csharp',
   };
 
   let language = '';
