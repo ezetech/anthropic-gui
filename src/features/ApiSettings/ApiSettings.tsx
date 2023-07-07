@@ -55,26 +55,14 @@ export const ApiSettings = memo(({ className }: ApiSettingsProps) => {
 
   const onTopPChange = useCallback(
     (value: number) => {
-      let newValue = value;
-
-      if (value === 0) {
-        newValue = -1;
-      }
-
-      dispatch(setTopP(newValue));
+      dispatch(setTopP(value));
     },
     [dispatch],
   );
 
   const onTopKChange = useCallback(
     (value: number) => {
-      let newValue = value;
-
-      if (value === 0) {
-        newValue = -1;
-      }
-
-      dispatch(setTopK(newValue));
+      dispatch(setTopK(value));
     },
     [dispatch],
   );
