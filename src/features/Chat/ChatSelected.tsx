@@ -439,6 +439,7 @@ export const ChatSelected: React.FC = () => {
           value={conversationName}
           onChange={onGhangeConversationName}
           fullWidth
+          autoComplete="off"
           InputProps={{
             endAdornment: (
               <div

@@ -4,11 +4,11 @@ import { ApiSettingOptions } from '@/typings/common';
 
 const initialState: ApiSettingOptions = {
   apiKey: '',
-  model: 'claude-v1.3-100k',
+  model: 'claude-1.3-100k',
   maxTokens: 8000,
-  temperature: 0,
-  topK: -1,
-  topP: -1,
+  temperature: 0.7,
+  topK: 5,
+  topP: 0,
 };
 
 export const apiSettingsSlice = createSlice({
@@ -43,7 +43,7 @@ export const apiSettingsSlice = createSlice({
     setTopP: (state, action: PayloadAction<number>) => {
       const value = action.payload;
 
-      if (value > -1) {
+      if (value > 0) {
         state.temperature = 0;
       }
 
