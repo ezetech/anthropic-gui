@@ -90,8 +90,9 @@ const TreeItem = forwardRef<HTMLDivElement, Props>(
         setIsDeleting(false);
       }
       if (isEditing) {
-        const trimmedName = editedItemName.trim();
-        if (trimmedName) {
+        if (editedItemName) {
+          const trimmedName = editedItemName.trim();
+          setEditedItemName(trimmedName.trim());
           dispatch(
             renameChatTreeItem({
               chatTreeId: value,
