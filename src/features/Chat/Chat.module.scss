@@ -35,6 +35,11 @@
   padding: 20px 0 10px 60px;
   background-color: var(--bg-color-main);
   margin: 0 0 18px;
+
+  input {
+    font-family: var(--font-family-bold);
+    font-weight: 700;
+  }
 }
 
 .chatPromptContainer {
