@@ -3,11 +3,7 @@
 
 This app allows you to communicate with Anthropic's Claude through an intuitive UI. You can save conversations, configure models and parameters, and get generated responses from the models.
 
-
-
-https://github.com/ezetech/anthropic-gui/assets/40824065/b40d064d-d17c-4179-a56c-6f3513209cba
-
-
+https://github.com/ezetech/anthropic-gui/assets/40824065/7eb0f1f1-34b3-4371-b410-77ff1ba5ed22
 
 ## Features
 
