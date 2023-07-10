@@ -3,6 +3,12 @@
 
 This app allows you to communicate with Anthropic's Claude through an intuitive UI. You can save conversations, configure models and parameters, and get generated responses from the models.
 
+
+
+https://github.com/ezetech/anthropic-gui/assets/40824065/b40d064d-d17c-4179-a56c-6f3513209cba
+
+
+
 ## Features
 
 - API key input to authenticate with the Anthropic API
@@ -37,7 +43,7 @@ To highlight text write
 ```
 and then press 'Enter'
 
-## Hot keys
+## Hotkeys
 
 Press Enter on the keyboard if you want to write a text or code from the new row.
 
