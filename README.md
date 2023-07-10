@@ -120,6 +120,8 @@ yarn package
 
 This will generate builds for your OS in the `dist` folder.
 
+Download distribution kits for Windows or Linux [here]([url](https://github.com/ezetech/anthropic-gui/releases/tag/release))
+
 ## Contributing
 
 Feel free to open an issue or submit a pull request if you find any bugs or want to suggest new features.
