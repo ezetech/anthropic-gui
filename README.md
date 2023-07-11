@@ -5,7 +5,14 @@ This app allows you to communicate with Anthropic's Claude through an intuitive 
 
 ![Claude_ft_Aleph1_1280x800](https://github.com/ezetech/anthropic-gui/assets/134277023/be7d66cd-c76d-465b-9187-118c8c03c419)
 
-Watch the full demo [here](https://github.com/ezetech/anthropic-gui/assets/40824065/7eb0f1f1-34b3-4371-b410-77ff1ba5ed22).
+
+<details>
+<summary>Watch the demo here</summary>
+
+### Claude ft. Aleph1 Demo
+https://github.com/ezetech/anthropic-gui/assets/40824065/7eb0f1f1-34b3-4371-b410-77ff1ba5ed22
+
+</details>
 
 
 ## Features
