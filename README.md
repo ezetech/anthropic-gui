@@ -22,10 +22,11 @@ https://github.com/ezetech/anthropic-gui/assets/40824065/7eb0f1f1-34b3-4371-b410
 - **API Key Input** 🔑 Securely authenticate and connect to the Anthropic API.
 - **Saved Chats and Drag & Drop Functionality** 📁 With our UI, you can not only save your chats for future reference, but also neatly organize them with ease using folders and drag & drop.
 - **Prompt Interface** 💬 Enter your message in a user-friendly prompt interface and view Claude's responses in real-time.
+- **Code Editor View** 💻 Get, write, and edit a prompt with code as in a code editor.
 - **Model Selection** 🤖 Our UI allows you to choose from various available models. You can select the most suitable model, including token size, to interact with Claude.
 - **Prompt Parameters Configuration** ⚙️ Customize Claude's responses according to your needs. Our tool provides options to configure prompt parameters, offering you more control over your interactions with Claude.
 - **Stream API** 📡 Get live responses from Claude with our Stream API integration. This ensures you're receiving up-to-the-minute responses.
-- **Dark Mode** 🌙 For those who prefer a darker theme, we've included a Dark Mode.experience.
+- **Dark Mode** 🌙 For those who prefer a darker theme, we've included a Dark Mode experience.
 
 ## Installation 💽
 
