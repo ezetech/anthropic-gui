@@ -5,6 +5,7 @@ This app allows you to communicate with Anthropic's Claude through an intuitive 
 
 https://github.com/ezetech/anthropic-gui/assets/40824065/7eb0f1f1-34b3-4371-b410-77ff1ba5ed22
 
+
 ## Features
 
 - API key input to authenticate with the Anthropic API
