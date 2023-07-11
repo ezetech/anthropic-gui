@@ -84,6 +84,11 @@
   }
 
   .codeWrapper {
+    * {
+      margin: 0;
+      white-space: pre;
+    }
+
     pre {
       color: #ffffff;
       background: var(--bg-secondary);
@@ -109,7 +114,6 @@
       border-radius: 8px 8px 0 0;
       padding: 10px 15px;
       color: var(--text-secondary);
-      margin: 0;
 
       & > span {
         white-space: nowrap;
@@ -120,10 +124,6 @@
       & > svg {
         flex-shrink: 0;
         margin-left: 20px;
-      }
-
-      * {
-        margin: 0;
       }
     }
 

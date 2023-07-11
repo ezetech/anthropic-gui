@@ -1,5 +1,9 @@
 export const models = [
   {
+    name: 'claude-2',
+    description: 'claude-2',
+  },
+  {
     name: 'claude-1',
     description:
       'Our largest model, ideal for a wide range of more complex tasks.',
