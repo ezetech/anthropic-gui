@@ -2,7 +2,7 @@
 
 Claude ft. Aleph1 is an open-source user interface for Anthropic's Claude AI. We developed this enhanced UI to offer features that are currently not available or problematic in the existing UI, such as model selection, chat saving, and improved chat editing functionality. Our goal is to provide an intuitive, bug-free experience while interacting with Claude to its fullest capability.
 
-![Claude_ft_Aleph1_1280x800](https://github.com/ezetech/anthropic-gui/assets/134277023/be7d66cd-c76d-465b-9187-118c8c03c419)
+![Claude_ft_Aleph1_1280x800](https://github.com/ezetech/anthropic-gui/assets/134277023/d0d36dc5-d03f-46b2-8699-3a0a99ec7cb0)
 
 
 ## Demo Highlight 🎥
