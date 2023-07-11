@@ -73,7 +73,10 @@ export const ApiSettings = memo(({ className }: ApiSettingsProps) => {
     dispatch(setModel(newModel));
   };
 
-  const isModelWithMaxToken = useMemo(() => model.includes('100k'), [model]);
+  const isModelWithMaxToken = useMemo(
+    () => model.includes('100k') || model === 'claude-2',
+    [model],
+  );
 
   const resetSettings = useCallback(() => {
     dispatch(resetApiSettings());
