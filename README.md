@@ -1,4 +1,4 @@
-# Introduction
+# Claude ft. Aleph1
 
 Claude ft. Aleph1 is an open-source user interface for Anthropic's Claude AI. We developed this enhanced UI to offer features that are currently not available or problematic in the existing UI, such as model selection, chat saving, and improved chat editing functionality. Our goal is to provide an intuitive, bug-free experience while interacting with Claude to its fullest capability.
 
@@ -113,7 +113,7 @@ It also allows to finish list and start writing a regular text.
 
 ## Few features with back quote ⛓️
 
-To start writing code as in a code editor write
+To start writing code as in a code editor write:
 
 ```
 ```code_extension
@@ -124,7 +124,7 @@ For example:
 ```
 and then press 'Enter'
 
-To highlight text write
+To highlight text write:
 
 ```
 `your text`
@@ -135,7 +135,7 @@ and then press 'Enter'
 
 ## Contributing 🤝
 
-We welcome all contributions from the community. If you'd like to contribute, here's how you can help:
+The app was built by [Aleph One](https://aleph1.io/). We welcome all contributions from the community. If you'd like to contribute, here's how you can help:
 
 - **Reporting Bugs:** If you encounter any bugs, please file an issue in our GitHub repository. Make sure to include as many details as possible to help us reproduce the bug, such as your operating system, browser version, steps to reproduce, and any error messages.
 - **Suggesting Enhancements:** If you have ideas for new features or improvements, feel free to open an issue. Describe your idea in as much detail as possible.
