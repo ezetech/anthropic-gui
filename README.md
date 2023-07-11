@@ -23,7 +23,7 @@ https://github.com/ezetech/anthropic-gui/assets/40824065/7eb0f1f1-34b3-4371-b410
 - **Saved Chats and Drag & Drop Functionality** 📁 With our UI, you can not only save your chats for future reference, but also neatly organize them with ease using folders and drag & drop.
 - **Prompt Interface** 💬 Enter your message in a user-friendly prompt interface and view Claude's responses in real-time.
 - **Code Editor View** 💻 Get, write, and edit a prompt with code as in a code editor.
-- **Model Selection** 🤖 Our UI allows you to choose from various available models. You can select the most suitable model, including token size, to interact with Claude.
+- **Model Selection** 🤖 Our UI allows you to choose from various available models. You can select the most suitable model, including token size, to interact with Anthropic. **We also support Claude-2 model**.
 - **Prompt Parameters Configuration** ⚙️ Customize Claude's responses according to your needs. Our tool provides options to configure prompt parameters, offering you more control over your interactions with Claude.
 - **Stream API** 📡 Get live responses from Claude with our Stream API integration. This ensures you're receiving up-to-the-minute responses.
 - **Dark Mode** 🌙 For those who prefer a darker theme, we've included a Dark Mode experience.
@@ -77,9 +77,6 @@ or
 yarn build
 ```
 
-
-This will generate builds for Windows, Mac, and Linux in the `dist` folder.
-
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
@@ -97,7 +94,7 @@ or
 yarn package
 ```
 
-This will generate builds for your OS in the `dist` folder.
+This will generate executable files for your OS in the `dist` folder.
 
 Download distribution kits for Windows or Linux [here](https://github.com/ezetech/anthropic-gui/releases/tag/release)
 

@@ -4,7 +4,7 @@ import { ApiSettingOptions } from '@/typings/common';
 
 const initialState: ApiSettingOptions = {
   apiKey: '',
-  model: 'claude-1.3-100k',
+  model: 'claude-2',
   maxTokens: 8000,
   temperature: 0.7,
   topK: 5,
