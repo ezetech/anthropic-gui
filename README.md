@@ -96,7 +96,7 @@ yarn package
 
 This will generate executable files for your OS in the `dist` folder.
 
-Download distribution kits for Windows or Linux [here](https://github.com/ezetech/anthropic-gui/releases/tag/release)
+Download distribution kits for Windows or Linux [here](https://github.com/ezetech/anthropic-gui/releases/tag/release-v1.0.1)
 
 ## Hotkeys 🔥
 
