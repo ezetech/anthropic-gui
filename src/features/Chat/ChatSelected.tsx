@@ -237,8 +237,9 @@ export const ChatSelected: React.FC = () => {
 
             for (let i = lastLineArray.length - 1; i >= 0; i--) {
               if (
-                lastLineArray[i].startsWith('{"completion":') &&
-                lastLineArray[i].includes('"exception": null}')
+                lastLineArray[i].includes('{"completion":') &&
+                (lastLineArray[i].includes('"exception":null}') ||
+                  lastLineArray[i].includes('"exception": null}'))
               ) {
                 lastLine = lastLineArray[i];
                 break;
